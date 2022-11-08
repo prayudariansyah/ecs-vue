@@ -117,6 +117,7 @@ export default {
   },
 
   setup() {
+    // let id;
     const data = reactive({
       name: '',
       email: '',
@@ -128,10 +129,9 @@ export default {
     });
 
     const dataPayment = reactive({
-      id: 1,
       payment_method_id: 1,
-      payment_priece: 500000,
       payment_picture: '',
+      payment_priece: 500000,
     });
 
     const submit = async () => {
@@ -140,9 +140,9 @@ export default {
         headers: { 'content-Type': 'Application/json' },
         body: JSON.stringify(data),
       });
-      const reg = await register.json();
-      console.log(reg);
-      // await fetch(CONFIG.BASE_URL + '/payment', {
+      const response = await register.json();
+      dataPayment['id'] = response.data.id;
+      // await fetch(CONFIG.BASE_URL + '/payment/add', {
       //   method: 'POST',
       //   headers: { 'content-Type': 'Application/json' },
       //   body: JSON.stringify(dataPayment),
