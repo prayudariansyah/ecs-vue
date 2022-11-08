@@ -134,7 +134,7 @@ export default {
     const dataPayment = reactive({
       payment_method_id: 1,
       payment_picture: '',
-      payment_priece: 500000,
+      payment_price: 50000,
     });
 
     const submit = async () => {
