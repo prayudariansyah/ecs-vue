@@ -1,6 +1,6 @@
 <template>
   <div class="signup">
-        <!-- start header -->
+    <!-- start header -->
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
@@ -25,26 +25,37 @@
             <br />
             <small>Semua Bisa Belajar</small>
           </div>
-          <form action="">
+          <form @submit.prevent="submit">
             <label for="email">Nama Lengkap</label>
-            <input type="text" placeholder="Masukan nama lengkap" name="nama" required />
+            <input type="text" v-model="data.name" placeholder="Masukan nama lengkap" name="nama" required />
             <label for="text">Umur</label>
-            <input type="text" placeholder="Masukan umur" name="umur" required />
+            <input type="text" v-model="data.user_age" placeholder="Masukan umur" name="umur" required />
             <label for="text">Asal Kota</label>
-            <input type="text" placeholder="Masukan asal kota" name="kota" required />
+            <input type="text" v-model="data.user_city" placeholder="Masukan asal kota" name="kota" required />
             <label for="email">Email Address</label>
-            <input type="text" placeholder="Masukan Email" name="email" required />
+            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
             <label for="psw">Password</label>
-            <input type="password" placeholder="Masukan Password" name="password" required />
-            <p>
-              Pembayaran Via Bank <br />
-              Mandiri 1490012259208 a.n MUHAMMAD PRAYUDA RIA
-            </p>
+            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
+            <label for="psw">Re-Password</label>
+            <input type="password" v-model="data.password_confirmation" placeholder="Masukan Re-Password"
+              name="re-password" required />
+            <label for="text">Pembayaran Via Bank</label>
+            <select v-model="dataPayment.payment_method_id" name="bank" id="bank" v-on:change="onChange($event)">
+              <option v-for=" payment in listPayment" :value="payment.payment_method_id"
+                :key="payment.payment_method_name">{{ payment.payment_method_name }}
+              </option>
+            </select>
+            <label for="text">kirim ke No rek dibawah</label>
+            <h3>{{ rekening.payment_method_rek }}</h3>
+            <label for="text">Total pembayaran</label>
+            <h3 for="text">Rp. 500.000</h3>
             <label class="file">
-              <input type="file" id="file" aria-label="File browser example" />
+              Bukti pembayaran
+              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles()"
+                multiple />
               <span class="file-custom"></span>
             </label>
-            <button class="button"><a href="#">Daftar Sekarang</a></button>
+            <button class="button" type="submit"><a href="#">Daftar Sekarang</a></button>
           </form>
         </div>
         <div class="imglogin">
@@ -80,13 +91,72 @@
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import { reactive } from 'vue';
+import CONFIG from '../global/config';
 
 export default {
   name: 'SignUp',
-  components: {
-    // HelloWorld
-  }
+  data() {
+    return { listPayment: [], rekening: '', file: '' }
+  },
+  methods: {
+    onChange: function onChange(event) {
+      const selected = event.target.value;
+      this.rekening = this.listPayment.find(id => id.payment_method_id == selected);
+    },
+    previewFiles() {
+      this.file = this.$refs.picture.files;
+    }
+  },
+
+  async mounted() {
+    await fetch(CONFIG.BASE_URL + "/payment_method")
+      .then((response) => response.json())
+      .then((json) => json.data)
+      .then((data) => this.listPayment = data)
+      .catch((error) => console.log('Request failed', error));
+
+    this.rekening = this.listPayment.find(id => id.payment_method_id == 1);
+  },
+
+  setup() {
+    // let id;
+    const data = reactive({
+      name: '',
+      email: '',
+      user_city: '',
+      user_age: '',
+      password: '',
+      password_confirmation: '',
+      role_id: 2,
+    });
+
+    const dataPayment = reactive({
+      payment_method_id: 1,
+      payment_picture: '',
+      payment_priece: 500000,
+    });
+
+    const submit = async () => {
+      await fetch(CONFIG.BASE_URL + '/register', {
+        method: 'POST',
+        headers: { 'content-Type': 'Application/json' },
+        body: JSON.stringify(data),
+      }).then((response) => response.json())
+        .then((data) => dataPayment['id'] = data.id);
+      // await fetch(CONFIG.BASE_URL + '/payment/add', {
+      //   method: 'POST',
+      //   headers: { 'content-Type': 'Application/json' },
+      //   body: JSON.stringify(dataPayment),
+      // });
+    };
+
+    return {
+      data,
+      dataPayment,
+      submit
+    }
+  },
 }
 </script>
 
@@ -152,7 +222,8 @@ header nav ul li a {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+select {
   width: 100%;
   padding: 12px 20px;
   margin: 15px 0;
@@ -293,12 +364,13 @@ footer p {
   0% {
     transform: translate(0, 0px);
   }
+
   50% {
     transform: translate(0, -50px);
   }
+
   100% {
     transform: translate(0, -0px);
   }
 }
-
 </style>
