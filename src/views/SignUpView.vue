@@ -36,11 +36,17 @@
             <input type="text" placeholder="Masukan Email" name="email" required />
             <label for="psw">Password</label>
             <input type="password" placeholder="Masukan Password" name="password" required />
-            <p>
-              Pembayaran Via Bank <br />
-              Mandiri 1490012259208 a.n MUHAMMAD PRAYUDA RIA
-            </p>
+            <label for="psw">Re-Password</label>
+            <input type="password" placeholder="Masukan Re-Password" name="re-password" required />
+            <label for="text">Pembayaran Via Bank</label>
+            <select name="bank" id="bank">
+              <option value="bri">BRI</option>
+              <option value="bni">BNI</option>
+            </select>
+            <label for="text">No. rekening</label>
+            <input type="text" placeholder="Masukan no rekening" name="rekening" required />
             <label class="file">
+              Bukti pembayaran
               <input type="file" id="file" aria-label="File browser example" />
               <span class="file-custom"></span>
             </label>
@@ -152,7 +158,7 @@ header nav ul li a {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"], select {
   width: 100%;
   padding: 12px 20px;
   margin: 15px 0;
