@@ -1,6 +1,6 @@
 <template>
   <div class="signin">
-       <!-- start header -->
+    <!-- start header -->
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
@@ -25,12 +25,12 @@
             <br />
             <small>Kita Belajar Lagi</small>
           </div>
-          <form action="">
+          <form @submit.prevent="submit">
             <label for="email">Email Address</label>
-            <input type="text" placeholder="Masukan Email" name="email" required />
+            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
             <label for="psw">Password</label>
-            <input type="password" placeholder="Masukan Password" name="password" required />
-            <button class="button"><a href="#/dashboard">Masuk</a></button>
+            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
+            <button class="button" type="submit"><a href="#/dashboard">Masuk</a></button>
           </form>
         </div>
         <div class="imglogin">
@@ -66,12 +66,28 @@
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import CONFIG from '@/global/config';
+import { reactive } from 'vue';
+// import { useRouter } from 'vue-router';
 
 export default {
   name: 'SignIn',
-  components: {
-    // HelloWorld
+  setup() {
+    const data = reactive({
+      email: '',
+      password: '',
+    });
+    // const route = useRouter();
+    const submit = async () => {
+      await fetch(CONFIG.BASE_URL + '/login', {
+        method: 'POST',
+        headers: { 'content-Type': 'Application/json' },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+      // await route.push('/dashboard');
+    }
+    return { data, submit };
   }
 }
 </script>
@@ -250,12 +266,13 @@ footer p {
   0% {
     transform: translate(0, 0px);
   }
+
   50% {
     transform: translate(0, -50px);
   }
+
   100% {
     transform: translate(0, -0px);
   }
 }
-
 </style>

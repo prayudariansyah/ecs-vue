@@ -110,9 +110,12 @@ export default {
   },
 
   async mounted() {
-    const res2 = await fetch(CONFIG.BASE_URL + "/payment_method");
-    const finalRes2 = await res2.json();
-    this.listPayment = finalRes2.data;
+    await fetch(CONFIG.BASE_URL + "/payment_method")
+      .then((response) => response.json())
+      .then((json) => json.data)
+      .then((data) => this.listPayment = data)
+      .catch((error) => console.log('Request failed', error));
+
     this.rekening = this.listPayment.find(id => id.payment_method_id == 1);
   },
 
@@ -135,13 +138,12 @@ export default {
     });
 
     const submit = async () => {
-      const register = await fetch(CONFIG.BASE_URL + '/register', {
+      await fetch(CONFIG.BASE_URL + '/register', {
         method: 'POST',
         headers: { 'content-Type': 'Application/json' },
         body: JSON.stringify(data),
-      });
-      const response = await register.json();
-      dataPayment['id'] = response.data.id;
+      }).then((response) => response.json())
+        .then((data) => dataPayment['id'] = data.id);
       // await fetch(CONFIG.BASE_URL + '/payment/add', {
       //   method: 'POST',
       //   headers: { 'content-Type': 'Application/json' },
