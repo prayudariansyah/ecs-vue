@@ -1,5 +1,5 @@
 <template>
-  <div class="home"> 
+  <div class="home">
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
@@ -13,7 +13,7 @@
         </ul>
       </nav>
     </header>
-      <!-- start main -->
+    <!-- start main -->
     <main>
       <!-- start jumbotron -->
       <div class="jumbotron">
@@ -59,7 +59,9 @@
             <h3>Tentang Program</h3>
             <h1>Program dengan semester yang diberikan</h1>
             <p>
-              Seluruh siswa yang terdaftar memulai pembelajaran dari kelas 1. Untuk naik ketingkat selanjutnya para siswa harus menyelesaikan 2 semester dimana per semester mempunyai waktu 6 bulan belajar. Pembelajaran dilakukan secara
+              Seluruh siswa yang terdaftar memulai pembelajaran dari kelas 1. Untuk naik ketingkat selanjutnya para
+              siswa harus menyelesaikan 2 semester dimana per semester mempunyai waktu 6 bulan belajar. Pembelajaran
+              dilakukan secara
               mandiri dengan menonton video pembelajaran yang disediakan oleh para ahli.
             </p>
           </div>
@@ -77,7 +79,7 @@
           <div class="card2">
             <div class="titleprice">
               <h3>Program Berkelanjutan</h3>
-              <h2>1.500.000 Rp</h2>
+              <h2>Rp. 1.500.000</h2>
               <h4>Per Semester</h4>
             </div>
             <hr />
@@ -304,13 +306,16 @@ article .harga .card2 ul {
 article .harga .card2 ul li {
   margin: 30px 0px;
   position: relative;
-  padding-left: 1.5em; /* space to preserve indentation on wrap */
+  padding-left: 1.5em;
+  /* space to preserve indentation on wrap */
 }
 
 article .harga .card2 ul li:before {
-  content: ""; /* placeholder for the SVG */
+  content: "";
+  /* placeholder for the SVG */
   position: absolute;
-  left: 0; /* place the SVG at the start of the padding */
+  left: 0;
+  /* place the SVG at the start of the padding */
   width: 2em;
   height: 2em;
   background: url('/public/images/check.svg') no-repeat;
@@ -408,12 +413,13 @@ footer p {
   0% {
     transform: translate(0, 0px);
   }
+
   50% {
     transform: translate(0, 50px);
   }
+
   100% {
     transform: translate(0, -0px);
   }
 }
-
 </style>

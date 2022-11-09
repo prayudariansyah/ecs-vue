@@ -30,7 +30,7 @@
             <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
             <label for="psw">Password</label>
             <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
-            <button class="button" type="submit"><a href="#/dashboard">Masuk</a></button>
+            <button class="button" type="submit">Masuk</button>
           </form>
         </div>
         <div class="imglogin">

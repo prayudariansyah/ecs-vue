@@ -1,11 +1,5 @@
 <template>
-    <div v-if="!auth">
-        <div class="card">
-            <h3>{{ messages }}</h3>
-            <p><a href="#">back to home</a></p>
-        </div>
-    </div>
-    <div class="dashboard" v-else>
+    <div class="dashboard" v-if="auth">
         <div class="container">
             <aside class="sidebar">
                 <div class="card-profile">
@@ -13,7 +7,7 @@
                     <p class="name">Prayuda Riansyah</p>
                     <p>Kelas 1 Sekolah Dasar</p>
                 </div>
-                <a href="#" class="active">Kelas Saya</a>
+                <a href="#/dashboard" class="active">Kelas Saya</a>
                 <a href="#/profile">Profile Saya</a>
                 <a href="#" @click="logout">Log Out</a>
             </aside>
@@ -36,6 +30,12 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+    <div v-else>
+        <div class="card">
+            <h3>{{ messages }}</h3>
+            <p><a href="#">back to home</a></p>
         </div>
     </div>
 </template>
@@ -71,6 +71,7 @@ export default {
             });
             const content = await response.json();
             messages.value = content.message;
+            alert(content.message);
         }
         return {
             messages,
