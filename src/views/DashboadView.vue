@@ -1,6 +1,12 @@
 <template>
-<div class="dashboard">
-    <div class="container">
+    <div v-if="!auth">
+        <div class="card">
+            <h3>{{ messages }}</h3>
+            <p><a href="#">back to home</a></p>
+        </div>
+    </div>
+    <div class="dashboard" v-else>
+        <div class="container">
             <aside class="sidebar">
                 <div class="card-profile">
                     <img src="/images/Profile.png" alt="">
@@ -9,7 +15,7 @@
                 </div>
                 <a href="#" class="active">Kelas Saya</a>
                 <a href="#/profile">Profile Saya</a>
-                <a href="#">Log Out</a>
+                <a href="#" @click="logout">Log Out</a>
             </aside>
             <div class="content">
                 <div class="title">
@@ -30,58 +36,91 @@
                 </div>
 
             </div>
-        </div>    
-  </div>
+        </div>
+    </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import CONFIG from '@/global/config';
+import { onMounted, ref } from 'vue';
 
 export default {
-  name: 'DashBoard',
-  components: {
-    // HelloWorld
-  }
+    name: 'DashBoard',
+    setup() {
+        const messages = ref('you are not login');
+        const auth = ref(false);
+        onMounted(async () => {
+            try {
+                const response = await fetch(CONFIG.BASE_URL + '/user/show', {
+                    headers: { 'content-Type': 'Application/json' },
+                    credentials: 'include',
+                });
+                const content = await response.json();
+                messages.value = content.message;
+                auth.value = true;
+            } catch (e) {
+                console.log(e);
+            }
+        });
+
+        const logout = async () => {
+            const response = await fetch(CONFIG.BASE_URL + '/logout', {
+                headers: { 'content-Type': 'Application/json' },
+                credentials: 'include',
+            });
+            const content = await response.json();
+            messages.value = content.message;
+        }
+        return {
+            messages,
+            auth,
+            logout
+        }
+    }
 }
 </script>
 
 <style scoped>
-
-*{
+* {
     margin: 0;
     padding: 0;
 }
-h4{
+
+h4 {
     font-size: 36px;
     font-weight: 600;
-    color:#404040;
+    color: #404040;
 }
 
 
-.dashboard{    
+.dashboard {
     font-family: 'Poppins';
     width: 1440px;
     height: 900px;
-    overflow:hidden;
+    overflow: hidden;
 }
-.container{
+
+.container {
     display: flex;
     width: 100%;
     height: 100%;
-    
+
 }
-.sidebar{
+
+.sidebar {
     padding-top: 80px;
     background-color: #FA8432;
     width: 280px;
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
 }
-.card-profile{
+
+.card-profile {
     width: 280px;
 }
-.card-profile img{
+
+.card-profile img {
     margin-left: 80px;
     margin-bottom: 16px;
     border-radius: 100%;
@@ -90,22 +129,25 @@ h4{
     padding: 2px;
     background-color: white;
 }
-.card-profile p{
+
+.card-profile p {
     margin-left: 65px;
     font-size: 14px;
     font-weight: 400;
     color: white;
     margin-bottom: 60px;
-    
+
 }
-.card-profile p.name{
+
+.card-profile p.name {
     margin-left: 48px;
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 6px;
-    
+
 }
-.sidebar a{
+
+.sidebar a {
     padding-left: 24px;
     padding-top: 17px;
     padding-bottom: 16px;
@@ -113,45 +155,53 @@ h4{
     color: white;
     text-decoration: none;
 }
+
 .sidebar a.active {
     background-color: #E45F03;
     color: white;
 }
+
 .sidebar a:hover:not(.active) {
     background-color: #FFB17B;
     color: white;
 }
 
 
-.content{    
+.content {
     margin-left: 70px;
     margin-top: 50px;
 }
-.title p{
+
+.title p {
     margin-top: 6px;
     font-size: 18px;
     font-weight: 400;
     color: #BFBFBF;
 }
-.class-row{
+
+.class-row {
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     margin-top: 30px;
 }
-.card{
+
+.card {
     margin-right: 47px;
 }
-.card img{
+
+.card img {
     width: 255px;
     height: 170px;
 }
-.card a.matpen{
+
+.card a.matpen {
     font-size: 18px;
     font-weight: 400;
     color: #404040;
     text-decoration: none;
 }
-.card p.semester{
+
+.card p.semester {
     font-size: 14px;
     font-weight: 400;
     color: #BFBFBF;

@@ -68,7 +68,7 @@
 // @ is an alias to /src
 import CONFIG from '@/global/config';
 import { reactive } from 'vue';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'SignIn',
@@ -77,15 +77,19 @@ export default {
       email: '',
       password: '',
     });
-    // const route = useRouter();
+    const route = useRouter();
     const submit = async () => {
-      await fetch(CONFIG.BASE_URL + '/login', {
+      const response = await fetch(CONFIG.BASE_URL + '/login', {
         method: 'POST',
         headers: { 'content-Type': 'Application/json' },
         credentials: 'include',
         body: JSON.stringify(data),
       });
-      // await route.push('/dashboard');
+      const json = await response.json();
+      if (response.status != 401) {
+        await route.push('/dashboard');
+      }
+      alert(json.meta.message);
     }
     return { data, submit };
   }

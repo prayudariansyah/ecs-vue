@@ -92,6 +92,7 @@
 <script>
 // @ is an alias to /src
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 import CONFIG from '../global/config';
 
 export default {
@@ -106,6 +107,7 @@ export default {
     },
     previewFiles() {
       this.file = this.$refs.picture.files;
+      console.log(this.file);
     }
   },
 
@@ -137,6 +139,8 @@ export default {
       payment_priece: 500000,
     });
 
+    const router = useRouter();
+
     const submit = async () => {
       await fetch(CONFIG.BASE_URL + '/register', {
         method: 'POST',
@@ -144,6 +148,8 @@ export default {
         body: JSON.stringify(data),
       }).then((response) => response.json())
         .then((data) => dataPayment['id'] = data.id);
+      console.log(dataPayment);
+      await router.push('/sign-in');
       // await fetch(CONFIG.BASE_URL + '/payment/add', {
       //   method: 'POST',
       //   headers: { 'content-Type': 'Application/json' },
