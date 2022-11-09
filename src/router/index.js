@@ -6,6 +6,7 @@ import SignIn from '../views/SignInView.vue'
 import SignUp from '../views/SignUpView.vue'
 import SubClassOne from '../views/SubClassOneView.vue'
 import SUbClassTwo from '../views/SubClassTwoView.vue'
+import EmailVerify from '../views/EmailVerify.vue'
 
 
 
@@ -17,7 +18,7 @@ const routes = [
   },
   {
     path: '/about',
-    name: 'about',    
+    name: 'about',
   },
   {
     path: '/dashboard',
@@ -48,6 +49,11 @@ const routes = [
     path: '/subclass-two',
     name: 'subclass-two',
     component: SUbClassTwo
+  },
+  {
+    path: '/email-verify',
+    name: 'email-verify',
+    component: EmailVerify
   },
 ]
 

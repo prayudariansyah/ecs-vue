@@ -149,7 +149,7 @@ export default {
       }).then((response) => response.json())
         .then((data) => dataPayment['id'] = data.id);
       console.log(dataPayment);
-      await router.push('/sign-in');
+      await router.push('/email-verify');
       // await fetch(CONFIG.BASE_URL + '/payment/add', {
       //   method: 'POST',
       //   headers: { 'content-Type': 'Application/json' },

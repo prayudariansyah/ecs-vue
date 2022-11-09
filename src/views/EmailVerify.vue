@@ -1,42 +1,34 @@
 <template>
-  <div class="signin">
-    <!-- start header -->
+  <div class="home">
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
       </div>
       <nav>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Class</a></li>
-          <li><a href="#">Harga</a></li>
-          <li><a href="#/sign-up"><button class="button" role="button">Daftar</button></a></li>
+          <li><a href="#/">Home</a></li>
+          <li><a href="#/sign-in"><button class="button" role="button">Masuk</button></a></li>
         </ul>
       </nav>
     </header>
-    <!-- end header -->
-
     <!-- start main -->
     <main>
-      <div class="containerlogin">
-        <div class="formlogin">
-          <div class="title">
-            <b>Yuk Masuk</b>
-            <br />
-            <small>Kita Belajar Lagi</small>
+      <article style="background-color: transparent; color: white;">
+        <section class="harga" id="harga">
+          <div>
+            <h2>Email Verification</h2>
           </div>
-          <form @submit.prevent="submit">
-            <label for="email">Email Address</label>
-            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
-            <label for="psw">Password</label>
-            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
-            <button class="button" type="submit"><a href="#/dashboard">Masuk</a></button>
-          </form>
-        </div>
-        <div class="imglogin">
-          <img class="floating" src="/images/cuate.png" alt="" />
-        </div>
-      </div>
+          <div class="card2" style="background-color: white; color: #e45f03">
+            <div class="titleprice">
+              <h3>Email verifikasi terkirim</h3>
+              <h2>Silahkan cek email anda!!!</h2>
+              <hr />
+              <h5>jika email belum terkirim silahkan klik dibawah</h5>
+            </div>
+            <button class="button" @click="submit">Kirim ulang</button>
+          </div>
+        </section>
+      </article>
     </main>
     <!-- end main -->
     <footer>
@@ -53,7 +45,7 @@
         <div class="touchus">
           <h4>Touch Us</h4>
           <a href="#">MANUSIA</a><br />
-          <a href="#">Jl Tirto Utomo No 3 GG 8</a><br />
+          <a href="https://goo.gl/maps/fvxLFfHeMMXtGLHd8">Jl Tirto Utomo No 3 GG 8</a><br />
           <a href="#">Kabupaten Malang</a><br />
           <a href="#">+62 831 5099 3913</a><br />
         </div>
@@ -66,33 +58,22 @@
 
 <script>
 // @ is an alias to /src
+// import HelloWorld from '@/components/HelloWorld.vue'
+
 import CONFIG from '@/global/config';
-import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
 
 export default {
-  name: 'SignIn',
+  name: 'EmailVerify',
   setup() {
-    const data = reactive({
-      email: '',
-      password: '',
-    });
-    const route = useRouter();
     const submit = async () => {
-      const response = await fetch(CONFIG.BASE_URL + '/login', {
-        method: 'POST',
+      const response = await fetch(CONFIG.BASE_URL + '/email/verify/resend-verification', {
         headers: { 'content-Type': 'Application/json' },
         credentials: 'include',
-        body: JSON.stringify(data),
       });
       const json = await response.json();
       alert(json.meta.message);
-
-      if (response.status == 200) {
-        await route.push('/dashboard');
-      }
     }
-    return { data, submit };
+    return { submit };
   }
 }
 </script>
@@ -100,9 +81,12 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-.signin {
+.home {
   margin: 0;
   font-family: Poppins;
+  background-image: url('/public/images/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 header {
@@ -114,7 +98,7 @@ header {
 
 header .logo {
   flex-grow: 1;
-  color: #fa8432;
+  color: white;
 }
 
 header nav {
@@ -137,46 +121,147 @@ header nav ul li a {
   text-decoration: none;
   font-style: normal;
   font-size: 18px;
-  color: rgb(0, 0, 0);
+  color: white;
   font-weight: 500;
 }
 
-.containerlogin {
+.jumbotron {
   display: flex;
+  margin: 0px 100px;
   align-items: center;
-  justify-content: space-around;
-  margin: 50px 0px;
+  justify-content: space-between;
+  margin-bottom: 169px;
 }
 
-.formlogin {
+main .jumbo1 {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  width: 370px;
 }
 
-.title {
-  font-size: 30px;
-  margin-bottom: 30px;
+main .jumbo1 .textjumbo {
+  flex-grow: 1;
+  color: white;
+  font-size: 60px;
 }
 
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 15px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box;
+main .jumbo1 .textjumbo b {
+  color: #e45f03;
 }
 
-main .containerlogin button a {
+main .jumbo1 p {
+  flex-grow: 1;
+  width: 400px;
+  font-weight: 0px;
+
+  color: white;
+}
+
+main .jumbo1 button {
+  flex-grow: 1;
+  width: 200px;
+}
+
+main .jumbo1 button a {
   text-decoration: none;
   color: white;
 }
 
-main .containerlogin .imglogin img {
-  width: 500px;
+main .jumbo2 {
+  flex-grow: 10;
+  align-items: flex-end;
+  text-align: right;
+}
+
+article {
+  padding: 30px;
+  margin: 0px 100px;
+  background-color: #ffffff;
+}
+
+.catalogue {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(auto, 1fr));
+  grid-template-rows: repeat(2);
+  grid-gap: 20px;
+  margin-bottom: 50px;
+}
+
+main article section .card1 {
+  padding: 10px;
+  height: 335px;
+  width: 332px;
+  box-shadow: 11px 12px 29px -18px rgba(0, 0, 0, 0.14);
+  -webkit-box-shadow: 11px 12px 29px -18px rgba(0, 0, 0, 0.14);
+  -moz-box-shadow: 11px 12px 29px -18px rgba(0, 0, 0, 0.14);
+}
+
+main article section .card1 img {
+  width: 320px;
+}
+
+main article .about {
+  display: flex;
+}
+
+main article .about .title {
+  flex-grow: 1;
+  width: 400px;
+}
+
+main article .about .imgabout {
+  flex-grow: 2;
+  text-align: right;
+}
+
+.title h2,
+.title h3 {
+  color: #fa8432;
+}
+
+.title p {
+  color: #bfbfbf;
+}
+
+.harga {
+  display: grid;
+  place-items: center;
+}
+
+article .harga .titleprice {
+  text-align: center;
+  margin: 50px 0px;
+}
+
+article .card2 {
+  border-radius: 20px;
+  background-color: #fa8432;
+  color: white;
+  padding: 20px;
+  width: 400px;
+}
+
+article .harga .card2 ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+article .harga .card2 ul li {
+  margin: 30px 0px;
+  position: relative;
+  padding-left: 1.5em;
+  /* space to preserve indentation on wrap */
+}
+
+article .harga .card2 ul li:before {
+  content: "";
+  /* placeholder for the SVG */
+  position: absolute;
+  left: 0;
+  /* place the SVG at the start of the padding */
+  width: 2em;
+  height: 2em;
+  background: url('/public/images/check.svg') no-repeat;
 }
 
 footer {
@@ -273,7 +358,7 @@ footer p {
   }
 
   50% {
-    transform: translate(0, -50px);
+    transform: translate(0, 50px);
   }
 
   100% {
