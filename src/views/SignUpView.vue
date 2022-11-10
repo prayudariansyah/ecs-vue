@@ -142,14 +142,19 @@ export default {
     const router = useRouter();
 
     const submit = async () => {
-      await fetch(CONFIG.BASE_URL + '/register', {
+      const response = await fetch(CONFIG.BASE_URL + '/register', {
         method: 'POST',
         headers: { 'content-Type': 'Application/json' },
         body: JSON.stringify(data),
-      }).then((response) => response.json())
-        .then((data) => dataPayment['id'] = data.id);
-      console.log(dataPayment);
-      await router.push('/email-verify');
+      });
+
+      const json = await response.json();
+      dataPayment['id'] = json.id;
+      alert(json.meta.message);
+
+      if (response.status == 200) {
+        await router.push('/sign-in');
+      }
       // await fetch(CONFIG.BASE_URL + '/payment/add', {
       //   method: 'POST',
       //   headers: { 'content-Type': 'Application/json' },

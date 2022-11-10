@@ -62,31 +62,30 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-
 import CONFIG from '@/global/config';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'EmailVerify',
   data() {
     return {
-      message: 'you are not login',
-      auth: false,
+      messages: localStorage.messages,
+      auth: localStorage.auth,
     }
   },
   async mounted() {
     try {
-      const response = await fetch(CONFIG.BASE_URL + '/email/verify', {
+      await fetch(CONFIG.BASE_URL + '/email/verify', {
         headers: { 'content-Type': 'Application/json' },
         credentials: 'include',
       });
-      const content = await response.json();
-      this.messages = content.message;
-      this.auth = true;
+      localStorage.auth = true;
     } catch (e) {
       console.log(e);
     }
   },
   setup() {
+    const route = useRouter();
     const submit = async () => {
       const response = await fetch(CONFIG.BASE_URL + '/email/verify/resend-verification', {
         headers: { 'content-Type': 'Application/json' },
@@ -94,6 +93,11 @@ export default {
       });
       const json = await response.json();
       alert(json.meta.message);
+      if (response.status == 400) {
+        localStorage.verify = true;
+        return route.push('/dashboard');
+      }
+      return console.log('error')
     }
 
     return { submit };

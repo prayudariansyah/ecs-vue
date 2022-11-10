@@ -1,5 +1,5 @@
 <template>
-    <div class="dashboard" v-if="auth">
+    <div class="dashboard" v-if="verify">
         <div class="container">
             <aside class="sidebar">
                 <div class="card-profile">
@@ -43,39 +43,27 @@
 <script>
 // @ is an alias to /src
 import CONFIG from '@/global/config';
-import { onMounted, ref } from 'vue';
 
 export default {
     name: 'DashBoard',
+    data() {
+        return {
+            messages: localStorage.messages,
+            verify: localStorage.verify,
+        }
+    },
     setup() {
-        const messages = ref('you are not login');
-        const auth = ref(false);
-        onMounted(async () => {
-            try {
-                const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-                    headers: { 'content-Type': 'Application/json' },
-                    credentials: 'include',
-                });
-                const content = await response.json();
-                messages.value = content.message;
-                auth.value = true;
-            } catch (e) {
-                console.log(e);
-            }
-        });
-
         const logout = async () => {
-            const response = await fetch(CONFIG.BASE_URL + '/logout', {
+            await fetch(CONFIG.BASE_URL + '/logout', {
                 headers: { 'content-Type': 'Application/json' },
                 credentials: 'include',
             });
-            const content = await response.json();
-            messages.value = content.message;
-            alert(content.message);
+            localStorage.removeItem('messages');
+            localStorage.removeItem('auth');
+            localStorage.removeItem('verify');
+            alert(this.messages);
         }
         return {
-            messages,
-            auth,
             logout
         }
     }
