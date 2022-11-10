@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="auth">
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
@@ -54,6 +54,9 @@
       <p>2020 Copyright ECS by MANUSIA. All Rights Reserved.</p>
     </footer>
   </div>
+  <div v-else>
+    {{ messages }}
+  </div>
 </template>
 
 <script>
@@ -64,6 +67,25 @@ import CONFIG from '@/global/config';
 
 export default {
   name: 'EmailVerify',
+  data() {
+    return {
+      message: 'you are not login',
+      auth: false,
+    }
+  },
+  async mounted() {
+    try {
+      const response = await fetch(CONFIG.BASE_URL + '/email/verify', {
+        headers: { 'content-Type': 'Application/json' },
+        credentials: 'include',
+      });
+      const content = await response.json();
+      this.messages = content.message;
+      this.auth = true;
+    } catch (e) {
+      console.log(e);
+    }
+  },
   setup() {
     const submit = async () => {
       const response = await fetch(CONFIG.BASE_URL + '/email/verify/resend-verification', {
@@ -73,8 +95,9 @@ export default {
       const json = await response.json();
       alert(json.meta.message);
     }
+
     return { submit };
-  }
+  },
 }
 </script>
 
