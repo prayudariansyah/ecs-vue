@@ -69,22 +69,24 @@ export default {
   name: 'EmailVerify',
   data() {
     return {
-      messages: localStorage.messages,
-      auth: localStorage.auth,
+      messages: '',
+      auth: false,
     }
   },
   async mounted() {
-    localStorage.auth = true;
     const route = useRouter();
     try {
       const response = await fetch(CONFIG.BASE_URL + '/email/verify', {
         headers: { 'content-Type': 'Application/json' },
         credentials: 'include',
       });
-      if (response.status == 400) {
-        localStorage.verify = true;
-        return route.push('/dashboard');
+      const json = await response.json();
+      const messages = json.meta.message;
+      this.messages = messages;
+      if (response.status == 200) {
+        return await route.push('/dashboard');
       }
+      this.auth = true;
     } catch (e) {
       console.log(e);
     }

@@ -86,18 +86,12 @@ export default {
         body: JSON.stringify(data),
       });
       const json = await response.json();
-      alert(json.meta.message);
-
+      const messages = json.meta.message;
       if (response.status == 200) {
-        localStorage.messages = json.meta.message;
-        localStorage.verify = true;
-        await route.push('/dashboard');
-      } else {
-        localStorage.messages = 'you are not verified email';
-        localStorage.auth = true;
-        localStorage.verify = false;
-        await route.push('/email-verify');
+        alert(messages);
+        return await route.push('/email-verify');
       }
+      return alert(messages);
     }
     return { data, submit };
   }

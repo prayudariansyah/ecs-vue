@@ -1,7 +1,8 @@
 <template>
     <div v-if="!verify">
         <div class="card">
-            <h3>{{ messages }}</h3>
+            <h3 v-if="messages">{{ messages }}</h3>
+            <h3 v-else>Anda belum masuk atau email anda belum diverifikasi!. silahkan masuk</h3>
             <p><a href="#">back to home</a></p>
         </div>
     </div>
@@ -15,7 +16,7 @@
                 </div>
                 <a href="#/dashboard" class="active">Kelas Saya</a>
                 <a href="#/profile">Profile Saya</a>
-                <a href="#" @click="logout">Log Out</a>
+                <a @click="logout">Log Out</a>
             </aside>
             <div class="content">
                 <div class="title">
@@ -43,25 +44,41 @@
 <script>
 // @ is an alias to /src
 import CONFIG from '@/global/config';
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'DashBoard',
     data() {
         return {
-            messages: localStorage.messages,
-            verify: localStorage.verify,
+            messages: '',
+            verify: false,
+        }
+    },
+    async mounted() {
+        try {
+            const response = await fetch(CONFIG.BASE_URL + '/user/show', {
+                headers: { 'content-Type': 'Application/json' },
+                credentials: 'include',
+            });
+            const json = await response.json();
+            const messages = json.meta.message;
+            this.messages = messages;
+            if (response.status == 200) {
+                this.verify = true;
+            }
+        } catch (e) {
+            console.log(e);
         }
     },
     setup() {
+        const route = useRouter()
         const logout = async () => {
             await fetch(CONFIG.BASE_URL + '/logout', {
                 headers: { 'content-Type': 'Application/json' },
                 credentials: 'include',
             });
-            localStorage.removeItem('messages');
-            localStorage.removeItem('auth');
-            localStorage.removeItem('verify');
-            alert(this.messages);
+            alert('logout berhasil');
+            return await route.push('#');
         }
         return {
             logout
