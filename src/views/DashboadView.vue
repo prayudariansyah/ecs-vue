@@ -1,5 +1,11 @@
 <template>
-    <div class="dashboard" v-if="verify">
+    <div v-if="!verify">
+        <div class="card">
+            <h3>{{ messages }}</h3>
+            <p><a href="#">back to home</a></p>
+        </div>
+    </div>
+    <div class="dashboard" v-else>
         <div class="container">
             <aside class="sidebar">
                 <div class="card-profile">
@@ -30,12 +36,6 @@
                 </div>
 
             </div>
-        </div>
-    </div>
-    <div v-else>
-        <div class="card">
-            <h3>{{ messages }}</h3>
-            <p><a href="#">back to home</a></p>
         </div>
     </div>
 </template>

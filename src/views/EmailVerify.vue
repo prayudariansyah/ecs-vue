@@ -74,12 +74,17 @@ export default {
     }
   },
   async mounted() {
+    localStorage.auth = true;
+    const route = useRouter();
     try {
-      await fetch(CONFIG.BASE_URL + '/email/verify', {
+      const response = await fetch(CONFIG.BASE_URL + '/email/verify', {
         headers: { 'content-Type': 'Application/json' },
         credentials: 'include',
       });
-      localStorage.auth = true;
+      if (response.status == 400) {
+        localStorage.verify = true;
+        return route.push('/dashboard');
+      }
     } catch (e) {
       console.log(e);
     }
@@ -97,7 +102,7 @@ export default {
         localStorage.verify = true;
         return route.push('/dashboard');
       }
-      return console.log('error')
+      return console.log('success send')
     }
 
     return { submit };

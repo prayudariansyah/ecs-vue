@@ -89,12 +89,12 @@ export default {
       alert(json.meta.message);
 
       if (response.status == 200) {
-        localStorage.messages = json.meta.messages;
+        localStorage.messages = json.meta.message;
         localStorage.verify = true;
         await route.push('/dashboard');
       } else {
         localStorage.messages = 'you are not verified email';
-        localStorage.auth = false;
+        localStorage.auth = true;
         localStorage.verify = false;
         await route.push('/email-verify');
       }
