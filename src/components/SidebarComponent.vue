@@ -1,8 +1,8 @@
 <template>
   <aside class="sidebar">
     <div class="card-profile">
-      <img :src="user_image" alt="" />
-      <p class="name">{{ user_name }}</p>
+      <img :src="config.BASE_IMAGE +'/'+ user.user_picture" alt="" />
+      <p class="name">{{ user.name }}</p>
       <p>Kelas 1 Sekolah Dasar</p>
     </div>
     <a href="#/dashboard" class="active">Kelas Saya</a>
@@ -19,11 +19,12 @@ export default {
   name: 'SidebarComponent',
   data() {
     return {
-      user_image: null,
-      user_name: null,
+      user: [],
+      config: [],
     };
   },
-  mounted() {
+  async mounted() {
+    this.config = CONFIG;
     try {
       const response = await fetch(CONFIG.BASE_URL + '/user/show', {
         headers: { 'content-Type': 'Application/json' },
@@ -33,8 +34,8 @@ export default {
       const messages = json.meta.message;
       this.messages = messages;
       if (response.status == 200) {
-        this.user_name = json.data.name;
-        this.user_image = await CONFIG.BASE_IMAGE + '/' +json.data.user_picture;
+        this.user = json.data;
+        // this.user_image = await CONFIG.BASE_IMAGE + '/' +json.data.user_picture;
       }
     } catch (e) {
       console.log(e);

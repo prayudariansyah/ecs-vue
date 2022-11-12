@@ -8,7 +8,7 @@
                 <p>Pastikan Data Pribadi anda benar dan tidak tersebar</p>
             </div>
             <div class="change-picture">
-                <img src="/images/Profile.png" alt="">
+                <img :src="config.BASE_IMAGE +'/'+ user.user_picture" alt="">
                 <div class="new-picture">
                     <p>Add your picture...</p>
                     <button>Browse</button>
@@ -17,20 +17,20 @@
             <div class="new-data">
                 <form action="#">
                     <div class="field">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" value="Prayuda Riansyah">
+                        <label for="fullName">Full Name {{ user.name }}</label>
+                        <input type="text" id="fullName" name="fullName" :value="user.name">
                     </div>
                     <div class="field">
                         <label for="umur">Umur</label>
-                        <input type="text" id="umur" name="umur" value="7 Tahun">
+                        <input type="text" id="umur" name="umur" :value="user.user_age">
                     </div>
                     <div class="field">
                         <label for="askot">Asal Kota</label>
-                        <input type="text" id="askot" name="askot" value="Malang">
+                        <input type="text" id="askot" name="askot" :value="user.user_city">
                     </div>
                     <div class="field">
                         <label for="emailaddress">Email Adddress</label>
-                        <input type="email" id="emailaddress" name="emailaddress" value="prayudariansyah1412@gmail.com">
+                        <input readonly type="email" id="emailaddress" name="emailaddress" :value="user.email">
                     </div>                  
                     <button class="submit" type="submit">Simpan</button>
                 </form>
@@ -44,12 +44,68 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import SidebarComponent from '@/components/SidebarComponent.vue';
+import CONFIG from '@/global/config';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'ProFile',
   components: {
     SidebarComponent
-  }
+  },
+  data() {
+    return {
+        user: [],
+        config: []
+    }
+  },
+  async mounted() {
+    this.config = CONFIG;
+    const response = await fetch(CONFIG.BASE_URL + '/user/show', {
+        headers: { 'content-Type': 'Application/json' },
+        credentials: 'include',
+      });
+      const json = await response.json();
+      this.user = await json.data;
+
+      console.log(this.user);
+  },
+  setup() {
+    // let id;
+    const data = reactive({
+      name: '',
+      email: '',
+      user_city: '',
+      user_age: '',
+    });
+
+    const router = useRouter();
+
+    const submit = async () => {
+      const response = await fetch(CONFIG.BASE_URL + '/update', {
+        method: 'POST',
+        headers: { 'content-Type': 'Application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const json = await response.json();
+      alert(json.meta.message);
+
+      if (response.status == 200) {
+        await router.push('/sign-in');
+      }
+      // await fetch(CONFIG.BASE_URL + '/payment/add', {
+      //   method: 'POST',
+      //   headers: { 'content-Type': 'Application/json' },
+      //   body: JSON.stringify(dataPayment),
+      // });
+    };
+
+    return {
+      data,
+      submit
+    }
+  },
 }
 </script>
 
