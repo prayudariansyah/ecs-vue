@@ -1,8 +1,8 @@
 <template>
   <aside class="sidebar">
     <div class="card-profile">
-      <img src="/images/Profile.png" alt="" />
-      <p class="name">Prayuda Riansyah</p>
+      <img :src="user_image" alt="" />
+      <p class="name">{{ user_name }}</p>
       <p>Kelas 1 Sekolah Dasar</p>
     </div>
     <a href="#/dashboard" class="active">Kelas Saya</a>
@@ -17,9 +17,29 @@ import { useRouter } from 'vue-router';
 
 export default {
   name: 'SidebarComponent',
-  // props: {
-  //   msg: String,
-  // },
+  data() {
+    return {
+      user_image: null,
+      user_name: null,
+    };
+  },
+  mounted() {
+    try {
+      const response = await fetch(CONFIG.BASE_URL + '/user/show', {
+        headers: { 'content-Type': 'Application/json' },
+        credentials: 'include',
+      });
+      const json = await response.json();
+      const messages = json.meta.message;
+      this.messages = messages;
+      if (response.status == 200) {
+        this.user_name = json.data.name;
+        this.user_image = await CONFIG.BASE_IMAGE + '/' +json.data.user_picture;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  },
   setup() {
     const route = useRouter();
     const logout = async () => {
