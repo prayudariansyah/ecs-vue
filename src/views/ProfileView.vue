@@ -1,16 +1,7 @@
 <template>
   <div class="profile">
         <div class="container">
-        <aside class="sidebar">
-            <div class="card-profile">
-                <img src="/images/Profile.png" alt="">
-                <p class="name">Prayuda Riansyah</p>
-                <p>Kelas 1 Sekolah Dasar</p>
-            </div>
-            <a href="#/dashboard">Kelas Saya</a>
-            <a href="#" class="active">Profile Saya</a>
-            <a href="#">Log Out</a>
-        </aside>
+        <SidebarComponent/>
         <div class="content">
             <div class="title">
                 <h4>Profile Saya</h4>
@@ -52,11 +43,12 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import SidebarComponent from '@/components/SidebarComponent.vue';
 
 export default {
   name: 'ProFile',
   components: {
-    // HelloWorld
+    SidebarComponent
   }
 }
 </script>
