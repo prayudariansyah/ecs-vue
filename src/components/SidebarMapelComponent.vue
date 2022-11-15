@@ -3,7 +3,8 @@
     <div class="kembali">
       <a href="#/dashboard">
         <img src="/images/akar-icons_arrow-left.png" alt="" />
-        Kembali</a>
+        Kembali
+      </a>
     </div>
     <div class="bab">
       <ul v-for="sub_mapel in mapel.sub_mapel" v-bind:key="sub_mapel.sub_mapel_id">
@@ -80,10 +81,6 @@ export default {
   margin-bottom: 50px;
 }
 
-.kembali img {
-  width: 24px;
-  height: 24px;
-}
 
 .kembali a {
   font-size: 20px;
@@ -91,6 +88,11 @@ export default {
   margin-left: 10px;
   color: white;
   text-decoration: none;
+}
+
+.kembali a img {
+  width: 24px;
+  height: 24px;
 }
 
 ul {

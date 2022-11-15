@@ -1,5 +1,5 @@
 <template>
-  <div class="subclassone">
+  <div class="subclassone" v-if="sub_mapel">
     <div class="container">
       <SidebarMapelComponentVue @sendSubMapel="getSubMapel($event)" />
       <div class="content" v-for="list_mapel in list_mapels" v-bind:key="list_mapel.list_mapel_id">
@@ -19,6 +19,7 @@
       </div>
     </div>
   </div>
+  <div v-else>{{ messages }}</div>
 </template>
 
 <script>
@@ -34,7 +35,7 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
-      list_id: '',
+      list_id: 0,
       messages: '',
       sub_mapel: [],
       list_mapel_cache: [],
@@ -55,6 +56,7 @@ export default {
     getSubMapel(sub_mapel) {
       this.sub_mapel = sub_mapel;
     },
+    
     async getAccessMapel() {
       const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
         headers: { 'content-Type': 'Application/json' },
@@ -62,7 +64,6 @@ export default {
       const jsonAccess = await responseAccess.json();
       this.messages = jsonAccess.meta.message;
       this.access = jsonAccess.data;
-      this.list_id = 2;
 
       this.getDataListMapel();
       this.getListMapel();
@@ -80,8 +81,11 @@ export default {
           }
         }
       }
-      console.log(this.list_mapel_cache);
+      if (this.access[0].mapel_id == this.$route.params.mapel_id) {
+        this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
+      }
     },
+
     async getListMapel() {
       try {
         const response = await fetch(CONFIG.BASE_URL + '/list_mapel/show/' + this.list_id, {
