@@ -6,11 +6,15 @@
     </div>
     <div class="bab">
       <ul v-for="sub_mapel in mapel.sub_mapel" v-bind:key="sub_mapel.sub_mapel_id">
-      <!-- <ul> -->
-        <li><a class="active" href="#">{{ sub_mapel.sub_mapel_name }}</a></li>
+        <!-- <ul> -->
+        <li><a class="active" :href="'#/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug">{{
+            sub_mapel.sub_mapel_name
+        }}</a></li>
 
         <li v-for="list_mapel in sub_mapel.list_mapel" v-bind:key="list_mapel.list_mapel_id">
-          <a :href="'/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id">{{ list_mapel.list_mapel_name }}</a>
+          <a :href="'#/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id">{{
+              list_mapel.list_mapel_name
+          }}</a>
         </li>
       </ul>
     </div>
@@ -31,18 +35,12 @@ export default {
   },
   async mounted() {
     try {
-      const response = await fetch(CONFIG.BASE_URL + '/mapel/show/1', { // Id masih static NeedFix
+      const response = await fetch(CONFIG.BASE_URL + '/mapel/show/' + this.$route.params.id, { // Id masih static NeedFix
         headers: { 'content-Type': 'Application/json' },
         credentials: 'include',
       });
       const json = await response.json();
-      const messages = json.meta.message;
       this.mapel = json.data;
-      console.log(this.mapel);
-      this.messages = messages;
-      if (response.status == 200) {
-        this.verify = true;
-      }
     } catch (e) {
       console.log(e);
     }
@@ -56,6 +54,7 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 .sidebar {
   padding-top: 63px;
   background-color: #fa8432;
@@ -63,16 +62,19 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .kembali {
   padding-left: 24px;
   display: flex;
   align-items: center;
   margin-bottom: 50px;
 }
+
 .kembali img {
   width: 24px;
   height: 24px;
 }
+
 .kembali a {
   font-size: 20px;
   font-weight: 400;
@@ -90,6 +92,7 @@ ul {
 li {
   margin-bottom: 20px;
 }
+
 li a {
   display: block;
   padding-left: 24px;

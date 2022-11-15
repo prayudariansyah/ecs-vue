@@ -4,10 +4,8 @@ import DashBoard from '../views/DashboadView.vue'
 import ProFile from '../views/ProfileView.vue'
 import SignIn from '../views/SignInView.vue'
 import SignUp from '../views/SignUpView.vue'
-import SubClassOne from '../views/SubClassOneView.vue'
-import SUbClassTwo from '../views/SubClassTwoView.vue'
 import EmailVerify from '../views/EmailVerify.vue'
-
+import ClassMapel from '../views/Class.vue'
 
 
 const routes = [
@@ -41,14 +39,14 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/subclass-one',
-    name: 'subclass-one',
-    component: SubClassOne
+    path: '/mapel/:id/:mapel_slug',
+    name: 'mapels',
+    component: ClassMapel,
   },
   {
-    path: '/subclass-two',
-    name: 'subclass-two',
-    component: SUbClassTwo
+    path: '/mapel/:id/:mapel_slug/:list_id',
+    name: 'list-mapels',
+    component: ClassMapel,
   },
   {
     path: '/email-verify',

@@ -14,16 +14,13 @@
                     <h4>My Class</h4>
                     <p>Tidak perlu terburu-buru dalam belajar. Konsisten adalah kunci utama</p>
                 </div>
-                <div class="class-row">
+                <div class="class-row" v-for="mapel in mapels" v-bind:key="mapel.id">
                     <div class="card">
                         <img src="/images/English teacher-pana 1.png" alt="">
-                        <p><a href="#/subclass-one" class="matpen">Bahasa Inggris</a></p>
-                        <p class="semester">Semester 1</p>
-                    </div>
-                    <div class="card">
-                        <img src="/images/English teacher-pana 2.png" alt="">
-                        <p><a href="#/subclass-two" class="matpen">Bahasa Indonesia</a></p>
-                        <p class="semester">Semester 1</p>
+                        <p><a v-bind:href="'#/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug" class="matpen">{{
+                                mapel.mapel_name
+                        }}</a></p>
+                        <p class="semester">Semester {{ mapel.semester_id }}</p>
                     </div>
                 </div>
 
@@ -46,6 +43,7 @@ export default {
         return {
             messages: '',
             verify: false,
+            mapels: [],
         }
     },
     async mounted() {
@@ -55,11 +53,16 @@ export default {
                 credentials: 'include',
             });
             const json = await response.json();
-            const messages = json.meta.message;
-            this.messages = messages;
+            this.messages = json.meta.message;
             if (response.status == 200) {
                 this.verify = true;
             }
+            const responseMapel = await fetch(CONFIG.BASE_URL + '/mapel', {
+                headers: { 'content-Type': 'Application/json' },
+            });
+            const jsonMapel = await responseMapel.json();
+            this.messages = jsonMapel.meta.message;
+            this.mapels = jsonMapel.data;
         } catch (e) {
             console.log(e);
         }

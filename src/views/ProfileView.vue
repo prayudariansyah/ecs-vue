@@ -1,43 +1,43 @@
 <template>
-  <div class="profile">
+    <div class="profile">
         <div class="container">
-        <SidebarComponent/>
-        <div class="content">
-            <div class="title">
-                <h4>Profile Saya</h4>
-                <p>Pastikan Data Pribadi anda benar dan tidak tersebar</p>
-            </div>
-            <div class="change-picture">
-                <img :src="config.BASE_IMAGE +'/'+ user.user_picture" alt="">
-                <div class="new-picture">
-                    <p>Add your picture...</p>
-                    <button>Browse</button>
+            <SidebarComponent />
+            <div class="content">
+                <div class="title">
+                    <h4>Profile Saya</h4>
+                    <p>Pastikan Data Pribadi anda benar dan tidak tersebar</p>
                 </div>
-            </div>
-            <div class="new-data">
-                <form action="#">
-                    <div class="field">
-                        <label for="fullName">Full Name {{ user.name }}</label>
-                        <input type="text" id="fullName" name="fullName" :value="user.name">
+                <div class="change-picture">
+                    <img :src="config.BASE_IMAGE + '/' + user.user_picture" alt="">
+                    <div class="new-picture">
+                        <p>Add your picture...</p>
+                        <button>Browse</button>
                     </div>
-                    <div class="field">
-                        <label for="umur">Umur</label>
-                        <input type="text" id="umur" name="umur" :value="user.user_age">
-                    </div>
-                    <div class="field">
-                        <label for="askot">Asal Kota</label>
-                        <input type="text" id="askot" name="askot" :value="user.user_city">
-                    </div>
-                    <div class="field">
-                        <label for="emailaddress">Email Adddress</label>
-                        <input readonly type="email" id="emailaddress" name="emailaddress" :value="user.email">
-                    </div>                  
-                    <button class="submit" type="submit">Simpan</button>
-                </form>
+                </div>
+                <div class="new-data">
+                    <form action="#">
+                        <div class="field">
+                            <label for="fullName">Full Name {{ user.name }}</label>
+                            <input type="text" id="fullName" name="fullName" :value="user.name">
+                        </div>
+                        <div class="field">
+                            <label for="umur">Umur</label>
+                            <input type="text" id="umur" name="umur" :value="user.user_age">
+                        </div>
+                        <div class="field">
+                            <label for="askot">Asal Kota</label>
+                            <input type="text" id="askot" name="askot" :value="user.user_city">
+                        </div>
+                        <div class="field">
+                            <label for="emailaddress">Email Adddress</label>
+                            <input readonly type="email" id="emailaddress" name="emailaddress" :value="user.email">
+                        </div>
+                        <button class="submit" type="submit">Simpan</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -49,101 +49,103 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
-  name: 'ProFile',
-  components: {
-    SidebarComponent
-  },
-  data() {
-    return {
-        user: [],
-        config: []
-    }
-  },
-  async mounted() {
-    this.config = CONFIG;
-    const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-        headers: { 'content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      const json = await response.json();
-      this.user = await json.data;
+    name: 'ProFile',
+    components: {
+        SidebarComponent
+    },
+    data() {
+        return {
+            user: [],
+            config: []
+        }
+    },
+    async mounted() {
+        this.config = CONFIG;
+        const response = await fetch(CONFIG.BASE_URL + '/user/show', {
+            headers: { 'content-Type': 'Application/json' },
+            credentials: 'include',
+        });
+        const json = await response.json();
+        this.user = await json.data;
+    },
+    setup() {
+        // let id;
+        const data = reactive({
+            name: '',
+            email: '',
+            user_city: '',
+            user_age: '',
+        });
 
-      console.log(this.user);
-  },
-  setup() {
-    // let id;
-    const data = reactive({
-      name: '',
-      email: '',
-      user_city: '',
-      user_age: '',
-    });
+        const router = useRouter();
 
-    const router = useRouter();
+        const submit = async () => {
+            const response = await fetch(CONFIG.BASE_URL + '/update', {
+                method: 'POST',
+                headers: { 'content-Type': 'Application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data),
+            });
 
-    const submit = async () => {
-      const response = await fetch(CONFIG.BASE_URL + '/update', {
-        method: 'POST',
-        headers: { 'content-Type': 'Application/json' },
-        body: JSON.stringify(data),
-      });
+            const json = await response.json();
+            alert(json.meta.message);
 
-      const json = await response.json();
-      alert(json.meta.message);
+            if (response.status == 200) {
+                await router.push('/sign-in');
+            }
+            // await fetch(CONFIG.BASE_URL + '/payment/add', {
+            //   method: 'POST',
+            //   headers: { 'content-Type': 'Application/json' },
+            //   body: JSON.stringify(dataPayment),
+            // });
+        };
 
-      if (response.status == 200) {
-        await router.push('/sign-in');
-      }
-      // await fetch(CONFIG.BASE_URL + '/payment/add', {
-      //   method: 'POST',
-      //   headers: { 'content-Type': 'Application/json' },
-      //   body: JSON.stringify(dataPayment),
-      // });
-    };
-
-    return {
-      data,
-      submit
-    }
-  },
+        return {
+            data,
+            submit
+        }
+    },
 }
 </script>
 
 <style scoped>
-
-*{
+* {
     margin: 0;
-    padding: 0;    
+    padding: 0;
 }
-h4{
+
+h4 {
     font-size: 36px;
     font-weight: 500;
-    color:#404040;
+    color: #404040;
 }
 
-.profile{
+.profile {
     font-family: 'Poppins';
     width: 1440px;
     height: 900px;
     overflow: auto;
 }
 
-.container{
+.container {
     display: flex;
     width: 100%;
     height: 100%;
 }
-.sidebar{
+
+.sidebar {
     padding-top: 80px;
     background-color: #FA8432;
     width: 280px;
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
 }
-.card-profile{
+
+.card-profile {
     width: 280px;
 }
-.card-profile img{
+
+.card-profile img {
     margin-left: 80px;
     margin-bottom: 16px;
     border-radius: 100%;
@@ -152,22 +154,25 @@ h4{
     padding: 2px;
     background-color: white;
 }
-.card-profile p{
+
+.card-profile p {
     margin-left: 65px;
     font-size: 14px;
     font-weight: 400;
     color: white;
     margin-bottom: 60px;
-    
+
 }
-.card-profile p.name{
+
+.card-profile p.name {
     margin-left: 48px;
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 6px;
-    
+
 }
-.sidebar a{
+
+.sidebar a {
     padding-left: 24px;
     padding-top: 17px;
     padding-bottom: 16px;
@@ -175,39 +180,45 @@ h4{
     color: white;
     text-decoration: none;
 }
+
 .sidebar a.active {
     background-color: #E45F03;
     color: white;
 }
+
 .sidebar a:hover:not(.active) {
     background-color: #FFB17B;
     color: white;
 }
 
-.content{
-    width: 1160px; 
+.content {
+    width: 1160px;
     margin-left: 70px;
     margin-top: 50px;
 }
-.title p{
+
+.title p {
     margin-top: 6px;
     font-size: 18px;
     font-weight: 400;
     color: #BFBFBF;
 }
-.change-picture{
+
+.change-picture {
     margin-top: 40px;
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
 }
-.change-picture img{
+
+.change-picture img {
     width: 100px;
     height: 100px;
     border-radius: 100%;
     padding: 2px;
     margin-right: 10px;
 }
-.change-picture p{
+
+.change-picture p {
     font-size: 16px;
     font-weight: 400;
     color: #BFBFBF;
@@ -215,30 +226,36 @@ h4{
     margin-bottom: 14px;
 
 }
-.change-picture button{
+
+.change-picture button {
     width: 120px;
     height: 50px;
     color: #ACACAC;
     background-color: #EDEDED;
     border: none;
 }
-.change-picture button:hover{
+
+.change-picture button:hover {
     background-color: #E45F03;
     color: white;
 }
-.new-data{
+
+.new-data {
     margin-top: 30px;
 }
-.new-data .field{
+
+.new-data .field {
     display: flex;
     flex-direction: column;
 }
-.new-data label{
+
+.new-data label {
     font-size: 18px;
-    font-weight: 400;    
+    font-weight: 400;
     color: #404040;
 }
-.new-data input{
+
+.new-data input {
     margin-right: 720px;
     margin-top: 10px;
     margin-bottom: 15px;
@@ -250,7 +267,8 @@ h4{
     border-radius: 10px;
     line-height: 24px;
 }
-.submit{
+
+.submit {
     width: 370px;
     height: 60px;
     background-color: #E45F03;
@@ -260,5 +278,4 @@ h4{
     font-size: 18px;
     font-weight: 600;
 }
-
 </style>
