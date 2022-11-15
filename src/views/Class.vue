@@ -1,7 +1,7 @@
 <template>
   <div class="subclassone">
     <div class="container">
-      <SidebarMapelComponentVue />
+      <SidebarMapelComponentVue @sendSubMapel="getSubMapel($event)" />
       <div class="content" v-for="list_mapel in list_mapels" v-bind:key="list_mapel.list_mapel_id">
         <div class="title">
           <h4>{{ list_mapel.list_mapel_name }}</h4>
@@ -36,6 +36,8 @@ export default {
       id: this.$route.params.id,
       list_id: '',
       messages: '',
+      sub_mapel: [],
+      list_mapel_cache: [],
       list_mapels: [],
       access: [],
     }
@@ -48,9 +50,11 @@ export default {
   },
   mounted() {
     this.getAccessMapel();
-    console.log();
   },
   methods: {
+    getSubMapel(sub_mapel) {
+      this.sub_mapel = sub_mapel;
+    },
     async getAccessMapel() {
       const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
         headers: { 'content-Type': 'Application/json' },
@@ -58,9 +62,25 @@ export default {
       const jsonAccess = await responseAccess.json();
       this.messages = jsonAccess.meta.message;
       this.access = jsonAccess.data;
-      this.list_id = this.access[0].last_access;
+      this.list_id = 2;
 
+      this.getDataListMapel();
       this.getListMapel();
+    },
+
+    getDataListMapel() {
+      for (const key in this.sub_mapel) {
+        if (Object.hasOwnProperty.call(this.sub_mapel, key)) {
+          const element = this.sub_mapel[key];
+          for (const i in element.list_mapel) {
+            if (Object.hasOwnProperty.call(element.list_mapel, i)) {
+              const element2 = element.list_mapel[i];
+              this.list_mapel_cache.push(element2);
+            }
+          }
+        }
+      }
+      console.log(this.list_mapel_cache);
     },
     async getListMapel() {
       try {

@@ -52,7 +52,8 @@ export default {
       });
       const json = await response.json();
       this.mapel = json.data;
-    }
+      this.$emit('sendSubMapel', this.mapel.sub_mapel);
+    },
   }
 };
 </script>
