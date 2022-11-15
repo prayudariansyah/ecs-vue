@@ -1,21 +1,28 @@
 <template>
   <aside class="sidebar">
     <div class="kembali">
-      <img src="/images/akar-icons_arrow-left.png" alt="" />
-      <a href="#/dashboard">Kembali</a>
+      <a href="#/dashboard">
+        <img src="/images/akar-icons_arrow-left.png" alt="" />
+        Kembali</a>
     </div>
     <div class="bab">
       <ul v-for="sub_mapel in mapel.sub_mapel" v-bind:key="sub_mapel.sub_mapel_id">
         <!-- <ul> -->
-        <li><a class="active" :href="'#/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug">{{
-            sub_mapel.sub_mapel_name
-        }}</a></li>
-
-        <li v-for="list_mapel in sub_mapel.list_mapel" v-bind:key="list_mapel.list_mapel_id">
-          <a :href="'#/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id">{{
-              list_mapel.list_mapel_name
-          }}</a>
+        <li>
+          <a v-on:click="sub_mapel.show = !sub_mapel.show" class="active">
+            ☰ {{ sub_mapel.sub_mapel_name }}
+          </a>
         </li>
+        <transition name="fade">
+          <div v-if="sub_mapel.show">
+            <li v-for="list_mapel in sub_mapel.list_mapel" v-bind:key="list_mapel.list_mapel_id">
+              <a
+                :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id">
+                {{ list_mapel.list_mapel_name }}
+              </a>
+            </li>
+          </div>
+        </transition>
       </ul>
     </div>
   </aside>
@@ -30,21 +37,23 @@ export default {
   name: 'SidebarMapelComponent',
   data() {
     return {
+      id: this.$route.params.id,
       mapel: [],
     };
   },
   async mounted() {
-    try {
-      const response = await fetch(CONFIG.BASE_URL + '/mapel/show/' + this.$route.params.id, { // Id masih static NeedFix
+    this.getMapel();
+  },
+  methods: {
+    async getMapel() {
+      const response = await fetch(CONFIG.BASE_URL + '/mapel/show/' + this.$route.params.mapel_id, { // Id masih static NeedFix
         headers: { 'content-Type': 'Application/json' },
         credentials: 'include',
       });
       const json = await response.json();
       this.mapel = json.data;
-    } catch (e) {
-      console.log(e);
     }
-  },
+  }
 };
 </script>
 
@@ -100,6 +109,7 @@ li a {
   text-decoration: none;
   font-size: 18px;
   font-weight: 500;
+  cursor: pointer;
 }
 
 li a.active {
@@ -111,5 +121,18 @@ li a.active {
 
 li a:hover:not(.active) {
   color: #e45f03;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to
+
+/* .fade-leave-active below version 2.1.8 */
+  {
+  opacity: 0;
 }
 </style>

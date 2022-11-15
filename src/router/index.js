@@ -39,12 +39,7 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/mapel/:id/:mapel_slug',
-    name: 'mapels',
-    component: ClassMapel,
-  },
-  {
-    path: '/mapel/:id/:mapel_slug/:list_id',
+    path: '/:id/mapel/:mapel_id/:mapel_slug/:list_id',
     name: 'list-mapels',
     component: ClassMapel,
   },

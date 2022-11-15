@@ -17,9 +17,10 @@
                 <div class="class-row" v-for="mapel in mapels" v-bind:key="mapel.id">
                     <div class="card">
                         <img src="/images/English teacher-pana 1.png" alt="">
-                        <p><a v-bind:href="'#/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug" class="matpen">{{
-                                mapel.mapel_name
-                        }}</a></p>
+                        <p><a v-bind:href="'#/' + user.id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + 0"
+                                class="matpen">{{
+                                        mapel.mapel_name
+                                }}</a></p>
                         <p class="semester">Semester {{ mapel.semester_id }}</p>
                     </div>
                 </div>
@@ -43,30 +44,36 @@ export default {
         return {
             messages: '',
             verify: false,
+            user: [],
             mapels: [],
         }
     },
     async mounted() {
-        try {
+        this.getUser();
+        this.getMapel();
+    },
+    methods: {
+        async getUser() {
             const response = await fetch(CONFIG.BASE_URL + '/user/show', {
                 headers: { 'content-Type': 'Application/json' },
                 credentials: 'include',
             });
             const json = await response.json();
             this.messages = json.meta.message;
+            this.user = json.data;
             if (response.status == 200) {
                 this.verify = true;
             }
+        },
+        async getMapel() {
             const responseMapel = await fetch(CONFIG.BASE_URL + '/mapel', {
                 headers: { 'content-Type': 'Application/json' },
             });
             const jsonMapel = await responseMapel.json();
             this.messages = jsonMapel.meta.message;
             this.mapels = jsonMapel.data;
-        } catch (e) {
-            console.log(e);
         }
-    },
+    }
 }
 </script>
 

@@ -33,18 +33,35 @@ export default {
   },
   data() {
     return {
+      id: this.$route.params.id,
       list_id: '',
       messages: '',
       list_mapels: [],
+      access: [],
     }
   },
   watch: {
     $route(to) {
       this.list_id = to.params.list_id;
-      this.getListMapel()
+      this.getListMapel();
     }
   },
+  mounted() {
+    this.getAccessMapel();
+    console.log();
+  },
   methods: {
+    async getAccessMapel() {
+      const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
+        headers: { 'content-Type': 'Application/json' },
+      });
+      const jsonAccess = await responseAccess.json();
+      this.messages = jsonAccess.meta.message;
+      this.access = jsonAccess.data;
+      this.list_id = this.access[0].last_access;
+
+      this.getListMapel();
+    },
     async getListMapel() {
       try {
         const response = await fetch(CONFIG.BASE_URL + '/list_mapel/show/' + this.list_id, {
