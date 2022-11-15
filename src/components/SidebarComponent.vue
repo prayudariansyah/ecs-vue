@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div class="card-profile">
-      <img :src="config.BASE_IMAGE +'/'+ user.user_picture" alt="" />
+      <img :src="config.BASE_IMAGE +  '/'  + user.user_picture" alt="" />
       <p class="name">{{ user.name }}</p>
       <p>Kelas 1 Sekolah Dasar</p>
     </div>
@@ -49,7 +49,7 @@ export default {
         credentials: 'include',
       });
       alert('logout berhasil');
-      return await route.push('#');
+      return await route.push('/');
     };
     return {
       logout,
