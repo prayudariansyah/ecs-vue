@@ -1,8 +1,7 @@
 <template>
     <div v-if="!verify">
         <div class="card">
-            <h3 v-if="messages">{{ messages }}</h3>
-            <h3 v-else>Anda belum masuk atau email anda belum diverifikasi!. silahkan masuk</h3>
+            <h3>Anda belum login. silahkan login kembali</h3>
             <p><a href="#">back to home</a></p>
         </div>
     </div>
@@ -49,8 +48,8 @@ export default {
         }
     },
     async mounted() {
-        this.getUser();
-        this.getMapel();
+        await this.getUser();
+        await this.getMapel();
     },
     methods: {
         async getUser() {

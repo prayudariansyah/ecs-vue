@@ -1,5 +1,5 @@
 <template>
-  <div class="subclassone" v-if="sub_mapel">
+  <div class="subclass" v-if="sub_mapel">
     <div class="container">
       <SidebarMapelComponentVue @sendSubMapel="getSubMapel($event)" />
       <div class="content" v-for="list_mapel in list_mapels" v-bind:key="list_mapel.list_mapel_id">
@@ -7,7 +7,7 @@
           <h4>{{ list_mapel.list_mapel_name }}</h4>
         </div>
         <div class="video">
-          <iframe width="1000" height="500" :src="list_mapels.list_mapel_link" title="YouTube video player"
+          <iframe width="100" height="500" :src="list_mapels.list_mapel_link" title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
@@ -15,7 +15,8 @@
         <div class="text-deskripsi">
           <p>{{ list_mapel.list_mapel_desc }}</p>
         </div>
-        <button class="btn">Next</button>
+        <button class="btn" @click="updateAccessMapel()"
+          v-if="this.$route.params.list_id != list_mapel_cache.pop().list_mapel_id">Next</button>
       </div>
     </div>
   </div>
@@ -49,14 +50,16 @@ export default {
       this.getListMapel();
     }
   },
-  mounted() {
-    this.getAccessMapel();
+  async mounted() {
+    await this.getAccessMapel();
+    this.getDataListMapel();
+    await this.getListMapel();
   },
   methods: {
     getSubMapel(sub_mapel) {
       this.sub_mapel = sub_mapel;
     },
-    
+
     async getAccessMapel() {
       const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
         headers: { 'content-Type': 'Application/json' },
@@ -64,9 +67,6 @@ export default {
       const jsonAccess = await responseAccess.json();
       this.messages = jsonAccess.meta.message;
       this.access = jsonAccess.data;
-
-      this.getDataListMapel();
-      this.getListMapel();
     },
 
     getDataListMapel() {
@@ -81,35 +81,49 @@ export default {
           }
         }
       }
-      if (this.access[0].mapel_id == this.$route.params.mapel_id) {
+      if (this.access[0].last_access <= this.list_mapel_cache.length) {
         this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
+      } else {
+        this.list_id = this.list_mapel_cache[0].list_mapel_id;
       }
     },
 
     async getListMapel() {
-      try {
-        const response = await fetch(CONFIG.BASE_URL + '/list_mapel/show/' + this.list_id, {
-          headers: { 'content-Type': 'Application/json' },
-        });
-        const json = await response.json();
-        this.messages = json.meta.message;
-        this.list_mapels = json.data;
-      } catch (e) {
-        console.log(e);
-      }
+      const response = await fetch(CONFIG.BASE_URL + '/list_mapel/show/' + this.list_id, {
+        headers: { 'content-Type': 'Application/json' },
+      });
+      const json = await response.json();
+      this.messages = json.meta.message;
+      this.list_mapels = json.data;
     },
+
+    async updateAccessMapel() {
+      const addLast = this.access[0].last_access + 1;
+      const dataUpdate = {
+        last_access: addLast,
+      };
+      await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
+        headers: { 'content-Type': 'Application/json' },
+        method: 'POST',
+        body: JSON.stringify(dataUpdate),
+      });
+      await this.getAccessMapel();
+      this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
+      await this.getListMapel();
+    }
   },
 }
 </script>
 
 <style scoped>
 h4 {
+  width: auto;
   font-size: 36px;
   font-weight: 500;
   color: #404040;
 }
 
-.subclassone {
+.subclass {
   font-family: 'Poppins';
   height: max-content;
   overflow: auto;
@@ -119,9 +133,8 @@ h4 {
   display: flex;
 }
 
-
 .content {
-  width: 1160px;
+  width: 100%;
   margin-left: 70px;
   margin-top: 50px;
 }
@@ -132,7 +145,6 @@ h4 {
 }
 
 .text-deskripsi {
-  width: 1000px;
   font-size: 18px;
   font-weight: 400;
   color: black;
