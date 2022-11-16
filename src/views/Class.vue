@@ -15,8 +15,10 @@
         <div class="text-deskripsi">
           <p>{{ list_mapel.list_mapel_desc }}</p>
         </div>
-        <button class="btn" @click="updateAccessMapel()"
-          v-if="this.$route.params.list_id != list_mapel_cache.slice(-1)[0].list_mapel_id">Next</button>
+        <div class="btn-container">
+          <button class="btn" @click="updateAccessMapel()"
+            v-if="this.$route.params.list_id != list_mapel_cache.slice(-1)[0].list_mapel_id">Next</button>
+        </div>
       </div>
     </div>
   </div>
@@ -146,6 +148,12 @@ h4 {
   margin-bottom: 15px;
 }
 
+.btn-container {
+  width: 100%;
+  display: block;
+  text-align: right;
+}
+
 .btn {
   width: 90px;
   height: 60px;
@@ -155,7 +163,6 @@ h4 {
   border: none;
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 30px;
-  margin-left: 1000px;
+  margin-right: 50px;
 }
 </style>
