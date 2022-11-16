@@ -16,7 +16,7 @@
           <p>{{ list_mapel.list_mapel_desc }}</p>
         </div>
         <button class="btn" @click="updateAccessMapel()"
-          v-if="this.$route.params.list_id != list_mapel_cache.pop().list_mapel_id">Next</button>
+          v-if="this.$route.params.list_id != list_mapel_cache.slice(-1)[0].list_mapel_id">Next</button>
       </div>
     </div>
   </div>
@@ -50,10 +50,8 @@ export default {
       this.getListMapel();
     }
   },
-  async mounted() {
-    await this.getAccessMapel();
-    this.getDataListMapel();
-    await this.getListMapel();
+  mounted() {
+    this.getAccessMapel()
   },
   methods: {
     getSubMapel(sub_mapel) {
@@ -67,25 +65,22 @@ export default {
       const jsonAccess = await responseAccess.json();
       this.messages = jsonAccess.meta.message;
       this.access = jsonAccess.data;
+
+      this.getDataListMapel();
     },
 
     getDataListMapel() {
-      for (const key in this.sub_mapel) {
-        if (Object.hasOwnProperty.call(this.sub_mapel, key)) {
-          const element = this.sub_mapel[key];
-          for (const i in element.list_mapel) {
-            if (Object.hasOwnProperty.call(element.list_mapel, i)) {
-              const element2 = element.list_mapel[i];
-              this.list_mapel_cache.push(element2);
-            }
-          }
-        }
-      }
+      this.sub_mapel.forEach(sub_mapel => {
+        sub_mapel.list_mapel.forEach(list_mapel => {
+          this.list_mapel_cache.push(list_mapel);
+        });
+      });
       if (this.access[0].last_access <= this.list_mapel_cache.length) {
         this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
       } else {
         this.list_id = this.list_mapel_cache[0].list_mapel_id;
       }
+      this.getListMapel();
     },
 
     async getListMapel() {
