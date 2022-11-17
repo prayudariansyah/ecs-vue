@@ -17,7 +17,8 @@
         </div>
         <div class="btn-container">
           <button class="btn" @click="updateAccessMapel()"
-            v-if="this.$route.params.list_id != list_mapel_cache.slice(-1)[0].list_mapel_id">Next</button>
+            v-if="list_mapels[0].list_mapel_id != list_mapel_cache.slice(-1)[0].list_mapel_id">Next</button>
+          <button class="btn" v-else><a href="#/dashboard">Finish</a></button>
         </div>
       </div>
     </div>
@@ -107,7 +108,7 @@ export default {
       await this.getAccessMapel();
       this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
       await this.getListMapel();
-    }
+    },
   },
 }
 </script>
@@ -164,5 +165,10 @@ h4 {
   font-size: 18px;
   font-weight: 600;
   margin-right: 50px;
+}
+
+.btn a {
+  color: white;
+  text-decoration-line: none;
 }
 </style>

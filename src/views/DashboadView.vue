@@ -13,9 +13,9 @@
                     <h4>My Class</h4>
                     <p>Tidak perlu terburu-buru dalam belajar. Konsisten adalah kunci utama</p>
                 </div>
-                <div class="class-row" v-for="mapel in mapels" v-bind:key="mapel.id">
-                    <div class="card">
-                        <img src="/images/English teacher-pana 1.png" alt="">
+                <div class="class-row">
+                    <div class="card" v-for="mapel in mapels" v-bind:key="mapel.id">
+                        <img :src="image + '/' + mapel.mapel_picture" alt="">
                         <p><a v-bind:href="'#/' + user.id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + 0"
                                 class="matpen">{{
                                         mapel.mapel_name
@@ -41,6 +41,7 @@ export default {
     },
     data() {
         return {
+            image: CONFIG.BASE_IMAGE,
             messages: '',
             verify: false,
             user: [],
