@@ -54,7 +54,7 @@ export default {
     }
   },
   mounted() {
-    this.getAccessMapel()
+    this.getAccessMapel();
   },
   methods: {
     getSubMapel(sub_mapel) {
@@ -63,13 +63,32 @@ export default {
 
     async getAccessMapel() {
       const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
-        headers: { 'content-Type': 'Application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'include',
       });
-      const jsonAccess = await responseAccess.json();
-      this.messages = jsonAccess.meta.message;
-      this.access = jsonAccess.data;
+      if (responseAccess.status != 200) {
+        return this.addAccessMapel();
+      } else {
+        const jsonAccess = await responseAccess.json();
+        this.messages = jsonAccess.meta.message;
+        this.access = jsonAccess.data;
+        return this.getDataListMapel();
+      }
+    },
 
-      this.getDataListMapel();
+    async addAccessMapel() {
+      const dataAccessMapel = {
+        id: this.id,
+        mapel_id: this.$route.params.mapel_id,
+        last_access: 1,
+      };
+      await fetch(CONFIG.BASE_URL + '/access_mapel/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(dataAccessMapel),
+      });
+      this.getAccessMapel();
     },
 
     getDataListMapel() {
@@ -83,7 +102,7 @@ export default {
       } else {
         this.list_id = this.list_mapel_cache[0].list_mapel_id;
       }
-      this.getListMapel();
+      return this.getListMapel();
     },
 
     async getListMapel() {
