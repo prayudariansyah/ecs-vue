@@ -109,19 +109,23 @@ export default {
       this.messages = json.meta.message;
       this.list_mapels = json.data;
     },
+    
     async updateAccessMapel() {
       const addLast = this.access[0].last_access + 1;
       const dataUpdate = {
         last_access: addLast,
       };
-      await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
-        headers: { 'content-Type': 'Application/json' },
-        method: 'POST',
-        body: JSON.stringify(dataUpdate),
-      });
-      await this.getAccessMapel();
-      this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
-      await this.getListMapel();
+      if (this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id == this.list_id) {
+        await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
+          headers: { 'content-Type': 'Application/json' },
+          method: 'POST',
+          body: JSON.stringify(dataUpdate),
+        });
+        await this.getAccessMapel();
+        await this.getListMapel();
+      } else {
+        await this.getAccessMapel();
+      }
     },
   },
 }
