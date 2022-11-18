@@ -16,9 +16,9 @@
         </li>
         <transition name="fade">
           <div v-if="sub_mapel.show">
-            <li v-for="list_mapel in sub_mapel.list_mapel" v-bind:key="list_mapel.list_mapel_id">
-              <a
-                :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id">
+            <li v-for="list_mapel in sub_mapel.list_mapel" :key="list_mapel.list_mapel_id">
+              <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id"
+                :class="{ 'disabled': list_mapel.list_mapel_id != this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id }">
                 {{ list_mapel.list_mapel_name }}
               </a>
             </li>
@@ -40,7 +40,19 @@ export default {
     return {
       id: this.$route.params.id,
       mapel: [],
+      list_id: 0,
+      messages: '',
+      list_mapels: [],
+      list_mapel_cache: [],
+      access: [],
     };
+  },
+  watch: {
+    $route(to) {
+      this.list_id = to.params.list_id;
+      this.getListMapel();
+      console.log(this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id);
+    }
   },
   async mounted() {
     this.getMapel();
@@ -53,7 +65,61 @@ export default {
       });
       const json = await response.json();
       this.mapel = json.data;
-      this.$emit('sendSubMapel', this.mapel.sub_mapel);
+      this.getAccessMapel();
+    },
+
+    async getAccessMapel() {
+      const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'include',
+      });
+      if (responseAccess.status != 200) {
+        return this.addAccessMapel();
+      } else {
+        const jsonAccess = await responseAccess.json();
+        this.messages = jsonAccess.meta.message;
+        this.access = jsonAccess.data;
+        return this.getDataListMapel();
+      }
+    },
+
+    async addAccessMapel() {
+      const dataAccessMapel = {
+        id: this.id,
+        mapel_id: this.$route.params.mapel_id,
+        last_access: 1,
+      };
+      await fetch(CONFIG.BASE_URL + '/access_mapel/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(dataAccessMapel),
+      });
+      this.getAccessMapel();
+    },
+
+    getDataListMapel() {
+      this.mapel.sub_mapel.forEach(sub_mapel => {
+        sub_mapel.list_mapel.forEach(list_mapel => {
+          this.list_mapel_cache.push(list_mapel);
+        });
+      });
+      if (this.access[0].last_access <= this.list_mapel_cache.length) {
+        this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
+      } else {
+        this.list_id = this.list_mapel_cache[0].list_mapel_id;
+      }
+      this.getListMapel();
+    },
+
+    async getListMapel() {
+      const response = await fetch(CONFIG.BASE_URL + '/list_mapel/show/' + this.list_id, {
+        headers: { 'content-Type': 'Application/json' },
+      });
+      const json = await response.json();
+      this.messages = json.meta.message;
+      this.list_mapels = json.data;
+      this.$emit('sendData', { 'list_mapel': this.list_mapels, 'list_mapel_cache': this.list_mapel_cache });
     },
   }
 };
@@ -115,12 +181,17 @@ li a {
   cursor: pointer;
 }
 
+li .disabled {
+  pointer-events: none;
+}
+
 li a.active {
   padding-top: 17px;
   padding-bottom: 16px;
   background-color: #e45f03;
   color: white;
 }
+
 
 li a:hover:not(.active) {
   color: #e45f03;
