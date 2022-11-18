@@ -54,7 +54,7 @@ export default {
         last_access: addLast,
       };
       await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
-        headers: { 'content-Type': 'Application/json' },
+        headers: { 'Content-Type': 'Application/json' },
         method: 'POST',
         body: JSON.stringify(dataUpdate),
       });

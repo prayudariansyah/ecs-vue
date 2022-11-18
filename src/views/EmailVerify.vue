@@ -77,7 +77,7 @@ export default {
     const route = useRouter();
     try {
       const response = await fetch(CONFIG.BASE_URL + '/email/verify', {
-        headers: { 'content-Type': 'Application/json' },
+        headers: { 'Content-Type': 'Application/json' },
         credentials: 'include',
       });
       const json = await response.json();
@@ -95,7 +95,7 @@ export default {
     const route = useRouter();
     const submit = async () => {
       const response = await fetch(CONFIG.BASE_URL + '/email/verify/resend-verification', {
-        headers: { 'content-Type': 'Application/json' },
+        headers: { 'Content-Type': 'Application/json' },
         credentials: 'include',
       });
       const json = await response.json();

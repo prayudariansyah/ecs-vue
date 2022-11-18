@@ -55,7 +55,7 @@ export default {
     methods: {
         async getUser() {
             const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-                headers: { 'content-Type': 'Application/json' },
+                headers: { 'Content-Type': 'Application/json' },
                 credentials: 'include',
             });
             const json = await response.json();
@@ -67,7 +67,7 @@ export default {
         },
         async getMapel() {
             const responseMapel = await fetch(CONFIG.BASE_URL + '/mapel', {
-                headers: { 'content-Type': 'Application/json' },
+                headers: { 'Content-Type': 'Application/json' },
             });
             const jsonMapel = await responseMapel.json();
             this.messages = jsonMapel.meta.message;

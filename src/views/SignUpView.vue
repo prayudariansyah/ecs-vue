@@ -91,7 +91,7 @@
 
 <script>
 // @ is an alias to /src
-import { reactive } from 'vue';
+import { reactive, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import CONFIG from '../global/config';
 
@@ -122,7 +122,6 @@ export default {
   },
 
   setup() {
-    // let id;
     const data = reactive({
       name: '',
       email: '',
@@ -134,8 +133,9 @@ export default {
     });
 
     const dataPayment = reactive({
-      payment_method_id: 1,
-      payment_picture: '',
+      payment_method_id: '',
+      id: '',
+      payment_picture: getCurrentInstance().data.file,
       payment_price: 50000,
     });
 
@@ -144,22 +144,25 @@ export default {
     const submit = async () => {
       const response = await fetch(CONFIG.BASE_URL + '/register', {
         method: 'POST',
-        headers: { 'content-Type': 'Application/json' },
+        headers: { 'Content-Type': 'Application/json' },
+        credentials: 'include',
         body: JSON.stringify(data),
       });
 
       const json = await response.json();
-      dataPayment['id'] = json.id;
+      dataPayment.id = json.id;
       alert(json.meta.message);
+
+      // await fetch(CONFIG.BASE_URL + '/payment/add', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'Application/json' },
+      //   credentials: 'include',
+      //   body: JSON.stringify(dataPayment),
+      // });
 
       if (response.status == 200) {
         await router.push('/sign-in');
       }
-      // await fetch(CONFIG.BASE_URL + '/payment/add', {
-      //   method: 'POST',
-      //   headers: { 'content-Type': 'Application/json' },
-      //   body: JSON.stringify(dataPayment),
-      // });
     };
 
     return {
