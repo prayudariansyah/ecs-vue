@@ -1,23 +1,24 @@
 <template>
-  <div class="subclass" v-if="sub_mapel">
+  <div class="subclass" v-if="list_mapels">
     <div class="container">
-      <SidebarMapelComponentVue @sendSubMapel="getSubMapel($event)" />
-      <div class="content" v-for="list_mapel in list_mapels" v-bind:key="list_mapel.list_mapel_id">
+      <SidebarMapelComponentVue @sendData="getSubMapel($event)" />
+      <div class="content" v-for="list_mapel in list_mapels" :key="list_mapel.list_mapel_id">
         <div class="title">
           <h4>{{ list_mapel.list_mapel_name }}</h4>
         </div>
         <div class="video">
-          <iframe width="100" height="500" :src="list_mapels.list_mapel_link" title="YouTube video player"
+          <!-- <iframe width="100" height="500" :src="list_mapel.list_mapel_link" title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen></iframe>
+            allowfullscreen></iframe> -->
         </div>
         <div class="text-deskripsi">
           <p>{{ list_mapel.list_mapel_desc }}</p>
         </div>
         <div class="btn-container">
           <button class="btn" @click="updateAccessMapel()"
-            v-if="this.$route.params.list_id != list_mapel_cache.slice(-1)[0].list_mapel_id">Next</button>
+            v-if="list_mapels[0].list_mapel_id != list_mapel_cache.slice(-1)[0].list_mapel_id">Next</button>
+          <button class="btn" v-else><a href="#/dashboard">Finish</a></button>
         </div>
       </div>
     </div>
@@ -53,24 +54,40 @@ export default {
     }
   },
   mounted() {
-    this.getAccessMapel()
+    this.getAccessMapel();
   },
   methods: {
     getSubMapel(sub_mapel) {
       this.sub_mapel = sub_mapel;
     },
-
     async getAccessMapel() {
       const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
-        headers: { 'content-Type': 'Application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'include',
       });
-      const jsonAccess = await responseAccess.json();
-      this.messages = jsonAccess.meta.message;
-      this.access = jsonAccess.data;
-
-      this.getDataListMapel();
+      if (responseAccess.status != 200) {
+        return this.addAccessMapel();
+      } else {
+        const jsonAccess = await responseAccess.json();
+        this.messages = jsonAccess.meta.message;
+        this.access = jsonAccess.data;
+        return this.getDataListMapel();
+      }
     },
-
+    async addAccessMapel() {
+      const dataAccessMapel = {
+        id: this.id,
+        mapel_id: this.$route.params.mapel_id,
+        last_access: 1,
+      };
+      await fetch(CONFIG.BASE_URL + '/access_mapel/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(dataAccessMapel),
+      });
+      this.getAccessMapel();
+    },
     getDataListMapel() {
       this.sub_mapel.forEach(sub_mapel => {
         sub_mapel.list_mapel.forEach(list_mapel => {
@@ -82,9 +99,8 @@ export default {
       } else {
         this.list_id = this.list_mapel_cache[0].list_mapel_id;
       }
-      this.getListMapel();
+      return this.getListMapel();
     },
-
     async getListMapel() {
       const response = await fetch(CONFIG.BASE_URL + '/list_mapel/show/' + this.list_id, {
         headers: { 'content-Type': 'Application/json' },
@@ -93,21 +109,24 @@ export default {
       this.messages = json.meta.message;
       this.list_mapels = json.data;
     },
-
+    
     async updateAccessMapel() {
       const addLast = this.access[0].last_access + 1;
       const dataUpdate = {
         last_access: addLast,
       };
-      await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
-        headers: { 'content-Type': 'Application/json' },
-        method: 'POST',
-        body: JSON.stringify(dataUpdate),
-      });
-      await this.getAccessMapel();
-      this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
-      await this.getListMapel();
-    }
+      if (this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id == this.list_id) {
+        await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
+          headers: { 'content-Type': 'Application/json' },
+          method: 'POST',
+          body: JSON.stringify(dataUpdate),
+        });
+        await this.getAccessMapel();
+        await this.getListMapel();
+      } else {
+        await this.getAccessMapel();
+      }
+    },
   },
 }
 </script>
@@ -164,5 +183,10 @@ h4 {
   font-size: 18px;
   font-weight: 600;
   margin-right: 50px;
+}
+
+.btn a {
+  color: white;
+  text-decoration-line: none;
 }
 </style>

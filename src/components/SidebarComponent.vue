@@ -20,11 +20,10 @@ export default {
   data() {
     return {
       user: [],
-      config: [],
+      config: CONFIG,
     };
   },
   async mounted() {
-    this.config = CONFIG;
     try {
       const response = await fetch(CONFIG.BASE_URL + '/user/show', {
         headers: { 'content-Type': 'Application/json' },
@@ -35,7 +34,6 @@ export default {
       this.messages = messages;
       if (response.status == 200) {
         this.user = json.data;
-        // this.user_image = await CONFIG.BASE_IMAGE + '/' +json.data.user_picture;
       }
     } catch (e) {
       console.log(e);

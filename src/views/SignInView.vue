@@ -81,7 +81,7 @@ export default {
     const submit = async () => {
       const response = await fetch(CONFIG.BASE_URL + '/login', {
         method: 'POST',
-        headers: { 'content-Type': 'Application/json' },
+        headers: { 'Content-Type': 'Application/json' },
         credentials: 'include',
         body: JSON.stringify(data),
       });

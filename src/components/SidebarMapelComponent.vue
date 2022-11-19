@@ -16,7 +16,7 @@
         </li>
         <transition name="fade">
           <div v-if="sub_mapel.show">
-            <li v-for="list_mapel in sub_mapel.list_mapel" v-bind:key="list_mapel.list_mapel_id">
+            <li v-for="list_mapel in sub_mapel.list_mapel" :key="list_mapel.list_mapel_id">
               <a
                 :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id">
                 {{ list_mapel.list_mapel_name }}
@@ -53,7 +53,7 @@ export default {
       });
       const json = await response.json();
       this.mapel = json.data;
-      this.$emit('sendSubMapel', this.mapel.sub_mapel);
+      this.$emit('sendData', this.mapel.sub_mapel)
     },
   }
 };
@@ -115,12 +115,17 @@ li a {
   cursor: pointer;
 }
 
+li .disabled {
+  pointer-events: none;
+}
+
 li a.active {
   padding-top: 17px;
   padding-bottom: 16px;
   background-color: #e45f03;
   color: white;
 }
+
 
 li a:hover:not(.active) {
   color: #e45f03;
