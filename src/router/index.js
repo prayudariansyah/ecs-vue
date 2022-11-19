@@ -6,6 +6,7 @@ import SignIn from '../views/SignInView.vue'
 import SignUp from '../views/SignUpView.vue'
 import EmailVerify from '../views/EmailVerify.vue'
 import ClassMapel from '../views/Class.vue'
+import QuizChapter from '../views/quizView.vue'
 
 
 const routes = [
@@ -47,6 +48,11 @@ const routes = [
     path: '/email-verify',
     name: 'email-verify',
     component: EmailVerify
+  },
+  {
+    path: '/quiz',
+    name: 'quiz',
+    component: QuizChapter
   },
 ]
 
