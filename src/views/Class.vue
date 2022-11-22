@@ -1,7 +1,7 @@
 <template>
   <div class="subclass" v-if="list_mapels">
     <div class="container">
-      <SidebarMapelComponentVue @sendMapel="getMapel($event)" :list_mapel_cache="list_mapel_cache" :access="access"/>
+      <SidebarMapelComponentVue @sendMapel="getMapel($event)" :list_mapel_cache="list_mapel_cache" :access="access" />
       <div class="content" v-for="list_mapel in list_mapels" :key="list_mapel.list_mapel_id">
         <div class="title">
           <h4>{{ list_mapel.list_mapel_name }}</h4>
@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
+      mapel_id: this.$route.params.mapel_id,
       list_id: 0,
       mapel: [],
       messages: '',
@@ -71,13 +72,17 @@ export default {
         const jsonAccess = await responseAccess.json();
         this.messages = jsonAccess.meta.message;
         this.access = jsonAccess.data;
+        this.access = this.access.filter(access => access.mapel_id == this.mapel_id);
+        if (!this.access[0]) {
+          return this.addAccessMapel();
+        }
         return this.getDataListMapel();
       }
     },
     async addAccessMapel() {
       const dataAccessMapel = {
         id: this.id,
-        mapel_id: this.$route.params.mapel_id,
+        mapel_id: this.mapel_id,
         last_access: 1,
       };
       await fetch(CONFIG.BASE_URL + '/access_mapel/add', {
