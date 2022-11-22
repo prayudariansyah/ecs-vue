@@ -1,7 +1,7 @@
 <template>
   <div class="subclass" v-if="list_mapels">
     <div class="container">
-      <SidebarMapelComponentVue @sendData="getSubMapel($event)" />
+      <SidebarMapelComponentVue @sendMapel="getMapel($event)" :list_mapel_cache="list_mapel_cache" :access="access"/>
       <div class="content" v-for="list_mapel in list_mapels" :key="list_mapel.list_mapel_id">
         <div class="title">
           <h4>{{ list_mapel.list_mapel_name }}</h4>
@@ -40,8 +40,8 @@ export default {
     return {
       id: this.$route.params.id,
       list_id: 0,
+      mapel: [],
       messages: '',
-      sub_mapel: [],
       list_mapel_cache: [],
       list_mapels: [],
       access: [],
@@ -53,12 +53,12 @@ export default {
       this.getListMapel();
     }
   },
-  mounted() {
-    this.getAccessMapel();
+  async mounted() {
+    await this.getAccessMapel();
   },
   methods: {
-    getSubMapel(sub_mapel) {
-      this.sub_mapel = sub_mapel;
+    getMapel(mapel) {
+      this.mapel = mapel;
     },
     async getAccessMapel() {
       const responseAccess = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
@@ -89,7 +89,7 @@ export default {
       this.getAccessMapel();
     },
     getDataListMapel() {
-      this.sub_mapel.forEach(sub_mapel => {
+      this.mapel.sub_mapel.forEach(sub_mapel => {
         sub_mapel.list_mapel.forEach(list_mapel => {
           this.list_mapel_cache.push(list_mapel);
         });
@@ -109,7 +109,7 @@ export default {
       this.messages = json.meta.message;
       this.list_mapels = json.data;
     },
-    
+
     async updateAccessMapel() {
       const addLast = this.access[0].last_access + 1;
       const dataUpdate = {
@@ -122,6 +122,7 @@ export default {
           body: JSON.stringify(dataUpdate),
         });
         await this.getAccessMapel();
+        this.list_id = this.list_mapel_cache[this.access[0].last_access - 1].list_mapel_id;
         await this.getListMapel();
       } else {
         await this.getAccessMapel();

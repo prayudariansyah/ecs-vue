@@ -17,8 +17,8 @@
         <transition name="fade">
           <div v-if="sub_mapel.show">
             <li v-for="list_mapel in sub_mapel.list_mapel" :key="list_mapel.list_mapel_id">
-              <a
-                :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id">
+              <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id"
+                :class="{'disabled' : disabled(list_mapel.list_mapel_id)}">
                 {{ list_mapel.list_mapel_name }}
               </a>
             </li>
@@ -30,20 +30,36 @@
 </template>
 
 <script>
-// import CONFIG from '@/global/config';
-
-import CONFIG from '@/global/config';
+import CONFIG from '../global/config';
 
 export default {
   name: 'SidebarMapelComponent',
+  props: {
+    list_mapel_cache: Array,
+    access: Array,
+  },
   data() {
     return {
       id: this.$route.params.id,
       mapel: [],
+      sub_mapel: [],
+      list_access: this.list_mapel_cache,
     };
   },
-  async mounted() {
-    this.getMapel();
+  watch:{
+    access: function () {
+      for (let i = 0; i < this.list_access.length; i++) {
+        if (this.list_access[0].access == null); {
+          this.list_access[i].access = 1;
+          if (i >= this.access[0].last_access) {
+            this.list_access[i].access = 0;
+          }
+        }
+      }
+    }
+  },
+  async mounted(){
+    await this.getMapel();
   },
   methods: {
     async getMapel() {
@@ -53,8 +69,17 @@ export default {
       });
       const json = await response.json();
       this.mapel = json.data;
-      this.$emit('sendData', this.mapel.sub_mapel)
+      this.sub_mapel = this.mapel.sub_mapel;
+      this.$emit('sendMapel', this.mapel);
     },
+
+    disabled(list_mapel_id){
+      for (let i = 0; i < this.list_access.length; i++) {
+        if (this.list_access[i].list_mapel_id == list_mapel_id && this.list_access[i].access == 0){
+          return true;
+        }
+      }
+    }
   }
 };
 </script>
