@@ -51,7 +51,7 @@ export default {
     };
     return {
       logout,
-    };
+    }
   },
 };
 </script>
@@ -62,6 +62,7 @@ export default {
   padding-top: 80px;
   background-color: #fa8432;
   width: 280px;
+  height: 900px;
   display: flex;
   flex-direction: column;
 }
