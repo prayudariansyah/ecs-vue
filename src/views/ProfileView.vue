@@ -34,7 +34,7 @@
                         </div>
                         <div class="field">
                             <button class="submit" type="submit">Simpan</button>
-                            <button class="change-pass"><a href="#/new-password"> Ganti Password</a></button>
+                            <a class="change-pass" href="#/new-password">Ganti Password</a>
                         </div>
                     </form>
                 </div>
@@ -268,23 +268,22 @@ h4 {
     border: none;
     font-size: 18px;
     font-weight: 600;
-    box-shadow: inset;
 }
 
 .change-pass {
-    width: 370px;
-    height: 60px;
+    margin-top: 10px;
+    max-width: 370px;
+    max-height: 60px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: white;
     color: #E45F03;
     border-radius: 10px;
-    border: none;
+    border-style: solid;
+    border-width: 2px;
     font-size: 18px;
     font-weight: 600;
-    box-shadow: inset;
-}
-
-.change-pass a {
-    color: #E45F03;
+    text-align: center;
     text-decoration: none;
 }
 </style>
