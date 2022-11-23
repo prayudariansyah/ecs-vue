@@ -7,6 +7,7 @@ import SignUp from '../views/SignUpView.vue'
 import EmailVerify from '../views/EmailVerify.vue'
 import ClassMapel from '../views/Class.vue'
 import QuizChapter from '../views/quizView.vue'
+import newPassword from '../views/NewPasswordView.vue'
 
 
 const routes = [
@@ -53,6 +54,11 @@ const routes = [
     path: '/quiz',
     name: 'quiz',
     component: QuizChapter
+  },
+  {
+    path: '/new-password',
+    name: 'new-password',
+    component: newPassword,
   },
 ]
 
