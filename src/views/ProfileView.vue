@@ -32,7 +32,10 @@
                             <label for="emailaddress">Email Adddress</label>
                             <input readonly type="email" id="emailaddress" name="emailaddress" :value="user.email">
                         </div>
-                        <button class="submit" type="submit">Simpan</button>
+                        <div class="field">
+                            <button class="submit" type="submit">Simpan</button>
+                            <button class="change-pass"><a href="#/new-password"> Ganti Password</a></button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -46,7 +49,6 @@
 import SidebarComponent from '@/components/SidebarComponent.vue';
 import CONFIG from '@/global/config';
 import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
 
 export default {
     name: 'ProFile',
@@ -77,8 +79,6 @@ export default {
             user_age: '',
         });
 
-        const router = useRouter();
-
         const submit = async () => {
             const response = await fetch(CONFIG.BASE_URL + '/update', {
                 method: 'POST',
@@ -89,20 +89,11 @@ export default {
 
             const json = await response.json();
             alert(json.meta.message);
-
-            if (response.status == 200) {
-                await router.push('/sign-in');
-            }
-            // await fetch(CONFIG.BASE_URL + '/payment/add', {
-            //   method: 'POST',
-            //   headers: { 'content-Type': 'Application/json' },
-            //   body: JSON.stringify(dataPayment),
-            // });
         };
 
         return {
             data,
-            submit
+            submit,
         }
     },
 }
@@ -277,5 +268,23 @@ h4 {
     border: none;
     font-size: 18px;
     font-weight: 600;
+    box-shadow: inset;
+}
+
+.change-pass {
+    width: 370px;
+    height: 60px;
+    background-color: white;
+    color: #E45F03;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: inset;
+}
+
+.change-pass a {
+    color: #E45F03;
+    text-decoration: none;
 }
 </style>
