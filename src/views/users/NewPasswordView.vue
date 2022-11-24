@@ -50,7 +50,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import SidebarComponent from '@/components/SidebarComponent.vue';
+import SidebarComponent from '../users/components/SidebarComponent.vue';
 import CONFIG from '@/global/config';
 import { reactive } from 'vue';
 

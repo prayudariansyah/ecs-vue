@@ -1,13 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import DashBoard from '../views/DashboadView.vue'
-import ProFile from '../views/ProfileView.vue'
 import SignIn from '../views/SignInView.vue'
 import SignUp from '../views/SignUpView.vue'
 import EmailVerify from '../views/EmailVerify.vue'
-import ClassMapel from '../views/Class.vue'
-import QuizChapter from '../views/quizView.vue'
-import newPassword from '../views/NewPasswordView.vue'
+import DashBoard from '../views/users/DashboadView.vue'
+import ProFile from '../views/users/ProfileView.vue'
+import ClassMapel from '../views/users/Class.vue'
+import QuizChapter from '../views/users/quizView.vue'
+import newPassword from '../views/users/NewPasswordView.vue'
 
 
 const routes = [

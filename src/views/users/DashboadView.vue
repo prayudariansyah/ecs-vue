@@ -32,7 +32,7 @@
 <script>
 // @ is an alias to /src
 import CONFIG from '@/global/config';
-import SidebarComponent from '@/components/SidebarComponent.vue';
+import SidebarComponent from '../users/components/SidebarComponent.vue';
 
 export default {
     name: 'DashBoard',

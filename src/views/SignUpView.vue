@@ -93,7 +93,7 @@
 // @ is an alias to /src
 import { reactive, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
-import CONFIG from '../global/config';
+import CONFIG from '@/global/config';
 
 export default {
   name: 'SignUp',
