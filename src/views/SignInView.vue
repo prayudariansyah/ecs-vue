@@ -29,7 +29,15 @@
             <label for="email">Email Address</label>
             <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
             <label for="psw">Password</label>
-            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
+            <div class="input-group">
+              <input :type="[password ? 'text' : 'password']" v-model="data.password" placeholder="Masukan Password"
+                name="password" required />
+              <div class="show-pass" @click="password = !password">
+                <div class="text">
+                  {{ password ? 'hide' : 'show' }}
+                </div>
+              </div>
+            </div>
             <button class="button" type="submit">Masuk</button>
           </form>
         </div>
@@ -72,6 +80,11 @@ import { useRouter } from 'vue-router';
 
 export default {
   name: 'SignIn',
+  data() {
+    return {
+      password: false,
+    }
+  },
   setup() {
     const data = reactive({
       email: '',
@@ -214,6 +227,31 @@ footer hr {
 
 footer p {
   flex-grow: 1;
+  text-align: center;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.show-pass {
+  width: 100%;
+  min-width: 44px;
+  max-width: 60px;
+  min-height: 44px;
+  max-height: 41px;
+  margin-left: 10px;
+  background-color: #E45F03;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.show-pass .text {
+  margin-top: 8px;
   text-align: center;
 }
 
