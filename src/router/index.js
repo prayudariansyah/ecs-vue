@@ -6,7 +6,6 @@ import EmailVerify from '../views/EmailVerify.vue'
 import DashBoard from '../views/users/DashboadView.vue'
 import ProFile from '../views/users/ProfileView.vue'
 import ClassMapel from '../views/users/Class.vue'
-import QuizChapter from '../views/users/QuizView.vue'
 import newPassword from '../views/users/NewPasswordView.vue'
 
 

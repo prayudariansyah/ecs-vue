@@ -1,83 +1,65 @@
 <template>
     <div class="quiz">
-        <div class="container">
-            <SidebarMapelComponentVue />
-            <div class="content">
-                <div class="title">
-                    <h4>Chapter 1 : Reading, Writing and Speaking</h4>
-                </div>
-                <form action="" class="question" method="">
-                    <div class="question-column">
-                        <h6>1. I have some pets at home</h6>
-                        <div class="answer-column-one">
-                            <div class="answer-row">
-                                <input name="one" type="button" value="A">
-                                <p>correct</p>
-                            </div>
-                            <div class="answer-row">
-                                <input name="one" type="button" value="B">
-                                <p>incorrect</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="question-column">
-                        <h6>2. The colors are yellow and green</h6>
-                        <div class="answer-column-two">
-                            <div class="answer-row">
-                                <input name="two" type="button" value="A">
-                                <p>correct</p>
-                            </div>
-                            <div class="answer-row">
-                                <input name="two" type="button" value="B">
-                                <p>incorrect</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="question-column">
-                        <h6>3. We have two .......? (mata)</h6>
-                        <div class="answer-column-three">
-                            <div class="answer-row">
-                                <input name="three" type="button" value="A">
-                                <p>stomach</p>
-                            </div>
-                            <div class="answer-row">
-                                <input name="three" type="button" value="B">
-                                <p>eyes</p>
-                            </div>
-                            <div class="answer-row">
-                                <input name="three" type="button" value="C">
-                                <p>cheek</p>
-                            </div>
-                            <div class="answer-row">
-                                <input name="three" type="button" value="D">
-                                <p>nose</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="question-column">
-                        <h6>4. Tell about your self</h6>
-                        <div class="answer-column-four">
-                            <div class="answer-row">
-                                <textarea name="four" id="four" cols="30" rows="10"
-                                    placeholder="Write in here!!"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <button class="btn">Next</button>
+        <div class="content">
+            <div class="title">
+                <h4>Chapter 1 : Reading, Writing and Speaking</h4>
             </div>
+            <form class="question" @submit.prevent="submit">
+                <div class="question-column" v-for="quiz in list_mapel.quiz" :key="quiz.quiz_id">
+                    <h6>{{ quiz.question }}</h6>
+                    <div class="answer-column-one" v-for="choice in quiz.choice" :key="choice.choice_id">
+                        <div class="answer-row">
+                            <input name="one" type="button" v-model="choice_id">
+                            <p>{{ choice.choice_name }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="question-column">
+                    <h6>4. Tell about your self</h6>
+                    <div class="answer-column-four">
+                        <div class="answer-row">
+                            <textarea name="four" id="four" cols="30" rows="10"
+                                placeholder="Write in here!!"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
-import SidebarMapelComponentVue from '../users/components/SidebarMapelComponent.vue';
+import CONFIG from '@/global/config';
+import { reactive } from 'vue';
 
 export default {
     name: 'QuizChapter',
-    components: {
-        SidebarMapelComponentVue
+    props: {
+        list_mapel: Array,
     },
+    data() {
+        return {
+            alphabet: [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
+        }
+    },
+    setup() {
+        const submit = async () => {
+            const data = reactive({
+                choice_id: '',
+            })
+            const response = await fetch(CONFIG.BASE_URL + '/score/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'Application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data),
+            });
+            await response.json();
+        }
+
+        return {
+            submit,
+        }
+    }
 };
 </script>
 
