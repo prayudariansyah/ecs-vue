@@ -2,27 +2,29 @@
   <div class="subclass">
     <div class="container">
       <SidebarMapelComponentVue @sendData="getData($event)" />
-      <div v-if="list_mapel">
-        <div class="content" v-for="list in list_mapel" :key="list.list_mapel_id">
+      <div class="content">
+        <div v-if="list_mapel.sub_mapel_id">
           <div class="title">
-            <h4>{{ list.list_mapel_name }}</h4>
+            <h4>{{ list_mapel.list_mapel_name }}</h4>
           </div>
           <div class="video">
-            <iframe width="100" height="500" :src="list.list_mapel_link" title="YouTube video player" frameborder="0"
+            <!-- <iframe width="100" height="500" :src="list.list_mapel_link" title="YouTube video player" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
+              allowfullscreen></iframe> -->
           </div>
           <div class="text-deskripsi">
-            <p>{{ list.list_mapel_desc }}</p>
-          </div>
-          <div class="btn-container">
-            <button class="btn" @click="updateAccessMapel()"
-              v-if="list.list_mapel_id != list_mapels.slice(-1)[0].list_mapel_id">Next</button>
-            <button class="btn" v-else><a href="#/dashboard">Finish</a></button>
+            <p>{{ list_mapel.list_mapel_desc }}</p>
           </div>
         </div>
+        <div v-else>
+          <QuizChapter :list_mapel="list_mapel"/>
+        </div>
+        <div class="btn-container">
+          <button class="btn" @click="back()" v-if="list > 1">Back</button>
+          <button class="btn" @click="updateAccessMapel()" v-if="list != list_mapels.length">Next</button>
+          <button class="btn" v-else><a href="#/dashboard">Finish</a></button>
+        </div>
       </div>
-      <div v-else>{{ messages }}</div>
     </div>
   </div>
 </template>
@@ -30,18 +32,20 @@
 <script>
 // @ is an alias to /src
 import SidebarMapelComponentVue from './components/SidebarMapelComponent.vue';
+import QuizChapter from './QuizView.vue';
 import CONFIG from '@/global/config';
+import router from '@/router';
 
 export default {
   name: 'ClassMapel',
   components: {
     SidebarMapelComponentVue,
+    QuizChapter,
   },
   data() {
     return {
       id: this.$route.params.id,
-      list_id: 0,
-      messages: '',
+      list: this.$route.params.list,
       list_mapels: [],
       list_mapel: [],
       access: [],
@@ -49,13 +53,18 @@ export default {
   },
   watch: {
     list_mapels() {
-      const list_mapel = this.list_mapels[this.access[0].last_access - 1];
-      this.list_mapel = Array(list_mapel);
-      this.list_id = list_mapel.list_mapel_id;
+      let list_mapel = '';
+      if (this.list == 0) {
+        list_mapel = this.list_mapels[this.access[0].last_access - 1];
+        this.list = this.list_mapels.findIndex(list => list.list_mapel_id == list_mapel.list_mapel_id);
+      } else {
+        list_mapel = this.list_mapels[this.list - 1];
+      }
+      this.list_mapel = list_mapel;
     },
     $route(to) {
-      this.list_id = to.params.list_id;
-      this.list_mapel = this.list_mapels.filter(list => list.list_mapel_id == this.list_id);
+      this.list = to.params.list;
+      this.list_mapel = this.list_mapels[this.list - 1];
     }
   },
   methods: {
@@ -63,20 +72,27 @@ export default {
       this.list_mapels = data[0];
       this.access = data[1];
     },
+    async back() {
+      const route = this.$route.params;
+      this.list--;
+      return await router.push(`/${route.id}/mapel/${route.mapel_id}/${route.mapel_slug}/${this.list}`)
+    },
     async updateAccessMapel() {
       const addLast = this.access[0].last_access + 1;
       const dataUpdate = {
         last_access: addLast,
       };
-      if (this.list_mapels[this.access[0].last_access - 1].list_mapel_id == this.list_id) {
+      const listOfLastAccess = this.list_mapels[this.access[0].last_access - 1].list_mapel_id;
+      if ((this.list_mapels.findIndex(list => list.list_mapel_id == listOfLastAccess) + 1) == this.list) {
         await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
           headers: { 'content-Type': 'Application/json' },
           method: 'POST',
           body: JSON.stringify(dataUpdate),
         });
-        return console.log('berhasil');
       }
-      return console.log('gagal');
+      const route = this.$route.params;
+      this.list++;
+      return await router.push(`/${route.id}/mapel/${route.mapel_id}/${route.mapel_slug}/${this.list}`)
     },
   },
 }
@@ -102,8 +118,10 @@ h4 {
 
 .content {
   width: 100%;
-  margin-left: 70px;
+  max-width: 800px;
   margin-top: 50px;
+  margin-left: 70px;
+  margin-right: 70px;
 }
 
 .video {
@@ -112,10 +130,12 @@ h4 {
 }
 
 .text-deskripsi {
+  width: 100%;
   font-size: 18px;
   font-weight: 400;
   color: black;
   margin-bottom: 15px;
+  text-align: justify;
 }
 
 .btn-container {

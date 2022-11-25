@@ -6,7 +6,7 @@ import EmailVerify from '../views/EmailVerify.vue'
 import DashBoard from '../views/users/DashboadView.vue'
 import ProFile from '../views/users/ProfileView.vue'
 import ClassMapel from '../views/users/Class.vue'
-import QuizChapter from '../views/users/quizView.vue'
+import QuizChapter from '../views/users/QuizView.vue'
 import newPassword from '../views/users/NewPasswordView.vue'
 
 
@@ -41,7 +41,7 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/:id/mapel/:mapel_id/:mapel_slug/:list_id',
+    path: '/:id/mapel/:mapel_id/:mapel_slug/:list',
     name: 'list-mapels',
     component: ClassMapel,
   },
@@ -49,11 +49,6 @@ const routes = [
     path: '/email-verify',
     name: 'email-verify',
     component: EmailVerify
-  },
-  {
-    path: '/quiz',
-    name: 'quiz',
-    component: QuizChapter
   },
   {
     path: '/new-password',

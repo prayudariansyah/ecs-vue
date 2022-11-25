@@ -15,13 +15,13 @@
           </a>
         </li>
         <transition name="fade">
-          <div v-if="sub_mapel.show">
-            <li v-for="list_mapel in list_mapels" :key="list_mapel.list_mapel_id">
-              <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + list_mapel.list_mapel_id"
+          <div v-if="!sub_mapel.show">
+            <li v-for="(list_mapel, i) in list_mapels" :key="list_mapel.list_mapel_id">
+              <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + (i + 1)"
                 :class="{ 'disabled': list_mapel.access == 0 }"
                 v-if="list_mapel.sub_mapel_id == sub_mapel.sub_mapel_id">{{ list_mapel.list_mapel_name }}</a>
               <div v-if="list_mapel.quiz">
-                <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + 2"
+                <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + (i + 1)"
                   :class="{ 'disabled': list_mapel.access == 0 }"
                   v-if="list_mapel.quiz[0].sub_mapel_id == sub_mapel.sub_mapel_id">
                   Quiz {{ sub_mapel.sub_mapel_name }}
@@ -43,19 +43,23 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
+      mapel_id: this.$route.params.mapel_id,
       mapel: [],
       list_mapels: [],
       quiz: [],
       access: [],
     };
   },
+  watch: {
+    $route() {
+      this.getAccessMapel();
+    },
+  },
   async mounted() {
     await this.getMapel();
-    this.getListMapel();
     await this.getQuiz();
-    this.addQuizOnList();
+    this.getListMapel();
     await this.getAccessMapel();
-    this.getAccess();
     this.$emit('sendData', [this.list_mapels, this.access])
   },
   methods: {
@@ -68,14 +72,6 @@ export default {
       this.mapel = json.data;
     },
 
-    getListMapel() {
-      this.mapel.sub_mapel.forEach(sub_mapel => {
-        sub_mapel.list_mapel.forEach(list_mapel => {
-          this.list_mapels.push(list_mapel);
-        });
-      });
-    },
-
     async getQuiz() {
       const response = await fetch(CONFIG.BASE_URL + '/quiz', {
         headers: { 'Content-Type': 'Application/json' },
@@ -85,16 +81,14 @@ export default {
       this.quiz = json.data;
     },
 
-    addQuizOnList() {
-      const quiz = new Set();
-      this.quiz.forEach(quizs => quiz.add(parseInt(quizs.sub_mapel_id)))
-      quiz.add(2);
-      quiz.forEach(q => {
-        const sub = this.list_mapels.map(list => list.sub_mapel_id).lastIndexOf(q);
-        const quizz = this.quiz.filter(quiz => quiz.sub_mapel_id == q);
-        if (quizz.length != 0) {
-          const quizs = { 'quiz': quizz };
-          this.list_mapels.splice(sub + 1, 0, quizs);
+    getListMapel() {
+      this.mapel.sub_mapel.forEach(sub_mapel => {
+        const quiz = this.quiz.filter(quiz => quiz.sub_mapel_id == sub_mapel.sub_mapel_id);
+        sub_mapel.list_mapel.forEach(list_mapel => {
+          this.list_mapels.push(list_mapel);
+        });
+        if (quiz.length != 0) {
+          this.list_mapels.push({ 'quiz': quiz });
         }
       });
     },
@@ -105,7 +99,29 @@ export default {
         credentials: 'include',
       });
       const json = await response.json();
-      this.access = json.data;
+      const access = json.data;
+      this.access = access.filter(acc => acc.mapel_id == this.mapel_id);
+      if (this.access.length == 0) {
+        return this.addAccessMapel();
+      }
+      return this.getAccess();
+    },
+
+    async addAccessMapel() {
+      const data = {
+        id: this.id,
+        mapel_id: this.mapel_id,
+        last_access: 1,
+      }
+      const response = await fetch(CONFIG.BASE_URL + '/access_mapel/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'Application/json' },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+      const json = await response.json();
+      this.access = Array(json.data);
+      this.getAccess();
     },
 
     getAccess() {
