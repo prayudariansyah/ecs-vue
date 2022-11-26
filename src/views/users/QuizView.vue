@@ -5,12 +5,12 @@
                 <h4>Chapter 1 : Reading, Writing and Speaking</h4>
             </div>
             <form class="question" @submit.prevent="submit">
-                <div class="question-column" v-for="quiz in list_mapel.quiz" :key="quiz.question_id">
+                <div class="question-column" v-for="(quiz, i) in list_mapel.quiz" :key="quiz.question_id">
                     <h6>{{ quiz.question }}</h6>
                     <div class="answer-column" v-for="choice in quiz.choice" :key="choice.choice_id">
                         <div class="answer-row">
                             <input :name="quiz.question_id" type="radio" :value="choice.choice_score"
-                                v-model="choice_id">
+                                v-model="choice_score[i]">
                             <label>{{ choice.choice_name }}</label>
                         </div>
                     </div>
@@ -24,6 +24,7 @@
                         </div>
                     </div>
                 </div>
+                <button type="submit" class="btn">Selesai</button>
             </form>
         </div>
     </div>
@@ -31,7 +32,6 @@
 
 <script>
 import CONFIG from '@/global/config';
-import { reactive } from 'vue';
 
 export default {
     name: 'QuizChapter',
@@ -40,25 +40,41 @@ export default {
     },
     data() {
         return {
+            id: this.$route.params.id,
+            sub_mapel_id: '',
             alphabet: [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
+            choice_score: [],
         }
     },
-    setup() {
-        const submit = async () => {
-            const data = reactive({
-                choice_id: '',
-            })
+    watch: {
+        list_mapel() {
+            this.sub_mapel_id = this.list_mapel.quiz[0].sub_mapel_id;
+        }
+    },
+    methods: {
+        async submit() {
+            // get score
+            if (this.choice_score.length != this.list_mapel.quiz.length) {
+                return alert('mohon diisi semua jawabannya');
+            }
+            let scoreOfChoice = 0;
+            this.choice_score.forEach(scoree => {
+                scoreOfChoice += scoree;
+            });
+            const score = 100 * scoreOfChoice / this.list_mapel.quiz.length;
+            const data = {
+                id: this.id,
+                sub_mapel: this.sub_mapel_id,
+                score
+            }
             const response = await fetch(CONFIG.BASE_URL + '/score/add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'Application/json' },
                 credentials: 'include',
                 body: JSON.stringify(data),
             });
-            await response.json();
-        }
-
-        return {
-            submit,
+            const json = await response.json();
+            return alert(json.meta.messages);
         }
     }
 };
@@ -148,7 +164,7 @@ li a:hover:not(.active) {
 }
 
 .content {
-    width: 1160px;
+    width: 100%;
     margin-left: 70px;
     margin-top: 50px;
 }
