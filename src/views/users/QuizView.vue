@@ -5,12 +5,13 @@
                 <h4>Chapter 1 : Reading, Writing and Speaking</h4>
             </div>
             <form class="question" @submit.prevent="submit">
-                <div class="question-column" v-for="quiz in list_mapel.quiz" :key="quiz.quiz_id">
+                <div class="question-column" v-for="quiz in list_mapel.quiz" :key="quiz.question_id">
                     <h6>{{ quiz.question }}</h6>
-                    <div class="answer-column-one" v-for="choice in quiz.choice" :key="choice.choice_id">
+                    <div class="answer-column" v-for="choice in quiz.choice" :key="choice.choice_id">
                         <div class="answer-row">
-                            <input name="one" type="button" v-model="choice_id">
-                            <p>{{ choice.choice_name }}</p>
+                            <input :name="quiz.question_id" type="radio" :value="choice.choice_score"
+                                v-model="choice_id">
+                            <label>{{ choice.choice_name }}</label>
                         </div>
                     </div>
                 </div>
@@ -178,7 +179,7 @@ li a:hover:not(.active) {
     gap: 21px;
 }
 
-.answer-column-one {
+.answer-column {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -197,7 +198,7 @@ li a:hover:not(.active) {
 
 }
 
-.answer-column-one input {
+.answer-column input {
     padding: 10px 15px;
     gap: 10px;
     border-style: none;
@@ -211,7 +212,7 @@ li a:hover:not(.active) {
     letter-spacing: 0.01em;
 }
 
-.answer-column-one input:focus {
+.answer-column input:focus {
     padding: 10px 15px;
     gap: 10px;
     border-style: none;
@@ -223,138 +224,6 @@ li a:hover:not(.active) {
     font-size: 18px;
     line-height: 27px;
     letter-spacing: 0.01em;
-}
-
-.answer-column-two {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px 20px;
-    gap: 20px;
-
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.01em;
-    color: #404040;
-
-}
-
-.answer-column-two input {
-    padding: 10px 15px;
-    gap: 10px;
-    border-style: none;
-    width: 43px;
-    height: 47px;
-    color: #404040;
-    background: #DCD9D1;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.01em;
-}
-
-.answer-column-two input:focus {
-    padding: 10px 15px;
-    gap: 10px;
-    border-style: none;
-    width: 43px;
-    height: 47px;
-    color: #fff;
-    background: #E45F03;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.01em;
-}
-
-.answer-column-three {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px 20px;
-    gap: 20px;
-
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.01em;
-    color: #404040;
-
-}
-
-.answer-column-three input {
-    padding: 10px 15px;
-    gap: 10px;
-    border-style: none;
-    width: 43px;
-    height: 47px;
-    color: #404040;
-    background: #DCD9D1;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.01em;
-}
-
-.answer-column-three input:focus {
-    padding: 10px 15px;
-    gap: 10px;
-    border-style: none;
-    width: 43px;
-    height: 47px;
-    color: #fff;
-    background: #E45F03;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    letter-spacing: 0.01em;
-}
-
-.answer-column-four textarea {
-    box-sizing: border-box;
-    width: 520px;
-    height: 201px;
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    gap: 10px;
-    border: 1px solid #DCD9D1;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    font-size: 18px;
-    line-height: 27px;
-    text-align: center;
-    letter-spacing: 0.01em;
-    color: #BFBFBF;
-}
-
-.answer-column-four textarea:focus {
-    outline: none;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 10px;
-    gap: 10px;
-    border: 1px solid #E45F03;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 27px;
-    text-align: start;
-    letter-spacing: 0.01em;
-    color: #404040;
 }
 
 .answer-row {
@@ -363,7 +232,6 @@ li a:hover:not(.active) {
     align-items: center;
     padding: 0px;
     gap: 15px;
-
     flex: none;
     order: 0;
     flex-grow: 0;
