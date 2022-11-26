@@ -10,7 +10,7 @@
           <div class="video">
             <!-- <iframe width="100" height="500" :src="list.list_mapel_link" title="YouTube video player" frameborder="0" -->
             <!-- 2KBFD0aoZy8 ganti dengan variable -->
-            <iframe width="1200" height="500" :src="'https://www.youtube.com/embed/' + list_mapel.list_mapel_link"
+            <iframe width="800" height="400" :src="'https://www.youtube.com/embed/' + list_mapel.list_mapel_link"
               title="YouTube video player" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
