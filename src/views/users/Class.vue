@@ -8,9 +8,11 @@
             <h4>{{ list_mapel.list_mapel_name }}</h4>
           </div>
           <div class="video">
-            <!-- <iframe width="100" height="500" :src="list.list_mapel_link" title="YouTube video player" frameborder="0"
+            <!-- <iframe width="100" height="500" :src="list.list_mapel_link" title="YouTube video player" frameborder="0" -->
+              <!-- 2KBFD0aoZy8 ganti dengan variable -->
+              <iframe width="1200" height="500" src="https://www.youtube.com/embed/2KBFD0aoZy8" title="YouTube video player" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe> -->
+              allowfullscreen></iframe>
           </div>
           <div class="text-deskripsi">
             <p>{{ list_mapel.list_mapel_desc }}</p>
