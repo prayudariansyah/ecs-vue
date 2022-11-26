@@ -19,7 +19,7 @@
           </div>
         </div>
         <div v-else>
-          <QuizChapter :list_mapel="list_mapel"/>
+          <QuizChapter :list_mapel="list_mapel" />
         </div>
         <div class="btn-container">
           <button class="btn" @click="back()" v-if="list > 1">Back</button>
@@ -55,14 +55,12 @@ export default {
   },
   watch: {
     list_mapels() {
-      let list_mapel = '';
       if (this.list == 0) {
-        list_mapel = this.list_mapels[this.access[0].last_access - 1];
-        this.list = this.list_mapels.findIndex(list => list.list_mapel_id == list_mapel.list_mapel_id);
+        this.list_mapel = this.list_mapels[this.access[0].last_access - 1];
+        this.list = this.list_mapels.findIndex(list => list.list_mapel_id == this.list_mapel.list_mapel_id) + 1;
       } else {
-        list_mapel = this.list_mapels[this.list - 1];
+        this.list_mapel = this.list_mapels[this.list - 1];
       }
-      this.list_mapel = list_mapel;
     },
     $route(to) {
       this.list = to.params.list;
