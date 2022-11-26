@@ -15,15 +15,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="question-column">
-                    <h6>4. Tell about your self</h6>
-                    <div class="answer-column-four">
-                        <div class="answer-row">
-                            <textarea name="four" id="four" cols="30" rows="10"
-                                placeholder="Write in here!!"></textarea>
-                        </div>
-                    </div>
-                </div>
                 <button type="submit" class="btn">Selesai</button>
             </form>
         </div>
@@ -87,14 +78,13 @@ export default {
 }
 
 h4 {
-    font-size: 36px;
+    font-size: 29px;
     font-weight: 500;
     color: #404040;
 }
 
 .quiz {
     font-family: 'Poppins';
-    width: 1440px;
     height: max-content;
     overflow: auto;
 }
@@ -104,65 +94,6 @@ h4 {
     width: 100%;
     height: 100%;
 }
-
-.sidebar {
-    padding-top: 63px;
-    background-color: #FA8432;
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-}
-
-ul {
-    margin-bottom: 26px;
-    list-style-type: none;
-    overflow: auto;
-}
-
-li {
-    margin-bottom: 20px;
-}
-
-li a {
-    display: block;
-    padding-left: 24px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: 500;
-}
-
-li a.active {
-    padding-top: 17px;
-    padding-bottom: 16px;
-    background-color: #E45F03;
-    color: white;
-}
-
-li a:hover:not(.active) {
-    color: #E45F03;
-}
-
-.kembali {
-    padding-left: 24px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 50px;
-}
-
-.kembali img {
-    width: 24px;
-    height: 24px;
-}
-
-.kembali a {
-    font-size: 20px;
-    font-weight: 400;
-    margin-left: 10px;
-    color: white;
-    text-decoration: none;
-}
-
 .content {
     width: 100%;
     margin-left: 70px;
@@ -263,6 +194,5 @@ li a:hover:not(.active) {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 30px;
-    margin-left: 1000px;
 }
 </style>
