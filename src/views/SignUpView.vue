@@ -10,7 +10,11 @@
           <li><a href="#">Home</a></li>
           <li><a href="#">Class</a></li>
           <li><a href="#">Harga</a></li>
-          <li><a href="#/sign-in"><button class="button" role="button">Masuk</button></a></li>
+          <li>
+            <a href="#/sign-in"
+              ><button class="button" role="button">Masuk</button></a
+            >
+          </li>
         </ul>
       </nav>
     </header>
@@ -27,35 +31,87 @@
           </div>
           <form @submit.prevent="submit">
             <label for="email">Nama Lengkap</label>
-            <input type="text" v-model="data.name" placeholder="Masukan nama lengkap" name="nama" required />
+            <input
+              type="text"
+              v-model="data.name"
+              placeholder="Masukan nama lengkap"
+              name="nama"
+              required
+            />
             <label for="text">Umur</label>
-            <input type="text" v-model="data.user_age" placeholder="Masukan umur" name="umur" required />
+            <input
+              type="text"
+              v-model="data.user_age"
+              placeholder="Masukan umur"
+              name="umur"
+              required
+            />
             <label for="text">Asal Kota</label>
-            <input type="text" v-model="data.user_city" placeholder="Masukan asal kota" name="kota" required />
+            <input
+              type="text"
+              v-model="data.user_city"
+              placeholder="Masukan asal kota"
+              name="kota"
+              required
+            />
             <label for="email">Email Address</label>
-            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
+            <input
+              type="text"
+              v-model="data.email"
+              placeholder="Masukan Email"
+              name="email"
+              required
+            />
             <label for="psw">Password</label>
-            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
+            <input
+              type="password"
+              v-model="data.password"
+              placeholder="Masukan Password"
+              name="password"
+              required
+            />
             <label for="psw">Re-Password</label>
-            <input type="password" v-model="data.password_confirmation" placeholder="Masukan Re-Password"
-              name="re-password" required />
+            <input
+              type="password"
+              v-model="data.password_confirmation"
+              placeholder="Masukan Re-Password"
+              name="re-password"
+              required
+            />
             <label for="text">Pembayaran Via Bank</label>
-            <select v-model="dataPayment.payment_method_id" name="bank" id="bank" v-on:change="onChange($event)">
-              <option v-for=" payment in listPayment" :value="payment.payment_method_id"
-                :key="payment.payment_method_name">{{ payment.payment_method_name }}
+            <select
+              v-model="data.payment_method_id"
+              name="bank"
+              id="bank"
+              v-on:change="onChange($event)"
+            >
+              <option
+                v-for="payment in listPayment"
+                :value="payment.payment_method_id"
+                :key="payment.payment_method_name"
+              >
+                {{ payment.payment_method_name }}
               </option>
             </select>
             <label for="text">kirim ke No rek dibawah</label>
             <h3>{{ rekening.payment_method_rek }}</h3>
             <label for="text">Total pembayaran</label>
-            <h3 for="text">Rp. 500.000</h3>
+            <h3 for="text">Rp. 50.000</h3>
             <label class="file">
               Bukti pembayaran
-              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles()"
-                multiple />
+              <input
+                type="file"
+                id="file"
+                ref="picture"
+                aria-label="File browser example"
+                v-on:change="previewFiles()"
+                multiple
+              />
               <span class="file-custom"></span>
             </label>
-            <button class="button" type="submit"><a href="#">Daftar Sekarang</a></button>
+            <button class="button" type="submit">
+              <a href="#">Daftar Sekarang</a>
+            </button>
           </form>
         </div>
         <div class="imglogin">
@@ -98,27 +154,29 @@ import CONFIG from '@/global/config';
 export default {
   name: 'SignUp',
   data() {
-    return { listPayment: [], rekening: '', file: '' }
+    return { listPayment: [], rekening: '', file: '' };
   },
   methods: {
     onChange: function onChange(event) {
       const selected = event.target.value;
-      this.rekening = this.listPayment.find(id => id.payment_method_id == selected);
+      this.rekening = this.listPayment.find(
+        (id) => id.payment_method_id == selected
+      );
     },
     previewFiles() {
       this.file = this.$refs.picture.files;
       console.log(this.file);
-    }
+    },
   },
 
   async mounted() {
-    await fetch(CONFIG.BASE_URL + "/payment_method")
+    await fetch(CONFIG.BASE_URL + '/payment_method')
       .then((response) => response.json())
       .then((json) => json.data)
-      .then((data) => this.listPayment = data)
+      .then((data) => (this.listPayment = data))
       .catch((error) => console.log('Request failed', error));
 
-    this.rekening = this.listPayment.find(id => id.payment_method_id == 1);
+    this.rekening = this.listPayment.find((id) => id.payment_method_id == 1);
   },
 
   setup() {
@@ -130,11 +188,7 @@ export default {
       password: '',
       password_confirmation: '',
       role_id: 2,
-    });
-
-    const dataPayment = reactive({
       payment_method_id: '',
-      id: '',
       payment_picture: getCurrentInstance().data.file,
       payment_price: 50000,
     });
@@ -150,7 +204,6 @@ export default {
       });
 
       const json = await response.json();
-      dataPayment.id = json.id;
       alert(json.meta.message);
 
       // await fetch(CONFIG.BASE_URL + '/payment/add', {
@@ -167,15 +220,14 @@ export default {
 
     return {
       data,
-      dataPayment,
-      submit
-    }
+      submit,
+    };
   },
-}
+};
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .signup {
   margin: 0;
@@ -235,8 +287,8 @@ header nav ul li a {
   margin-bottom: 30px;
 }
 
-input[type="text"],
-input[type="password"],
+input[type='text'],
+input[type='password'],
 select {
   width: 100%;
   padding: 12px 20px;
@@ -260,7 +312,7 @@ main .containerlogin .imglogin img {
   margin: 100px 0px;
 }
 
-input[type="file"]::file-selector-button {
+input[type='file']::file-selector-button {
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
@@ -273,11 +325,11 @@ input[type="file"]::file-selector-button {
   will-change: transform;
 }
 
-input[type="file"]::file-selector-button:hover {
+input[type='file']::file-selector-button:hover {
   transform: translateY(-2px);
 }
 
-input[type="file"]::file-selector-button:active {
+input[type='file']::file-selector-button:active {
   box-shadow: none;
   transform: translateY(0);
 }
