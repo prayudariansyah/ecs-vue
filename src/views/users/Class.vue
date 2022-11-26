@@ -154,6 +154,7 @@ h4 {
   font-size: 18px;
   font-weight: 600;
   margin-right: 50px;
+  cursor: pointer;
 }
 
 .btn a {
