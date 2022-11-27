@@ -56,7 +56,7 @@ export default {
             // add score
             const data = {
                 id: this.id,
-                sub_mapel: this.sub_mapel_id,
+                sub_mapel_id: this.sub_mapel_id,
                 score
             }
             const response = await fetch(CONFIG.BASE_URL + '/score/add', {
@@ -65,8 +65,11 @@ export default {
                 credentials: 'include',
                 body: JSON.stringify(data),
             });
-            const json = await response.json();
-            return alert(json.meta.messages);
+            if (response.status == 200) {
+                const json = await response.json();
+                return alert(json.data.score);
+            }
+            return alert('gagal, mungkin anda sudah mengerjakannya ');
         }
     }
 };
