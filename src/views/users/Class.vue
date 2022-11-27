@@ -187,5 +187,6 @@ h4 {
 
 .disabled {
   pointer-events: none;
+  background-color: slategray;
 }
 </style>
