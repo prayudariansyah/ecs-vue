@@ -9,7 +9,7 @@
                     <h6>{{ quiz.question }}</h6>
                     <div class="answer-column" v-for="choice in quiz.choice" :key="choice.choice_id">
                         <div class="answer-row">
-                            <input :name="quiz.question_id" type="radio" :value="choice.choice_score"
+                            <input :name="'quiz' + quiz.question_id" type="radio" :value="choice.choice_score"
                                 v-model="choice_score[i]">
                             <label>{{ choice.choice_name }}</label>
                         </div>
@@ -27,7 +27,7 @@ import CONFIG from '@/global/config';
 export default {
     name: 'QuizChapter',
     props: {
-        list_mapel: Array,
+        list_mapel: Object,
     },
     data() {
         return {
@@ -40,7 +40,7 @@ export default {
     watch: {
         list_mapel() {
             this.sub_mapel_id = this.list_mapel.quiz[0].sub_mapel_id;
-        }
+        },
     },
     methods: {
         async submit() {
@@ -53,6 +53,7 @@ export default {
                 scoreOfChoice += scoree;
             });
             const score = 100 * scoreOfChoice / this.list_mapel.quiz.length;
+            // add score
             const data = {
                 id: this.id,
                 sub_mapel: this.sub_mapel_id,
@@ -94,6 +95,7 @@ h4 {
     width: 100%;
     height: 100%;
 }
+
 .content {
     width: 100%;
     margin-left: 70px;
@@ -194,5 +196,6 @@ h4 {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 </style>

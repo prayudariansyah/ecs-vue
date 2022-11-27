@@ -24,7 +24,8 @@
         </div>
         <div class="btn-container">
           <button class="btn" @click="back()" v-if="list > 1">Back</button>
-          <button class="btn" @click="updateAccessMapel()" v-if="list != list_mapels.length">Next</button>
+          <button class="btn" @click="updateAccessMapel()" v-if="list != list_mapels.length"
+            :class="{ 'disabled': check_quiz }">Next</button>
           <button class="btn" v-else><a href="#/dashboard">Finish</a></button>
         </div>
       </div>
@@ -52,6 +53,8 @@ export default {
       list_mapels: [],
       list_mapel: [],
       access: [],
+      score: [],
+      check_quiz: false,
     }
   },
   watch: {
@@ -66,6 +69,9 @@ export default {
     $route(to) {
       this.list = to.params.list;
       this.list_mapel = this.list_mapels[this.list - 1];
+      if (this.list_mapel.quiz) {
+        this.getScore();
+      }
     }
   },
   methods: {
@@ -73,11 +79,27 @@ export default {
       this.list_mapels = data[0];
       this.access = data[1];
     },
+
     async back() {
       const route = this.$route.params;
       this.list--;
       return await router.push(`/${route.id}/mapel/${route.mapel_id}/${route.mapel_slug}/${this.list}`)
     },
+
+    async getScore() {
+      const response = await fetch(CONFIG.BASE_URL + '/score', {
+        headers: { 'Content-Type': 'Application/json' },
+        credentials: 'include',
+      });
+      const json = await response.json();
+      this.score = json.data.filter(score => score.id == this.id && score.sub_mapel_id == this.list_mapel.quiz[0].sub_mapel_id);
+      if (this.score.length != 0) {
+        this.check_quiz = false;
+      } else {
+        this.check_quiz = true;
+      }
+    },
+
     async updateAccessMapel() {
       const addLast = this.access[0].last_access + 1;
       const dataUpdate = {
@@ -161,5 +183,9 @@ h4 {
 .btn a {
   color: white;
   text-decoration-line: none;
+}
+
+.disabled {
+  pointer-events: none;
 }
 </style>
