@@ -2,7 +2,7 @@
     <div v-if="!verify">
         <div class="card">
             <h3>Anda belum login. silahkan login kembali</h3>
-            <p><a href="#">back to home</a></p>
+            <p><a href="/">back to home</a></p>
         </div>
     </div>
     <div class="dashboard" v-else>
@@ -16,7 +16,7 @@
                 <div class="class-row">
                     <div class="card" v-for="mapel in mapels" v-bind:key="mapel.id">
                         <img :src="image + '/' + mapel.mapel_picture" alt="">
-                        <p><a v-bind:href="'#/' + user.id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + 0"
+                        <p><a v-bind:href=" user.id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + 0"
                                 class="matpen">{{
                                         mapel.mapel_name
                                 }}</a></p>

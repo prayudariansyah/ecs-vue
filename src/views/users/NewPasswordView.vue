@@ -7,8 +7,8 @@
                     <h4>New Password</h4>
                     <p>Mengubah Password anda</p>
                 </div>
-                <div class="new-data">
-                    <form @submit.prevent="submit">
+                <form @submit.prevent="submit">
+                    <div class="new-data">
                         <div class="field">
                             <label for="fullName">Old Password</label>
                             <div class="input-group">
@@ -39,9 +39,12 @@
                                 }}</span>
                             </div>
                         </div>
-                        <button class="submit" type="submit">Simpan</button>
-                    </form>
-                </div>
+                        <div class="forgot">
+                            <a href="/send-reset-password">lupa password ?</a>
+                        </div>
+                        <button class="button" type="submit">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -162,7 +165,10 @@ h4 {
 }
 
 .new-data {
+    width: 100%;
+    max-width: 500px;
     margin-top: 30px;
+    padding: 50px;
 }
 
 .new-data .field {
@@ -198,15 +204,46 @@ h4 {
     max-width: 500px;
 }
 
-.submit {
-    width: 370px;
-    height: 60px;
-    background-color: #E45F03;
-    color: white;
+.button {
+    appearance: none;
+    background-color: #e45f03;
+    border: 0px solid #ffffff00;
     border-radius: 10px;
-    border: none;
-    font-size: 18px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Poppins;
+    font-size: 16px;
     font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 60px;
+    min-width: 0;
+    outline: none;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+    will-change: transform;
+}
+
+.button:disabled {
+    pointer-events: none;
+}
+
+.button:hover {
+    box-shadow: rgb(250, 132, 50) 0 8px 15px;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    box-shadow: none;
+    transform: translateY(0);
 }
 
 .show-pass {
@@ -220,5 +257,25 @@ h4 {
     font-size: 18px;
     font-weight: 600;
     text-align: center;
+    cursor: pointer;
+}
+
+.show-pass:hover {
+    box-shadow: rgb(250, 132, 50) 0 8px 15px;
+    transform: translateY(-2px);
+}
+
+.forgot {
+    width: 100%;
+    min-width: 44px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.forgot a {
+    margin-right: 40px;
+    color: #E45F03;
+    text-decoration: none;
 }
 </style>

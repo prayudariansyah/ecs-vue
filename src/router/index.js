@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SignIn from '../views/SignInView.vue'
 import SignUp from '../views/SignUpView.vue'
@@ -7,6 +7,8 @@ import DashBoard from '../views/users/DashboadView.vue'
 import ProFile from '../views/users/ProfileView.vue'
 import ClassMapel from '../views/users/Class.vue'
 import newPassword from '../views/users/NewPasswordView.vue'
+import CreateNewPass from '../views/createNewPass.vue'
+import SendEmail from '../views/sendEmailRecovery.vue'
 
 
 const routes = [
@@ -54,10 +56,20 @@ const routes = [
     name: 'new-password',
     component: newPassword,
   },
+  {
+    path: '/send-reset-password',
+    name: 'send-reset-password',
+    component: SendEmail,
+  },
+  {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: CreateNewPass,
+  },
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 

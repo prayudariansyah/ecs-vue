@@ -6,8 +6,8 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#/">Home</a></li>
-          <li><a href="#/sign-in"><button class="button" role="button">Masuk</button></a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/sign-in"><button class="button" role="button">Masuk</button></a></li>
         </ul>
       </nav>
     </header>

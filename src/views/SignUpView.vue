@@ -7,13 +7,11 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="#">Class</a></li>
           <li><a href="#">Harga</a></li>
           <li>
-            <a href="#/sign-in"
-              ><button class="button" role="button">Masuk</button></a
-            >
+            <a href="/sign-in"><button class="button" role="button">Masuk</button></a>
           </li>
         </ul>
       </nav>
@@ -31,65 +29,22 @@
           </div>
           <form @submit.prevent="submit">
             <label for="email">Nama Lengkap</label>
-            <input
-              type="text"
-              v-model="data.name"
-              placeholder="Masukan nama lengkap"
-              name="nama"
-              required
-            />
+            <input type="text" v-model="data.name" placeholder="Masukan nama lengkap" name="nama" required />
             <label for="text">Umur</label>
-            <input
-              type="text"
-              v-model="data.user_age"
-              placeholder="Masukan umur"
-              name="umur"
-              required
-            />
+            <input type="text" v-model="data.user_age" placeholder="Masukan umur" name="umur" required />
             <label for="text">Asal Kota</label>
-            <input
-              type="text"
-              v-model="data.user_city"
-              placeholder="Masukan asal kota"
-              name="kota"
-              required
-            />
+            <input type="text" v-model="data.user_city" placeholder="Masukan asal kota" name="kota" required />
             <label for="email">Email Address</label>
-            <input
-              type="text"
-              v-model="data.email"
-              placeholder="Masukan Email"
-              name="email"
-              required
-            />
+            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
             <label for="psw">Password</label>
-            <input
-              type="password"
-              v-model="data.password"
-              placeholder="Masukan Password"
-              name="password"
-              required
-            />
+            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
             <label for="psw">Re-Password</label>
-            <input
-              type="password"
-              v-model="data.password_confirmation"
-              placeholder="Masukan Re-Password"
-              name="re-password"
-              required
-            />
+            <input type="password" v-model="data.password_confirmation" placeholder="Masukan Re-Password"
+              name="re-password" required />
             <label for="text">Pembayaran Via Bank</label>
-            <select
-              v-model="data.payment_method_id"
-              name="bank"
-              id="bank"
-              v-on:change="onChange($event)"
-            >
-              <option
-                v-for="payment in listPayment"
-                :value="payment.payment_method_id"
-                :key="payment.payment_method_name"
-              >
+            <select v-model="data.payment_method_id" name="bank" id="bank" v-on:change="onChange($event)">
+              <option v-for="payment in listPayment" :value="payment.payment_method_id"
+                :key="payment.payment_method_name">
                 {{ payment.payment_method_name }}
               </option>
             </select>
@@ -99,14 +54,8 @@
             <h3 for="text">Rp. 50.000</h3>
             <label class="file">
               Bukti pembayaran
-              <input
-                type="file"
-                id="file"
-                ref="picture"
-                aria-label="File browser example"
-                v-on:change="previewFiles()"
-                multiple
-              />
+              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles"
+                multiple />
               <span class="file-custom"></span>
             </label>
             <button class="button" type="submit">
@@ -147,9 +96,9 @@
 
 <script>
 // @ is an alias to /src
-import { reactive, getCurrentInstance } from 'vue';
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import CONFIG from '@/global/config';
+import axios from 'axios';
 
 export default {
   name: 'SignUp',
@@ -163,16 +112,15 @@ export default {
         (id) => id.payment_method_id == selected
       );
     },
-    previewFiles() {
-      this.file = this.$refs.picture.files;
-      console.log(this.file);
+    previewFiles(event) {
+      this.data.payment_picture = event.target.files;
     },
   },
 
   async mounted() {
-    await fetch(CONFIG.BASE_URL + '/payment_method')
-      .then((response) => response.json())
-      .then((json) => json.data)
+    await axios.get('/api/payment_method')
+      .then((response) => response.data)
+      .then((datas) => datas.data)
       .then((data) => (this.listPayment = data))
       .catch((error) => console.log('Request failed', error));
 
@@ -188,34 +136,20 @@ export default {
       password: '',
       password_confirmation: '',
       role_id: 2,
-      payment_method_id: '',
-      payment_picture: getCurrentInstance().data.file,
       payment_price: 50000,
+      payment_picture: '',
+      payment_method_id: '',
     });
 
     const router = useRouter();
 
     const submit = async () => {
-      const response = await fetch(CONFIG.BASE_URL + '/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      });
-
-      const json = await response.json();
-      alert(json.meta.message);
-
-      // await fetch(CONFIG.BASE_URL + '/payment/add', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'Application/json' },
-      //   credentials: 'include',
-      //   body: JSON.stringify(dataPayment),
-      // });
-
-      if (response.status == 200) {
-        await router.push('/sign-in');
-      }
+      await axios.post('/api/register', data).then((response) => {
+        alert(response.data.meta.message);
+        return router.push('/sign-in');
+      }).catch(error => {
+        alert(error);
+      })
     };
 
     return {

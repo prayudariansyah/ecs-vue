@@ -26,7 +26,7 @@
           <button class="btn" @click="back()" v-if="list > 1">Back</button>
           <button class="btn" @click="updateAccessMapel()" v-if="list != list_mapels.length"
             :class="{ 'disabled': check_quiz }">Next</button>
-          <button class="btn" v-else><a href="#/dashboard">Finish</a></button>
+          <button class="btn" v-else><a href="/dashboard">Finish</a></button>
         </div>
       </div>
     </div>
@@ -64,6 +64,11 @@ export default {
         this.list = this.list_mapels.findIndex(list => list.list_mapel_id == this.list_mapel.list_mapel_id) + 1;
       } else {
         this.list_mapel = this.list_mapels[this.list - 1];
+        if (this.list_mapel.quiz) {
+          this.getScore();
+        } else {
+          this.check_quiz = false;
+        }
       }
     },
     $route(to) {
@@ -71,6 +76,8 @@ export default {
       this.list_mapel = this.list_mapels[this.list - 1];
       if (this.list_mapel.quiz) {
         this.getScore();
+      } else {
+        this.check_quiz = false;
       }
     }
   },
@@ -187,5 +194,6 @@ h4 {
 
 .disabled {
   pointer-events: none;
+  background-color: slategray;
 }
 </style>
