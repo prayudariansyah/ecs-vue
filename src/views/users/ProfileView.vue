@@ -34,7 +34,7 @@
                         </div>
                         <div class="field">
                             <button class="submit" type="submit">Simpan</button>
-                            <a class="change-pass" href="#/new-password">Ganti Password</a>
+                            <a class="change-pass" href="/new-password">Ganti Password</a>
                         </div>
                     </form>
                 </div>

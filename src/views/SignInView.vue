@@ -7,10 +7,10 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="#">Class</a></li>
           <li><a href="#">Harga</a></li>
-          <li><a href="#/sign-up"><button class="button" role="button">Daftar</button></a></li>
+          <li><a href="/sign-up"><button class="button" role="button">Daftar</button></a></li>
         </ul>
       </nav>
     </header>
@@ -101,8 +101,11 @@ export default {
       const json = await response.json();
       const messages = json.meta.message;
       if (response.status == 200) {
-        alert(messages);
-        return await route.push('/email-verify');
+        if(json.data.role_id == 2){
+          alert(messages);
+          return await route.push('/email-verify');
+        }
+        return alert('gagal login');
       }
       return alert(messages);
     }
