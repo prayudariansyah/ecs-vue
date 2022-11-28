@@ -7,6 +7,8 @@ import DashBoard from '../views/users/DashboadView.vue'
 import ProFile from '../views/users/ProfileView.vue'
 import ClassMapel from '../views/users/Class.vue'
 import newPassword from '../views/users/NewPasswordView.vue'
+import CreateNewPass from '../views/createNewPass.vue'
+import SendEmail from '../views/sendEmailRecovery.vue'
 
 
 const routes = [
@@ -53,6 +55,16 @@ const routes = [
     path: '/new-password',
     name: 'new-password',
     component: newPassword,
+  },
+  {
+    path: '/send-reset-password',
+    name: 'send-reset-password',
+    component: SendEmail,
+  },
+  {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: CreateNewPass,
   },
 ]
 
