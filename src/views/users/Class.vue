@@ -9,8 +9,9 @@
           </div>
           <div class="video">
             <!-- <iframe width="100" height="500" :src="list.list_mapel_link" title="YouTube video player" frameborder="0" -->
-              <!-- 2KBFD0aoZy8 ganti dengan variable -->
-              <iframe width="1200" height="500" src="https://www.youtube.com/embed/2KBFD0aoZy8" title="YouTube video player" frameborder="0"
+            <!-- 2KBFD0aoZy8 ganti dengan variable -->
+            <iframe width="800" height="400" :src="'https://www.youtube.com/embed/' + list_mapel.list_mapel_link"
+              title="YouTube video player" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen></iframe>
           </div>
@@ -23,8 +24,9 @@
         </div>
         <div class="btn-container">
           <button class="btn" @click="back()" v-if="list > 1">Back</button>
-          <button class="btn" @click="updateAccessMapel()" v-if="list != list_mapels.length">Next</button>
-          <button class="btn" v-else><a href="#/dashboard">Finish</a></button>
+          <button class="btn" @click="updateAccessMapel()" v-if="list != list_mapels.length"
+            :class="{ 'disabled': check_quiz }">Next</button>
+          <button class="btn" v-else><a href="/dashboard">Finish</a></button>
         </div>
       </div>
     </div>
@@ -51,6 +53,8 @@ export default {
       list_mapels: [],
       list_mapel: [],
       access: [],
+      score: [],
+      check_quiz: false,
     }
   },
   watch: {
@@ -60,11 +64,21 @@ export default {
         this.list = this.list_mapels.findIndex(list => list.list_mapel_id == this.list_mapel.list_mapel_id) + 1;
       } else {
         this.list_mapel = this.list_mapels[this.list - 1];
+        if (this.list_mapel.quiz) {
+          this.getScore();
+        } else {
+          this.check_quiz = false;
+        }
       }
     },
     $route(to) {
       this.list = to.params.list;
       this.list_mapel = this.list_mapels[this.list - 1];
+      if (this.list_mapel.quiz) {
+        this.getScore();
+      } else {
+        this.check_quiz = false;
+      }
     }
   },
   methods: {
@@ -72,11 +86,27 @@ export default {
       this.list_mapels = data[0];
       this.access = data[1];
     },
+
     async back() {
       const route = this.$route.params;
       this.list--;
       return await router.push(`/${route.id}/mapel/${route.mapel_id}/${route.mapel_slug}/${this.list}`)
     },
+
+    async getScore() {
+      const response = await fetch(CONFIG.BASE_URL + '/score', {
+        headers: { 'Content-Type': 'Application/json' },
+        credentials: 'include',
+      });
+      const json = await response.json();
+      this.score = json.data.filter(score => score.id == this.id && score.sub_mapel_id == this.list_mapel.quiz[0].sub_mapel_id);
+      if (this.score.length != 0) {
+        this.check_quiz = false;
+      } else {
+        this.check_quiz = true;
+      }
+    },
+
     async updateAccessMapel() {
       const addLast = this.access[0].last_access + 1;
       const dataUpdate = {
@@ -160,5 +190,10 @@ h4 {
 .btn a {
   color: white;
   text-decoration-line: none;
+}
+
+.disabled {
+  pointer-events: none;
+  background-color: slategray;
 }
 </style>

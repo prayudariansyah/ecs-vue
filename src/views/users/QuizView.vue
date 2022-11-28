@@ -9,18 +9,9 @@
                     <h6>{{ quiz.question }}</h6>
                     <div class="answer-column" v-for="choice in quiz.choice" :key="choice.choice_id">
                         <div class="answer-row">
-                            <input :name="quiz.question_id" type="radio" :value="choice.choice_score"
+                            <input :name="'quiz' + quiz.question_id" type="radio" :value="choice.choice_score"
                                 v-model="choice_score[i]">
                             <label>{{ choice.choice_name }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="question-column">
-                    <h6>4. Tell about your self</h6>
-                    <div class="answer-column-four">
-                        <div class="answer-row">
-                            <textarea name="four" id="four" cols="30" rows="10"
-                                placeholder="Write in here!!"></textarea>
                         </div>
                     </div>
                 </div>
@@ -36,7 +27,7 @@ import CONFIG from '@/global/config';
 export default {
     name: 'QuizChapter',
     props: {
-        list_mapel: Array,
+        list_mapel: Object,
     },
     data() {
         return {
@@ -49,7 +40,7 @@ export default {
     watch: {
         list_mapel() {
             this.sub_mapel_id = this.list_mapel.quiz[0].sub_mapel_id;
-        }
+        },
     },
     methods: {
         async submit() {
@@ -62,9 +53,10 @@ export default {
                 scoreOfChoice += scoree;
             });
             const score = 100 * scoreOfChoice / this.list_mapel.quiz.length;
+            // add score
             const data = {
                 id: this.id,
-                sub_mapel: this.sub_mapel_id,
+                sub_mapel_id: this.sub_mapel_id,
                 score
             }
             const response = await fetch(CONFIG.BASE_URL + '/score/add', {
@@ -73,8 +65,11 @@ export default {
                 credentials: 'include',
                 body: JSON.stringify(data),
             });
-            const json = await response.json();
-            return alert(json.meta.messages);
+            if (response.status == 200) {
+                const json = await response.json();
+                return alert(json.data.score);
+            }
+            return alert('gagal, mungkin anda sudah mengerjakannya ');
         }
     }
 };
@@ -87,14 +82,13 @@ export default {
 }
 
 h4 {
-    font-size: 36px;
+    font-size: 29px;
     font-weight: 500;
     color: #404040;
 }
 
 .quiz {
     font-family: 'Poppins';
-    width: 1440px;
     height: max-content;
     overflow: auto;
 }
@@ -103,64 +97,6 @@ h4 {
     display: flex;
     width: 100%;
     height: 100%;
-}
-
-.sidebar {
-    padding-top: 63px;
-    background-color: #FA8432;
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-}
-
-ul {
-    margin-bottom: 26px;
-    list-style-type: none;
-    overflow: auto;
-}
-
-li {
-    margin-bottom: 20px;
-}
-
-li a {
-    display: block;
-    padding-left: 24px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: 500;
-}
-
-li a.active {
-    padding-top: 17px;
-    padding-bottom: 16px;
-    background-color: #E45F03;
-    color: white;
-}
-
-li a:hover:not(.active) {
-    color: #E45F03;
-}
-
-.kembali {
-    padding-left: 24px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 50px;
-}
-
-.kembali img {
-    width: 24px;
-    height: 24px;
-}
-
-.kembali a {
-    font-size: 20px;
-    font-weight: 400;
-    margin-left: 10px;
-    color: white;
-    text-decoration: none;
 }
 
 .content {
@@ -263,6 +199,6 @@ li a:hover:not(.active) {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 30px;
-    margin-left: 1000px;
+    cursor: pointer;
 }
 </style>

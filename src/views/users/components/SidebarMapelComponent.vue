@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div class="kembali">
-      <a href="#/dashboard">
+      <a href="/dashboard">
         <img src="/images/akar-icons_arrow-left.png" alt="" />
         Kembali
       </a>
@@ -17,12 +17,12 @@
         <transition name="fade">
           <div v-if="!sub_mapel.show">
             <li v-for="(list_mapel, i) in list_mapels" :key="list_mapel.list_mapel_id">
-              <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + (i + 1)"
-                :class="{ 'disabled': list_mapel.access == 0 }"
+              <a :href="'/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + (i + 1)"
+                :class="{ 'disabled': list_mapel.access == 0, 'active-list': list == (i + 1) }"
                 v-if="list_mapel.sub_mapel_id == sub_mapel.sub_mapel_id">{{ list_mapel.list_mapel_name }}</a>
               <div v-if="list_mapel.quiz">
-                <a :href="'#/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + (i + 1)"
-                  :class="{ 'disabled': list_mapel.access == 0 }"
+                <a :href="'/' + id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + (i + 1)"
+                  :class="{ 'disabled': list_mapel.access == 0, 'active-list': list == (i + 1) }"
                   v-if="list_mapel.quiz[0].sub_mapel_id == sub_mapel.sub_mapel_id">
                   Quiz {{ sub_mapel.sub_mapel_name }}
                 </a>
@@ -44,6 +44,7 @@ export default {
     return {
       id: this.$route.params.id,
       mapel_id: this.$route.params.mapel_id,
+      list: this.$route.params.list,
       mapel: [],
       list_mapels: [],
       quiz: [],
@@ -52,7 +53,8 @@ export default {
   },
   watch: {
     $route() {
-      this.getAccessMapel();
+      this.list = this.$route.params.list,
+        this.getAccessMapel();
     },
   },
   async mounted() {
@@ -203,8 +205,16 @@ li a.active {
   color: white;
 }
 
+li a.active-list {
+  padding-top: 17px;
+  padding-bottom: 16px;
+  background-color: gainsboro;
+  color: #e45f03;
+  cursor: unset;
+}
 
 li a:hover:not(.active) {
+  background-color: #ffb17b;
   color: #e45f03;
 }
 

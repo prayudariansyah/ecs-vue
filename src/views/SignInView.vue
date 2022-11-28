@@ -7,10 +7,10 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="#">Class</a></li>
           <li><a href="#">Harga</a></li>
-          <li><a href="#/sign-up"><button class="button" role="button">Daftar</button></a></li>
+          <li><a href="/sign-up"><button class="button" role="button">Daftar</button></a></li>
         </ul>
       </nav>
     </header>
@@ -74,7 +74,8 @@
 
 <script>
 // @ is an alias to /src
-import CONFIG from '@/global/config';
+// import CONFIG from '@/global/config';
+import axios from 'axios';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -92,19 +93,20 @@ export default {
     });
     const route = useRouter();
     const submit = async () => {
-      const response = await fetch(CONFIG.BASE_URL + '/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      });
-      const json = await response.json();
-      const messages = json.meta.message;
-      if (response.status == 200) {
-        alert(messages);
-        return await route.push('/email-verify');
-      }
-      return alert(messages);
+      await axios.post('/api/login', data).then((response) => {
+        const datas = response.data;
+        const messages = datas.meta.message;
+        if (response.status == 200) {
+          if (datas.data.role_id == 2) {
+            alert(messages);
+            return route.push('/email-verify');
+          }
+          return alert('gagal login');
+        }
+        return alert(messages);
+      }).catch(error => {
+        console.log(error);
+      })
     }
     return { data, submit };
   }

@@ -5,8 +5,8 @@
       <p class="name">{{ user.name }}</p>
       <p>Kelas 1 Sekolah Dasar</p>
     </div>
-    <a href="#/dashboard" class="active">Kelas Saya</a>
-    <a href="#/profile">Profile Saya</a>
+    <a href="/dashboard" :name="dashboard = '/dashboard'" :class="{'active': dashboard == $route.path}">Kelas Saya</a>
+    <a href="/profile" :name="profile = '/profile'" :class="{'active': profile == $route.path}">Profile Saya</a>
     <a @click="logout">Log Out</a>
   </aside>
 </template>

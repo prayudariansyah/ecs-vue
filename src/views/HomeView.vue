@@ -6,10 +6,10 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#/">Home</a></li>
-          <li><a href="#">Class</a></li>
-          <li><a href="#">Harga</a></li>
-          <li><a href="#/sign-in"><button class="button" role="button">Masuk</button></a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="#class">Class</a></li>
+          <li><a href="#harga">Harga</a></li>
+          <li><a href="/sign-in"><button class="button" role="button">Masuk</button></a></li>
         </ul>
       </nav>
     </header>
@@ -24,7 +24,7 @@
             <small>Untuk Bisa Belajar</small>
           </div>
           <p>Buktikan bahwa semua bisa dilakukan jika kita mempunyai niat yang kuat</p>
-          <button class="button"><a href="#/sign-up">Daftar Sekarang</a></button>
+          <button class="button"><a href="/sign-up">Daftar Sekarang</a></button>
         </div>
         <div class="jumbo2">
           <img class="floating" src="/images/Ilustrasi.png" alt="Image Jumbotron" />
@@ -33,7 +33,7 @@
       <!-- end jumbotron -->
 
       <!-- start article -->
-      <article>
+      <article id="class">
         <!-- start class catalogue -->
         <div class="title" id="list-class">
           <h3>New Classes</h3>
@@ -90,7 +90,7 @@
               <li>Diajari oleh para ahli di bidangnya</li>
               <li>Sesi Zoom One Class 1 kali seminggu</li>
             </ul>
-            <a href="#/sign-up"><button class="button">Daftar Sekarang</button></a>
+            <a href="/sign-up"><button class="button">Daftar Sekarang</button></a>
           </div>
         </section>
         <!-- end harga -->
