@@ -54,7 +54,7 @@
             <h3 for="text">Rp. 50.000</h3>
             <label class="file">
               Bukti pembayaran
-              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles()"
+              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles"
                 multiple />
               <span class="file-custom"></span>
             </label>
@@ -96,9 +96,9 @@
 
 <script>
 // @ is an alias to /src
-import { reactive, getCurrentInstance } from 'vue';
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import CONFIG from '@/global/config';
+import axios from 'axios';
 
 export default {
   name: 'SignUp',
@@ -112,15 +112,15 @@ export default {
         (id) => id.payment_method_id == selected
       );
     },
-    previewFiles() {
-      this.file = this.$refs.picture.files;
+    previewFiles(event) {
+      this.data.payment_picture = event.target.files;
     },
   },
 
   async mounted() {
-    await fetch(CONFIG.BASE_URL + '/payment_method')
-      .then((response) => response.json())
-      .then((json) => json.data)
+    await axios.get('/api/payment_method')
+      .then((response) => response.data)
+      .then((datas) => datas.data)
       .then((data) => (this.listPayment = data))
       .catch((error) => console.log('Request failed', error));
 
@@ -136,27 +136,20 @@ export default {
       password: '',
       password_confirmation: '',
       role_id: 2,
-      payment_method_id: '',
-      payment_picture: getCurrentInstance().data.file,
       payment_price: 50000,
+      payment_picture: '',
+      payment_method_id: '',
     });
 
     const router = useRouter();
 
     const submit = async () => {
-      const response = await fetch(CONFIG.BASE_URL + '/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      });
-
-      const json = await response.json();
-      alert(json.meta.message);
-
-      if (response.status == 200) {
-        await router.push('/sign-in');
-      }
+      await axios.post('/api/register', data).then((response) => {
+        alert(response.data.meta.message);
+        return router.push('/sign-in');
+      }).catch(error => {
+        alert(error);
+      })
     };
 
     return {

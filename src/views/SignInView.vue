@@ -74,7 +74,8 @@
 
 <script>
 // @ is an alias to /src
-import CONFIG from '@/global/config';
+// import CONFIG from '@/global/config';
+import axios from 'axios';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -92,22 +93,20 @@ export default {
     });
     const route = useRouter();
     const submit = async () => {
-      const response = await fetch(CONFIG.BASE_URL + '/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      });
-      const json = await response.json();
-      const messages = json.meta.message;
-      if (response.status == 200) {
-        if(json.data.role_id == 2){
-          alert(messages);
-          return await route.push('/email-verify');
+      await axios.post('/api/login', data).then((response) => {
+        const datas = response.data;
+        const messages = datas.meta.message;
+        if (response.status == 200) {
+          if (datas.data.role_id == 2) {
+            alert(messages);
+            return route.push('/email-verify');
+          }
+          return alert('gagal login');
         }
-        return alert('gagal login');
-      }
-      return alert(messages);
+        return alert(messages);
+      }).catch(error => {
+        console.log(error);
+      })
     }
     return { data, submit };
   }
