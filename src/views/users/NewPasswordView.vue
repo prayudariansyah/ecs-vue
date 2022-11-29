@@ -13,7 +13,7 @@
                             <label for="fullName">Old Password</label>
                             <div class="input-group">
                                 <input :type="[password.oldPassword ? 'text' : 'password']" id="oldPass" name="oldPass"
-                                    :model="data.old_password">
+                                    v-model="data.old_password">
                                 <span class="show-pass" @click="password.oldPassword = !password.oldPassword">{{
                                         password.oldPassword ? 'hide' : 'show'
                                 }}</span>

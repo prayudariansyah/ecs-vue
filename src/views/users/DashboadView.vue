@@ -1,11 +1,12 @@
 <template>
-    <div v-if="!verify">
+    <!-- {{ verify }}{{ loading }} -->
+    <div v-if="!verify && !loading">
         <div class="card">
             <h3>Anda belum login. silahkan login kembali</h3>
             <p><a href="/">back to home</a></p>
         </div>
     </div>
-    <div class="dashboard" v-else>
+    <div class="dashboard" v-else-if="verify && !loading">
         <div class="container">
             <SidebarComponent />
             <div class="content">
@@ -27,6 +28,9 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <h3>Mohon Tunggu</h3>
+    </div>
 </template>
 
 <script>
@@ -44,6 +48,7 @@ export default {
             image: CONFIG.BASE_IMAGE,
             messages: '',
             verify: false,
+            loading: true,
             user: [],
             mapels: [],
         }
@@ -54,16 +59,24 @@ export default {
     },
     methods: {
         async getUser() {
-            const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-                headers: { 'Content-Type': 'Application/json' },
-                credentials: 'include',
-            });
-            const json = await response.json();
-            this.messages = json.meta.message;
-            this.user = json.data;
-            if (response.status == 200) {
-                this.verify = true;
+            this.loading = true;
+                try {
+                    const response = await fetch(CONFIG.BASE_URL + '/user/show', {
+                    headers: { 'Content-Type': 'Application/json' },
+                    credentials: 'include',
+                });
+                const json = await response.json();
+                this.messages = json.meta.message;
+                this.user = json.data;
+                if (response.status == 200) {
+                    this.verify = true;
+                }
+                this.loading = false;
+            } catch (e) {
+                this.loading = false;
             }
+            
+            
         },
         async getMapel() {
             const responseMapel = await fetch(CONFIG.BASE_URL + '/mapel', {

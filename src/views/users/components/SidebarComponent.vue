@@ -19,7 +19,7 @@ export default {
   name: 'SidebarComponent',
   data() {
     return {
-      user: [],
+      user: {user_picture: 'img/profile/default.png'},
       config: CONFIG,
     };
   },

@@ -54,8 +54,7 @@
             <h3 for="text">Rp. 50.000</h3>
             <label class="file">
               Bukti pembayaran
-              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles"
-                multiple />
+              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles" />
               <span class="file-custom"></span>
             </label>
             <button class="button" type="submit">
@@ -96,8 +95,8 @@
 
 <script>
 // @ is an alias to /src
-import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, ref } from 'vue';
+// import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
@@ -140,21 +139,54 @@ export default {
       payment_picture: '',
       payment_method_id: '',
     });
+    const picture = ref();
 
-    const router = useRouter();
+
+    // const router = useRouter();
+    // const axios = require('axios');
 
     const submit = async () => {
-      await axios.post('/api/register', data).then((response) => {
-        alert(response.data.meta.message);
-        return router.push('/sign-in');
-      }).catch(error => {
-        alert(error);
-      })
-    };
+      console.log(picture.value);
+      
+      // var FormData = require('form-data');
+      // var fs = require('fs');
+      // var data = new FormData();
+      // data.append('mapel_name', 'Arlana coba lagi');
+      // data.append('mapel_picture', fs.createReadStream('/C:/Users/ariam/Downloads/WhatsApp Image 2022-11-28 at 21.22.30.jpeg'));
+      // data.append('semester_id', '1');
+
+      // var config = {
+      //   method: 'post',
+      //   url: 'https://ecs-api.learnforfuture.id/api/mapel/add',
+      //   headers: { 
+      //     ...data.getHeaders()
+      //   },
+      //   data : data
+      // };
+
+      // axios(config)
+      // .then(function (response) {
+      //   console.log(JSON.stringify(response.data));
+      //   return router.push('/sign-in');
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // });
+    }
+
+    // const submit = async () => {
+    //   await axios.post('/api/register', data).then((response) => {
+    //     alert(response.data.meta.message);
+    //     return router.push('/sign-in');
+    //   }).catch(error => {
+    //     alert(error);
+    //   })
+    // };
 
     return {
       data,
       submit,
+      picture,
     };
   },
 };
