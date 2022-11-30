@@ -194,6 +194,16 @@ export default {
 
     const submit = async () => {
       let data = new FormData();
+      data.append('name', 'data.name');
+      data.append('email', 'emaill@gmail.comas');
+      data.append('user_city', 'data.user_city');
+      data.append('user_age', 12);
+      data.append('password', 'pass');
+      data.append('password_confirmation', 'pass');
+      data.append('role_id', 2);
+      data.append('payment_price', 50000);
+      data.append('payment_picture', pictureData.value.files.item(0));
+      data.append('payment_method_id', 1);
       // data.append('name', data.name);
       // data.append('email', data.email);
       // data.append('user_city', data.user_city);
@@ -205,16 +215,16 @@ export default {
       // data.append('payment_picture', pictureData.value.files.item(0));
       // data.append('payment_method_id', data.payment_method_id);
 
-      data.append('mapel_name', data.name);
-      data.append('mapel_picture', pictureData.value.files.item(0));
-      data.append('semester_id', '1');
+      // data.append('mapel_name', data.name);
+      // data.append('mapel_picture', pictureData.value.files.item(0));
+      // data.append('semester_id', '1');
 
       console.log(data)
 
       await axios({
         method: 'post',
-        // url: 'http://localhost:8000/api/register',
-        url: "https://ecs-api.learnforfuture.id/api/mapel/add",
+        url: 'http://localhost:8000/api/register',
+        // url: "https://ecs-api.learnforfuture.id/api/mapel/add",
         headers: {},
         data: data,
       });
