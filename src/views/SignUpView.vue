@@ -145,9 +145,8 @@
 <script>
 // @ is an alias to /src
 import { reactive, ref } from 'vue';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
-// const router = useRouter();
 
 export default {
   name: 'SignUp',
@@ -191,43 +190,45 @@ export default {
       payment_method_id: '',
     });
     const pictureData = ref({});
+    const router = useRouter();
 
     const submit = async () => {
-      let data = new FormData();
-      data.append('name', 'data.name');
-      data.append('email', 'emaill@gmail.comas');
-      data.append('user_city', 'data.user_city');
-      data.append('user_age', 12);
-      data.append('password', 'pass');
-      data.append('password_confirmation', 'pass');
-      data.append('role_id', 2);
-      data.append('payment_price', 50000);
-      data.append('payment_picture', pictureData.value.files.item(0));
-      data.append('payment_method_id', 1);
-      // data.append('name', data.name);
-      // data.append('email', data.email);
-      // data.append('user_city', data.user_city);
-      // data.append('user_age', data.user_age);
-      // data.append('password', data.password);
-      // data.append('password_confirmation', data.password_confirmation);
-      // data.append('role_id', data.role_id);
-      // data.append('payment_price', data.payment_price);
+      let form_data = new FormData();
+      // data.append('name', 'data.name');
+      // data.append('email', 'emaill@gmail.comas');
+      // data.append('user_city', 'data.user_city');
+      // data.append('user_age', 12);
+      // data.append('password', 'pass');
+      // data.append('password_confirmation', 'pass');
+      // data.append('role_id', 2);
+      // data.append('payment_price', 50000);
       // data.append('payment_picture', pictureData.value.files.item(0));
-      // data.append('payment_method_id', data.payment_method_id);
+      // data.append('payment_method_id', 1);
+      form_data.append('name', data.name);
+      form_data.append('email', data.email);
+      form_data.append('user_city', data.user_city);
+      form_data.append('user_age', data.user_age);
+      form_data.append('password', data.password);
+      form_data.append('password_confirmation', data.password_confirmation);
+      form_data.append('role_id', data.role_id);
+      form_data.append('payment_price', data.payment_price);
+      form_data.append('payment_picture', pictureData.value.files.item(0));
+      form_data.append('payment_method_id', data.payment_method_id);
 
       // data.append('mapel_name', data.name);
       // data.append('mapel_picture', pictureData.value.files.item(0));
       // data.append('semester_id', '1');
-
-      console.log(data)
 
       await axios({
         method: 'post',
         url: 'http://localhost:8000/api/register',
         // url: "https://ecs-api.learnforfuture.id/api/mapel/add",
         headers: {},
-        data: data,
-      });
+        data: form_data,
+      }).then(function (response) {
+        alert(response.data.meta.message);
+        return router.push('/sign-in');
+      })
       // await axios.post('/api/register', data);
       // var FormData = require('form-data');
       // var fs = require('fs');
