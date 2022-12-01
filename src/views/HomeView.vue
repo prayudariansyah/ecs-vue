@@ -12,6 +12,11 @@
           <li><a href="/sign-in"><button class="button" role="button">Masuk</button></a></li>
         </ul>
       </nav>
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </header>
     <!-- start main -->
     <main>
@@ -121,6 +126,15 @@
       <p>2020 Copyright ECS by MANUSIA. All Rights Reserved.</p>
     </footer>
   </div>
+  <component :is="'script'">
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navbar = document.querySelector("header nav ul");
+
+    menuToggle.addEventListener("click", () => {
+    navbar.classList.toggle("close");
+    });
+  </component>
+
 </template>
 
 <script>
@@ -131,9 +145,10 @@ export default {
   name: 'HomeView',
   components: {
     // HelloWorld
-  }
+  },
 }
 </script>
+
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
@@ -422,4 +437,176 @@ footer p {
     transform: translate(0, -0px);
   }
 }
+
+@media screen and (max-width: 800px) {
+  .jumbotron {
+    flex-direction: column-reverse;
+  }
+
+  .jumbo1 {
+    align-items: center;
+  }
+
+  main .jumbo1 .textjumbo {
+    font-size: 50px;
+  }
+
+  main .jumbo1 .textjumbo small {
+    color: rgb(73, 73, 73);
+  }
+
+  main .jumbo1 p {
+    color: rgb(73, 73, 73);
+    text-align: center;
+    font-size: 20px;
+  }
+
+  main .jumbo2 img {
+    width: 350px;
+  }
+
+  .catalogue {
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(1, minmax(auto, 1fr));
+    grid-template-rows: repeat(2);
+  }
+
+  main article .about {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  main .jumbo2 img {
+    width: 300px;
+  }
+
+  main .jumbo1 .textjumbo {
+    font-size: 40px;
+  }
+
+  main article .about {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  main .jumbo1 .textjumbo {
+    font-size: 50px;
+  }
+
+  main .jumbo1 p {
+    text-align: center;
+    font-size: 20px;
+  }
+
+  main .jumbo2 img {
+    width: 370px;
+  }
+
+  .catalogue {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(auto, 1fr));
+    grid-template-rows: repeat(2);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .jumbotron {
+    flex-direction: row;
+  }
+
+  .jumbo1 {
+    align-items: flex-start;
+  }
+
+  main .jumbo1 .textjumbo small {
+    color: white;
+  }
+
+  main .jumbo1 p {
+    color: white;
+    text-align: left;
+  }
+
+  main .jumbo2 img {
+    width: 550px;
+  }
+
+  main article .about {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  main .jumbo2 img {
+    width: 700px;
+  }
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  height: 20px;
+  justify-content: space-between;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background-color: white;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 730px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  header nav ul {
+    z-index: 1;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    right: 0;
+    background-color: #fa8432;
+    margin: 50px 0px;
+    transition: all 300ms ease-in-out;
+  }
+
+  .close {
+    transform: translateY(-1000px);
+  }
+
+  header nav ul li {
+    margin: 20px 30px;
+  }
+}
+
+@media screen and (min-width: 573px) {
+  footer .textfooter {
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 800px) {
+}
+
+@media screen and (min-width: 850px) {
+  footer .textfooter {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+}
+
+@media screen and (min-width: 1600px) {
+}
+
 </style>
