@@ -19,7 +19,7 @@
             <p>{{ list_mapel.list_mapel_desc }}</p>
           </div>
         </div>
-        <div v-else>
+        <div v-else-if="list_mapel.quiz">
           <QuizChapter :list_mapel="list_mapel" />
         </div>
         <div class="btn-container">
