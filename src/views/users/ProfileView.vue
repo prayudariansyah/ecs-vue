@@ -1,4 +1,5 @@
 <template>
+    <AuthUser @sendData="user = $event[0]"/>
     <div class="profile">
         <div class="container">
             <SidebarComponent />
@@ -47,6 +48,7 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import SidebarComponent from '../users/components/SidebarComponent.vue';
+import AuthUser from './components/AuthUser.vue';
 import CONFIG from '@/global/config';
 import { reactive } from 'vue';
 import axios from 'axios';
@@ -54,7 +56,8 @@ import axios from 'axios';
 export default {
     name: 'ProFile',
     components: {
-        SidebarComponent
+        SidebarComponent,
+        AuthUser
     },
     data() {
         return {

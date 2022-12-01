@@ -1,4 +1,5 @@
 <template>
+    <AuthUser @sendData="user = $event[0]" />
   <aside class="sidebar">
     <div class="card-profile">
       <img :src="config.BASE_IMAGE + '/' + user.user_picture" alt="" />
@@ -15,31 +16,18 @@
 import CONFIG from '@/global/config';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import AuthUser from './AuthUser.vue';
 
 export default {
   name: 'SidebarComponent',
+  components:{
+    AuthUser,
+  },
   data() {
     return {
       user: [],
       config: CONFIG,
     };
-  },
-  async mounted() {
-    await axios.get('/api/user/show')
-      .then(response => {
-        const datas = response.data;
-        this.messages = datas.meta.message;
-        this.user = datas.data;
-        if (response.status == 200) {
-          this.verify = true;
-        }
-        this.loading = false;
-        this.$emit('sendData', this.user);
-      })
-      .catch(error => {
-        this.loading = false;
-        console.log(error);
-      });
   },
   setup() {
     const route = useRouter();

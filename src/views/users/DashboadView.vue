@@ -1,14 +1,19 @@
 <template>
-    <!-- {{ verify }}{{ loading }} -->
-    <div v-if="!verify">
+    <AuthUser @sendData="getData($event)" />
+    <!-- { { loading } } -->
+    <div v-if="loading">
+        <h3>Mohon Tunggu</h3>
+    </div>
+    <!-- {{ verify }} -->
+    <div v-else-if="(!verify)">
         <div class="card">
             <h3>Anda belum login. silahkan login kembali</h3>
             <p><a href="/">back to home</a></p>
         </div>
     </div>
-    <div class="dashboard" v-else-if="verify">
+    <div class="dashboard" v-else>
         <div class="container">
-            <SidebarComponent @sendData="getData($event)" />
+            <SidebarComponent />
             <div class="content">
                 <div class="title">
                     <h4>My Class</h4>
@@ -28,9 +33,6 @@
             </div>
         </div>
     </div>
-    <div v-else>
-        <h3>Mohon Tunggu</h3>
-    </div>
 </template>
 
 <script>
@@ -38,32 +40,39 @@
 import CONFIG from '@/global/config';
 import SidebarComponent from '../users/components/SidebarComponent.vue';
 import axios from 'axios';
+import AuthUser from './components/AuthUser.vue';
 
 export default {
     name: 'DashBoard',
     components: {
-        SidebarComponent
+        SidebarComponent,
+        AuthUser,
     },
     data() {
         return {
             image: CONFIG.BASE_IMAGE,
             messages: '',
-            verify: true,
+            verify: false,
+            loading: true,
             user: [],
             mapels: [],
         }
     },
     async mounted() {
         await this.getMapel();
+        setTimeout(() => {
+            this.loading = false
+        }, 1000);
     },
     methods: {
         getData(data) {
-            this.verify = false;
-            this.user = data;
+            this.user = data[0];
+            this.messages = data[1];
             if (this.user) {
                 this.verify = true;
             }
         },
+
         async getMapel() {
             await axios.get('/api/mapel')
                 .then(response => response.data)
