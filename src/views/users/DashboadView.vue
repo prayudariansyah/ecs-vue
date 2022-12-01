@@ -62,7 +62,7 @@ export default {
         await this.getMapel();
         setTimeout(() => {
             this.loading = false
-        }, 1000);
+        }, 500);
     },
     methods: {
         getData(data) {
