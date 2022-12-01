@@ -65,14 +65,6 @@ export default {
             }
         },
         async getMapel() {
-            // const responseMapel = await fetch(CONFIG.BASE_URL + '/mapel', {
-            //     headers: { 'Content-Type': 'Application/json' },
-            //     credentials: 'include',
-            // });
-            // const jsonMapel = await responseMapel.json();
-            // this.messages = jsonMapel.meta.message;
-            // this.mapels = jsonMapel.data;
-
             await axios.get('/api/mapel')
                 .then(response => response.data)
                 .then(data => {

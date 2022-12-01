@@ -25,21 +25,6 @@ export default {
     };
   },
   async mounted() {
-    // try {
-    //     const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-    //         headers: { 'Content-Type': 'Application/json' },
-    //         credentials: 'include',
-    //     });
-    //     const json = await response.json();
-    //     this.messages = json.meta.message;
-    //     this.user = json.data;
-    //     if (response.status == 200) {
-    //         this.verify = true;
-    //     }
-    //     this.loading = false;
-    // } catch (e) {
-    //     this.loading = false;
-    // }
     await axios.get('/api/user/show')
       .then(response => {
         const datas = response.data;
@@ -59,12 +44,6 @@ export default {
   setup() {
     const route = useRouter();
     const logout = async () => {
-      // await fetch(CONFIG.BASE_URL + '/logout', {
-      //   headers: { 'content-Type': 'Application/json' },
-      //   credentials: 'include',
-      // });
-      // alert('logout berhasil');
-      // return await route.push('/');
       await axios.get('/api/logout')
         .then(response => response.data)
         .then(datas => {

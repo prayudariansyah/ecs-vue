@@ -63,12 +63,6 @@ export default {
         }
     },
     async mounted() {
-        // const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-        //     headers: { 'content-Type': 'Application/json' },
-        //     credentials: 'include',
-        // });
-        // const json = await response.json();
-        // this.user = await json.data;
         await axios.get('/api/user/show')
             .then(response => response.data)
             .then(datas => this.user = datas.data)
@@ -85,15 +79,6 @@ export default {
         });
 
         const submit = async () => {
-            // const response = await fetch(CONFIG.BASE_URL + '/update', {
-            //     method: 'POST',
-            //     headers: { 'content-Type': 'Application/json' },
-            //     credentials: 'include',
-            //     body: JSON.stringify(data),
-            // });
-
-            // const json = await response.json();
-            // alert(json.meta.message);
             await axios.post('/api/user/update', data)
                 .then(response => response.data)
                 .then(data => { alert(data.meta.message) })

@@ -64,17 +64,6 @@ export default {
                 .then(response => response.json())
                 .then(data => { return alert(data.score) })
                 .catch(() => { return alert('gagal, mungkin anda sudah mengerjakannya ') });
-            // const response = await fetch(CONFIG.BASE_URL + '/score/add', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'Application/json' },
-            //     credentials: 'include',
-            //     body: JSON.stringify(data),
-            // });
-            // if (response.status == 200) {
-            //     const json = await response.json();
-            //     return alert(json.data.score);
-            // }
-            // return alert('gagal, mungkin anda sudah mengerjakannya ');
         }
     }
 };
