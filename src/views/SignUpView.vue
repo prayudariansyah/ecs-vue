@@ -150,16 +150,6 @@ export default {
 
     const submit = async () => {
       let form_data = new FormData();
-      // data.append('name', 'data.name');
-      // data.append('email', 'emaill@gmail.comas');
-      // data.append('user_city', 'data.user_city');
-      // data.append('user_age', 12);
-      // data.append('password', 'pass');
-      // data.append('password_confirmation', 'pass');
-      // data.append('role_id', 2);
-      // data.append('payment_price', 50000);
-      // data.append('payment_picture', pictureData.value.files.item(0));
-      // data.append('payment_method_id', 1);
       form_data.append('name', data.name);
       form_data.append('email', data.email);
       form_data.append('user_city', data.user_city);
@@ -171,49 +161,11 @@ export default {
       form_data.append('payment_picture', pictureData.value.files.item(0));
       form_data.append('payment_method_id', data.payment_method_id);
 
-      // data.append('mapel_name', data.name);
-      // data.append('mapel_picture', pictureData.value.files.item(0));
-      // data.append('semester_id', '1');
-
       await axios.post('/api/register', form_data).then(function (response) {
         alert(response.data.meta.message);
         return router.push('/sign-in');
-      })
-      // await axios.post('/api/register', data);
-      // var FormData = require('form-data');
-      // var fs = require('fs');
-      // var data = new FormData();
-      // data.append('mapel_name', 'Arlana coba lagi');
-      // data.append('mapel_picture', fs.createReadStream('/C:/Users/ariam/Downloads/WhatsApp Image 2022-11-28 at 21.22.30.jpeg'));
-      // data.append('semester_id', '1');
-
-      // var config = {
-      //   method: 'post',
-      //   url: 'https://ecs-api.learnforfuture.id/api/mapel/add',
-      //   headers: {
-      //     ...data.getHeaders()
-      //   },
-      //   data : data
-      // };
-
-      // axios(config)
-      // .then(function (response) {
-      //   console.log(JSON.stringify(response.data));
-      //   return router.push('/sign-in');
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      // });
+      });
     };
-
-    // const submit = async () => {
-    //   await axios.post('/api/register', data).then((response) => {
-    //     alert(response.data.meta.message);
-    //     return router.push('/sign-in');
-    //   }).catch(error => {
-    //     alert(error);
-    //   })
-    // };
 
     return {
       data,
