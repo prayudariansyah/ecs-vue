@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import CONFIG from '@/global/config';
+import axios from 'axios';
 
 export default {
   name: 'SidebarMapelComponent',
@@ -66,21 +66,29 @@ export default {
   },
   methods: {
     async getMapel() {
-      const response = await fetch(CONFIG.BASE_URL + '/mapel/show/' + this.$route.params.mapel_id, { // Id masih static NeedFix
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      const json = await response.json();
-      this.mapel = json.data;
+      // const response = await fetch(CONFIG.BASE_URL + '/mapel/show/' + this.$route.params.mapel_id, { // Id masih static NeedFix
+      //   headers: { 'Content-Type': 'Application/json' },
+      //   credentials: 'include',
+      // });
+      // const json = await response.json();
+      // this.mapel = json.data;
+      await axios.get('/api/mapel/show/' + this.$route.params.mapel_id)
+        .then(response => response.data)
+        .then(datas => { this.mapel = datas.data })
+        .catch(error => { console.log(error) });
     },
 
     async getQuiz() {
-      const response = await fetch(CONFIG.BASE_URL + '/quiz', {
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      const json = await response.json();
-      this.quiz = json.data;
+      // const response = await fetch(CONFIG.BASE_URL + '/quiz', {
+      //   headers: { 'Content-Type': 'Application/json' },
+      //   credentials: 'include',
+      // });
+      // const json = await response.json();
+      // this.quiz = json.data;
+      await axios.get('/api/quiz')
+        .then(response => response.data)
+        .then(datas => { this.quiz = datas.data })
+        .catch(error => { console.log(error) });
     },
 
     getListMapel() {
@@ -96,17 +104,29 @@ export default {
     },
 
     async getAccessMapel() {
-      const response = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      const json = await response.json();
-      const access = json.data;
-      this.access = access.filter(acc => acc.mapel_id == this.mapel_id);
-      if (this.access.length == 0) {
-        return this.addAccessMapel();
-      }
-      return this.getAccess();
+      // const response = await fetch(CONFIG.BASE_URL + '/access_mapel/show_by_user/' + this.id, {
+      //   headers: { 'Content-Type': 'Application/json' },
+      //   credentials: 'include',
+      // });
+      // const json = await response.json();
+      // const access = json.data;
+      // this.access = access.filter(acc => acc.mapel_id == this.mapel_id);
+      // if (this.access.length == 0) {
+      //   return this.addAccessMapel();
+      // }
+      // return this.getAccess();
+
+      await axios.get('/api/access_mapel/show_by_user/' + this.id)
+        .then(response => response.data)
+        .then(datas => {
+          const access = datas.data;
+          this.access = access.filter(acc => acc.mapel_id == this.mapel_id);
+          return this.getAccess();
+        })
+        .catch(error => {
+          console.log(error)
+          return this.addAccessMapel();
+        });
     },
 
     async addAccessMapel() {
@@ -115,15 +135,23 @@ export default {
         mapel_id: this.mapel_id,
         last_access: 1,
       }
-      const response = await fetch(CONFIG.BASE_URL + '/access_mapel/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      });
-      const json = await response.json();
-      this.access = Array(json.data);
-      this.getAccess();
+      // const response = await fetch(CONFIG.BASE_URL + '/access_mapel/add', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'Application/json' },
+      //   credentials: 'include',
+      //   body: JSON.stringify(data),
+      // });
+      // const json = await response.json();
+      // this.access = Array(json.data);
+      // this.getAccess();
+
+      await axios.post('/api/access_mapel/add', data)
+        .then(response => response.data)
+        .then(datas => {
+          this.access = Array(datas.data);
+          this.getAccess();
+        })
+        .catch(error => { console.log(error) });
     },
 
     getAccess() {

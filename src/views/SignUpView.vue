@@ -11,9 +11,7 @@
           <li><a href="#">Class</a></li>
           <li><a href="#">Harga</a></li>
           <li>
-            <a href="/sign-in"
-              ><button class="button" role="button">Masuk</button></a
-            >
+            <a href="/sign-in"><button class="button" role="button">Masuk</button></a>
           </li>
         </ul>
       </nav>
@@ -31,65 +29,28 @@
           </div>
           <form @submit.prevent="submit">
             <label for="email">Nama Lengkap</label>
-            <input
-              type="text"
-              v-model="data.name"
-              placeholder="Masukan nama lengkap"
-              name="nama"
-            />
+            <input type="text" v-model="data.name" placeholder="Masukan nama lengkap" name="nama" />
             <!-- required -->
             <label for="text">Umur</label>
-            <input
-              type="text"
-              v-model="data.user_age"
-              placeholder="Masukan umur"
-              name="umur"
-            />
+            <input type="text" v-model="data.user_age" placeholder="Masukan umur" name="umur" />
             <!-- required -->
             <label for="text">Asal Kota</label>
-            <input
-              type="text"
-              v-model="data.user_city"
-              placeholder="Masukan asal kota"
-              name="kota"
-            />
+            <input type="text" v-model="data.user_city" placeholder="Masukan asal kota" name="kota" />
             <!-- required -->
             <label for="email">Email Address</label>
-            <input
-              type="text"
-              v-model="data.email"
-              placeholder="Masukan Email"
-              name="email"
-            />
+            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" />
             <!-- required -->
             <label for="psw">Password</label>
-            <input
-              type="password"
-              v-model="data.password"
-              placeholder="Masukan Password"
-              name="password"
-            />
+            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" />
             <!-- required -->
             <label for="psw">Re-Password</label>
-            <input
-              type="password"
-              v-model="data.password_confirmation"
-              placeholder="Masukan Re-Password"
-              name="re-password"
-            />
+            <input type="password" v-model="data.password_confirmation" placeholder="Masukan Re-Password"
+              name="re-password" />
             <!-- required -->
             <label for="text">Pembayaran Via Bank</label>
-            <select
-              v-model="data.payment_method_id"
-              name="bank"
-              id="bank"
-              v-on:change="onChange($event)"
-            >
-              <option
-                v-for="payment in listPayment"
-                :value="payment.payment_method_id"
-                :key="payment.payment_method_name"
-              >
+            <select v-model="data.payment_method_id" name="bank" id="bank" v-on:change="onChange($event)">
+              <option v-for="payment in listPayment" :value="payment.payment_method_id"
+                :key="payment.payment_method_name">
                 {{ payment.payment_method_name }}
               </option>
             </select>
@@ -99,13 +60,8 @@
             <h3 for="text">Rp. 50.000</h3>
             <label class="file">
               Bukti pembayaran
-              <input
-                type="file"
-                id="file"
-                ref="pictureData"
-                aria-label="File browser example"
-                v-on:change="previewFiles"
-              />
+              <input type="file" id="file" ref="pictureData" aria-label="File browser example"
+                v-on:change="previewFiles" />
               <span class="file-custom"></span>
             </label>
             <button class="button" type="submit">Daftar Sekarang</button>
@@ -219,13 +175,7 @@ export default {
       // data.append('mapel_picture', pictureData.value.files.item(0));
       // data.append('semester_id', '1');
 
-      await axios({
-        method: 'post',
-        url: 'http://localhost:8000/api/register',
-        // url: "https://ecs-api.learnforfuture.id/api/mapel/add",
-        headers: {},
-        data: form_data,
-      }).then(function (response) {
+      await axios.post('/api/register', form_data).then(function (response) {
         alert(response.data.meta.message);
         return router.push('/sign-in');
       })

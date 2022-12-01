@@ -96,20 +96,21 @@ export default {
     });
     const route = useRouter();
     const submit = async () => {
-      await axios.post('/api/login', data).then((response) => {
-        const datas = response.data;
-        const messages = datas.meta.message;
-        if (response.status == 200) {
-          if (datas.data.role_id == 2) {
-            alert(messages);
-            return route.push('/email-verify');
+      await axios.post('/api/login', data)
+        .then((response) => {
+          const datas = response.data;
+          const messages = datas.meta.message;
+          if (response.status == 200) {
+            if (datas.data.role_id == 2) {
+              alert(messages);
+              return route.push('/email-verify');
+            }
+            return alert('gagal login');
           }
-          return alert('gagal login');
-        }
-        return alert(messages);
-      }).catch(error => {
-        console.log(error);
-      })
+          return alert(messages);
+        }).catch(error => {
+          console.log(error);
+        })
     }
     return { data, submit };
   }

@@ -1,53 +1,76 @@
 <template>
   <aside class="sidebar">
     <div class="card-profile">
-      <img :src="config.BASE_IMAGE +  '/'  + user.user_picture" alt="" />
+      <img :src="config.BASE_IMAGE + '/' + user.user_picture" alt="" />
       <p class="name">{{ user.name }}</p>
       <p>Kelas 1 Sekolah Dasar</p>
     </div>
-    <a href="/dashboard" :name="dashboard = '/dashboard'" :class="{'active': dashboard == $route.path}">Kelas Saya</a>
-    <a href="/profile" :name="profile = '/profile'" :class="{'active': profile == $route.path}">Profile Saya</a>
+    <a href="/dashboard" :name="dashboard = '/dashboard'" :class="{ 'active': dashboard == $route.path }">Kelas Saya</a>
+    <a href="/profile" :name="profile = '/profile'" :class="{ 'active': profile == $route.path }">Profile Saya</a>
     <a @click="logout">Log Out</a>
   </aside>
 </template>
 
 <script>
 import CONFIG from '@/global/config';
+import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 export default {
   name: 'SidebarComponent',
   data() {
     return {
-      user: {user_picture: 'img/profile/default.png'},
+      user: [],
       config: CONFIG,
     };
   },
   async mounted() {
-    try {
-      const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-        headers: { 'content-Type': 'Application/json' },
-        credentials: 'include',
+    // try {
+    //     const response = await fetch(CONFIG.BASE_URL + '/user/show', {
+    //         headers: { 'Content-Type': 'Application/json' },
+    //         credentials: 'include',
+    //     });
+    //     const json = await response.json();
+    //     this.messages = json.meta.message;
+    //     this.user = json.data;
+    //     if (response.status == 200) {
+    //         this.verify = true;
+    //     }
+    //     this.loading = false;
+    // } catch (e) {
+    //     this.loading = false;
+    // }
+    await axios.get('/api/user/show')
+      .then(response => {
+        const datas = response.data;
+        this.messages = datas.meta.message;
+        this.user = datas.data;
+        if (response.status == 200) {
+          this.verify = true;
+        }
+        this.loading = false;
+        this.$emit('sendData', this.user);
+      })
+      .catch(error => {
+        this.loading = false;
+        console.log(error);
       });
-      const json = await response.json();
-      const messages = json.meta.message;
-      this.messages = messages;
-      if (response.status == 200) {
-        this.user = json.data;
-      }
-    } catch (e) {
-      console.log(e);
-    }
   },
   setup() {
     const route = useRouter();
     const logout = async () => {
-      await fetch(CONFIG.BASE_URL + '/logout', {
-        headers: { 'content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      alert('logout berhasil');
-      return await route.push('/');
+      // await fetch(CONFIG.BASE_URL + '/logout', {
+      //   headers: { 'content-Type': 'Application/json' },
+      //   credentials: 'include',
+      // });
+      // alert('logout berhasil');
+      // return await route.push('/');
+      await axios.get('/api/logout')
+        .then(response => response.data)
+        .then(datas => {
+          alert(datas.meta.message);
+          return route.push('/');
+        })
     };
     return {
       logout,

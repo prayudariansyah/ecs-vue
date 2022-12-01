@@ -54,8 +54,8 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import SidebarComponent from '../users/components/SidebarComponent.vue';
-import CONFIG from '@/global/config';
 import { reactive } from 'vue';
+import axios from 'axios';
 
 export default {
     name: 'newPassword',
@@ -80,16 +80,20 @@ export default {
         });
 
         const submit = async () => {
-            const response = await fetch(CONFIG.BASE_URL + '/update-password', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'Application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
-            const json = await response.json();
-            alert(json.meta.message);
+            // const response = await fetch(CONFIG.BASE_URL + '/update-password', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'Application/json',
+            //     },
+            //     credentials: 'include',
+            //     body: JSON.stringify(data),
+            // });
+            // const json = await response.json();
+            // alert(json.meta.message);
+            await axios.post('/api/update-password', data)
+                .then(response => response.data)
+                .then(datas => { alert(datas.meta.message) })
+                .catch(error => { console.log(error) });
         }
 
         return {
