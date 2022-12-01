@@ -43,6 +43,9 @@
                 </div>
               </div>
             </div>
+            <div class="forgot">
+              <a href="/send-reset-password">lupa password ?</a>
+            </div>
             <button class="button" type="submit">Masuk</button>
           </form>
         </div>
@@ -106,20 +109,21 @@ export default {
     });
     const route = useRouter();
     const submit = async () => {
-      await axios.post('/api/login', data).then((response) => {
-        const datas = response.data;
-        const messages = datas.meta.message;
-        if (response.status == 200) {
-          if (datas.data.role_id == 2) {
-            alert(messages);
-            return route.push('/email-verify');
+      await axios.post('/api/login', data)
+        .then((response) => {
+          const datas = response.data;
+          const messages = datas.meta.message;
+          if (response.status == 200) {
+            if (datas.data.role_id == 2) {
+              alert(messages);
+              return route.push('/email-verify');
+            }
+            return alert('gagal login');
           }
-          return alert('gagal login');
-        }
-        return alert(messages);
-      }).catch(error => {
-        console.log(error);
-      })
+          return alert(messages);
+        }).catch(error => {
+          console.log(error);
+        })
     }
     return { data, submit };
   }
@@ -263,11 +267,31 @@ footer p {
   border: none;
   font-size: 18px;
   font-weight: 600;
+  cursor: pointer;
+}
+
+.show-pass:hover {
+  box-shadow: rgb(250, 132, 50) 0 8px 15px;
+  transform: translateY(-2px);
 }
 
 .show-pass .text {
   margin-top: 8px;
   text-align: center;
+}
+
+.forgot {
+  width: 100%;
+  min-width: 44px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding-right: 20px;
+  text-align: right;
+}
+
+.forgot a {
+  color: #E45F03;
+  text-decoration: none;
 }
 
 .button {

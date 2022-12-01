@@ -1,4 +1,5 @@
 <template>
+    <AuthUser @sendData="user = $event[0]"/>
     <div class="profile">
         <div class="container">
             <SidebarComponent />
@@ -47,28 +48,29 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import SidebarComponent from '../users/components/SidebarComponent.vue';
+import AuthUser from './components/AuthUser.vue';
 import CONFIG from '@/global/config';
 import { reactive } from 'vue';
+import axios from 'axios';
 
 export default {
     name: 'ProFile',
     components: {
-        SidebarComponent
+        SidebarComponent,
+        AuthUser
     },
     data() {
         return {
             user: [],
-            config: []
+            config: CONFIG
         }
     },
     async mounted() {
-        this.config = CONFIG;
-        const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-            headers: { 'content-Type': 'Application/json' },
-            credentials: 'include',
-        });
-        const json = await response.json();
-        this.user = await json.data;
+        await axios.get('/api/user/show')
+            .then(response => response.data)
+            .then(datas => this.user = datas.data)
+            .catch(error => { console.log(error) });
+        console.log(this.user)
     },
     setup() {
         // let id;
@@ -80,15 +82,10 @@ export default {
         });
 
         const submit = async () => {
-            const response = await fetch(CONFIG.BASE_URL + '/update', {
-                method: 'POST',
-                headers: { 'content-Type': 'Application/json' },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
-
-            const json = await response.json();
-            alert(json.meta.message);
+            await axios.post('/api/user/update', data)
+                .then(response => response.data)
+                .then(data => { alert(data.meta.message) })
+                .catch(error => console.log(error));
         };
 
         return {

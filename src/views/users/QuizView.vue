@@ -22,7 +22,8 @@
 </template>
 
 <script>
-import CONFIG from '@/global/config';
+// import CONFIG from '@/global/config';
+import axios from 'axios';
 
 export default {
     name: 'QuizChapter',
@@ -59,17 +60,10 @@ export default {
                 sub_mapel_id: this.sub_mapel_id,
                 score
             }
-            const response = await fetch(CONFIG.BASE_URL + '/score/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'Application/json' },
-                credentials: 'include',
-                body: JSON.stringify(data),
-            });
-            if (response.status == 200) {
-                const json = await response.json();
-                return alert(json.data.score);
-            }
-            return alert('gagal, mungkin anda sudah mengerjakannya ');
+            await axios.post('/api/score/add', data)
+                .then(response => response.json())
+                .then(data => { return alert(data.score) })
+                .catch(() => { return alert('gagal, mungkin anda sudah mengerjakannya ') });
         }
     }
 };

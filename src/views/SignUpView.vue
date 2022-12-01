@@ -29,18 +29,24 @@
           </div>
           <form @submit.prevent="submit">
             <label for="email">Nama Lengkap</label>
-            <input type="text" v-model="data.name" placeholder="Masukan nama lengkap" name="nama" required />
+            <input type="text" v-model="data.name" placeholder="Masukan nama lengkap" name="nama" />
+            <!-- required -->
             <label for="text">Umur</label>
-            <input type="text" v-model="data.user_age" placeholder="Masukan umur" name="umur" required />
+            <input type="text" v-model="data.user_age" placeholder="Masukan umur" name="umur" />
+            <!-- required -->
             <label for="text">Asal Kota</label>
-            <input type="text" v-model="data.user_city" placeholder="Masukan asal kota" name="kota" required />
+            <input type="text" v-model="data.user_city" placeholder="Masukan asal kota" name="kota" />
+            <!-- required -->
             <label for="email">Email Address</label>
-            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" required />
+            <input type="text" v-model="data.email" placeholder="Masukan Email" name="email" />
+            <!-- required -->
             <label for="psw">Password</label>
-            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" required />
+            <input type="password" v-model="data.password" placeholder="Masukan Password" name="password" />
+            <!-- required -->
             <label for="psw">Re-Password</label>
             <input type="password" v-model="data.password_confirmation" placeholder="Masukan Re-Password"
-              name="re-password" required />
+              name="re-password" />
+            <!-- required -->
             <label for="text">Pembayaran Via Bank</label>
             <select v-model="data.payment_method_id" name="bank" id="bank" v-on:change="onChange($event)">
               <option v-for="payment in listPayment" :value="payment.payment_method_id"
@@ -54,13 +60,11 @@
             <h3 for="text">Rp. 50.000</h3>
             <label class="file">
               Bukti pembayaran
-              <input type="file" id="file" ref="picture" aria-label="File browser example" v-on:change="previewFiles"
-                multiple />
+              <input type="file" id="file" ref="pictureData" aria-label="File browser example"
+                v-on:change="previewFiles" />
               <span class="file-custom"></span>
             </label>
-            <button class="button" type="submit">
-              <a href="#">Daftar Sekarang</a>
-            </button>
+            <button class="button" type="submit">Daftar Sekarang</button>
           </form>
         </div>
         <div class="imglogin">
@@ -104,7 +108,7 @@
 
 <script>
 // @ is an alias to /src
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
@@ -126,7 +130,8 @@ export default {
   },
 
   async mounted() {
-    await axios.get('/api/payment_method')
+    await axios
+      .get('/api/payment_method')
       .then((response) => response.data)
       .then((datas) => datas.data)
       .then((data) => (this.listPayment = data))
@@ -148,21 +153,32 @@ export default {
       payment_picture: '',
       payment_method_id: '',
     });
-
+    const pictureData = ref({});
     const router = useRouter();
 
     const submit = async () => {
-      await axios.post('/api/register', data).then((response) => {
+      let form_data = new FormData();
+      form_data.append('name', data.name);
+      form_data.append('email', data.email);
+      form_data.append('user_city', data.user_city);
+      form_data.append('user_age', data.user_age);
+      form_data.append('password', data.password);
+      form_data.append('password_confirmation', data.password_confirmation);
+      form_data.append('role_id', data.role_id);
+      form_data.append('payment_price', data.payment_price);
+      form_data.append('payment_picture', pictureData.value.files.item(0));
+      form_data.append('payment_method_id', data.payment_method_id);
+
+      await axios.post('/api/register', form_data).then(function (response) {
         alert(response.data.meta.message);
         return router.push('/sign-in');
-      }).catch(error => {
-        alert(error);
-      })
+      });
     };
 
     return {
       data,
       submit,
+      pictureData,
     };
   },
 };

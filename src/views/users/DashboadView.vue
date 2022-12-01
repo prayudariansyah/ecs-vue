@@ -1,5 +1,11 @@
 <template>
-    <div v-if="!verify">
+    <AuthUser @sendData="getData($event)" />
+    <!-- { { loading } } -->
+    <div v-if="loading">
+        <h3>Mohon Tunggu</h3>
+    </div>
+    <!-- {{ verify }} -->
+    <div v-else-if="(!verify)">
         <div class="card">
             <h3>Anda belum login. silahkan login kembali</h3>
             <p><a href="/">back to home</a></p>
@@ -16,7 +22,7 @@
                 <div class="class-row">
                     <div class="card" v-for="mapel in mapels" v-bind:key="mapel.id">
                         <img :src="image + '/' + mapel.mapel_picture" alt="">
-                        <p><a v-bind:href=" user.id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + 0"
+                        <p><a v-bind:href="user.id + '/mapel/' + mapel.mapel_id + '/' + mapel.mapel_slug + '/' + 0"
                                 class="matpen">{{
                                         mapel.mapel_name
                                 }}</a></p>
@@ -33,45 +39,47 @@
 // @ is an alias to /src
 import CONFIG from '@/global/config';
 import SidebarComponent from '../users/components/SidebarComponent.vue';
+import axios from 'axios';
+import AuthUser from './components/AuthUser.vue';
 
 export default {
     name: 'DashBoard',
     components: {
-        SidebarComponent
+        SidebarComponent,
+        AuthUser,
     },
     data() {
         return {
             image: CONFIG.BASE_IMAGE,
             messages: '',
             verify: false,
+            loading: true,
             user: [],
             mapels: [],
         }
     },
     async mounted() {
-        await this.getUser();
         await this.getMapel();
+        setTimeout(() => {
+            this.loading = false
+        }, 500);
     },
     methods: {
-        async getUser() {
-            const response = await fetch(CONFIG.BASE_URL + '/user/show', {
-                headers: { 'Content-Type': 'Application/json' },
-                credentials: 'include',
-            });
-            const json = await response.json();
-            this.messages = json.meta.message;
-            this.user = json.data;
-            if (response.status == 200) {
+        getData(data) {
+            this.user = data[0];
+            this.messages = data[1];
+            if (this.user) {
                 this.verify = true;
             }
         },
+
         async getMapel() {
-            const responseMapel = await fetch(CONFIG.BASE_URL + '/mapel', {
-                headers: { 'Content-Type': 'Application/json' },
-            });
-            const jsonMapel = await responseMapel.json();
-            this.messages = jsonMapel.meta.message;
-            this.mapels = jsonMapel.data;
+            await axios.get('/api/mapel')
+                .then(response => response.data)
+                .then(data => {
+                    this.messages = data.meta.message;
+                    this.mapels = data.data
+                })
         }
     }
 }

@@ -19,7 +19,7 @@
             <p>{{ list_mapel.list_mapel_desc }}</p>
           </div>
         </div>
-        <div v-else>
+        <div v-else-if="list_mapel.quiz">
           <QuizChapter :list_mapel="list_mapel" />
         </div>
         <div class="btn-container">
@@ -37,8 +37,8 @@
 // @ is an alias to /src
 import SidebarMapelComponentVue from './components/SidebarMapelComponent.vue';
 import QuizChapter from './QuizView.vue';
-import CONFIG from '@/global/config';
 import router from '@/router';
+import axios from 'axios';
 
 export default {
   name: 'ClassMapel',
@@ -94,17 +94,12 @@ export default {
     },
 
     async getScore() {
-      const response = await fetch(CONFIG.BASE_URL + '/score', {
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      const json = await response.json();
-      this.score = json.data.filter(score => score.id == this.id && score.sub_mapel_id == this.list_mapel.quiz[0].sub_mapel_id);
-      if (this.score.length != 0) {
-        this.check_quiz = false;
-      } else {
-        this.check_quiz = true;
-      }
+      await axios.get('/api/score')
+      .then(response => response.data)
+      .then(datas => {
+      this.score = datas.data.filter(score => score.id == this.id && score.sub_mapel_id == this.list_mapel.quiz[0].sub_mapel_id);
+
+      })
     },
 
     async updateAccessMapel() {
@@ -114,11 +109,7 @@ export default {
       };
       const listOfLastAccess = this.list_mapels[this.access[0].last_access - 1].list_mapel_id;
       if ((this.list_mapels.findIndex(list => list.list_mapel_id == listOfLastAccess) + 1) == this.list) {
-        await fetch(CONFIG.BASE_URL + '/access_mapel/edit/' + this.access[0].access_mapel_id, {
-          headers: { 'content-Type': 'Application/json' },
-          method: 'POST',
-          body: JSON.stringify(dataUpdate),
-        });
+        await axios.post('/api/access_mapel/edit', dataUpdate);
       }
       const route = this.$route.params;
       this.list++;
