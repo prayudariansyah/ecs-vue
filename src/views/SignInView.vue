@@ -13,6 +13,11 @@
           <li><a href="/sign-up"><button class="button" role="button">Daftar</button></a></li>
         </ul>
       </nav>
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </header>
     <!-- end header -->
 
@@ -73,6 +78,14 @@
       <p>2020 Copyright ECS by MANUSIA. All Rights Reserved.</p>
     </footer>
   </div>
+  <component :is="'script'">
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navbar = document.querySelector("header nav ul");
+
+    menuToggle.addEventListener("click", () => {
+    navbar.classList.toggle("close");
+    });
+  </component>
 </template>
 
 <script>
@@ -345,4 +358,100 @@ footer p {
     transform: translate(0, -0px);
   }
 }
+
+@media screen and (max-width: 800px) {
+  .containerlogin {
+    flex-direction: column-reverse;
+  }
+
+  main .containerlogin .imglogin img {
+    width: 350px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+}
+
+@media screen and (min-width: 850px) {
+  .containerlogin {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  main .containerlogin .imglogin img {
+    width: 500px;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+}
+
+@media screen and (min-width: 573px) {
+  footer .textfooter {
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 800px) {
+}
+
+@media screen and (min-width: 850px) {
+  footer .textfooter {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+}
+
+@media screen and (min-width: 1600px) {
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  height: 20px;
+  justify-content: space-between;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background-color: #fa8432;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 730px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  header nav ul {
+    z-index: 1;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    right: 0;
+    background-color: #fa8432;
+    margin: 50px 0px;
+    transition: all 300ms ease-in-out;
+    color: white;
+  }
+
+  .close {
+    transform: translateY(-1000px);
+  }
+
+  header nav ul li {
+    margin: 20px 30px;
+  }
+
+  header nav ul li a {
+    color: white;
+  }
+}
+
 </style>
