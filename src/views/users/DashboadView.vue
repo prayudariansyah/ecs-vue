@@ -59,10 +59,10 @@ export default {
         }
     },
     async mounted() {
-        await this.getMapel();
         setTimeout(() => {
             this.loading = false
         }, 500);
+        await this.getMapel();
     },
     methods: {
         getData(data) {
