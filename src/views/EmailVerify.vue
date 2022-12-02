@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-if="auth">
+  <div class="home" v-if="!auth">
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
