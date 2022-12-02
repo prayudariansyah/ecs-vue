@@ -1,5 +1,5 @@
 <template>
-    <AuthUser @sendData="user = $event[0]"/>
+    <AuthUser @sendData="user = $event[0]" />
     <div class="profile">
         <div class="container">
             <SidebarComponent />
@@ -16,22 +16,25 @@
                     </div>
                 </div>
                 <div class="new-data">
-                    <form action="#">
+                    <form @submit.prevent="submit">
                         <div class="field">
-                            <label for="fullName">Full Name {{ user.name }}</label>
-                            <input type="text" id="fullName" name="fullName" :value="user.name">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" :value="user.name" :v-model="data.name">
                         </div>
                         <div class="field">
                             <label for="umur">Umur</label>
-                            <input type="text" id="umur" name="umur" :value="user.user_age">
+                            <input type="text" id="user_age" name="user_age" :value="user.user_age"
+                                :v-model="data.user_age">
                         </div>
                         <div class="field">
                             <label for="askot">Asal Kota</label>
-                            <input type="text" id="askot" name="askot" :value="user.user_city">
+                            <input type="text" id="user_city" name="user_city" :value="user.user_city"
+                                :v-model="data.user_city">
                         </div>
                         <div class="field">
                             <label for="emailaddress">Email Adddress</label>
-                            <input readonly type="email" id="emailaddress" name="emailaddress" :value="user.email">
+                            <input readonly type="email" id="email" name="email" :value="user.email"
+                                :v-model="data.email">
                         </div>
                         <div class="field">
                             <button class="submit" type="submit">Simpan</button>
@@ -61,19 +64,25 @@ export default {
     },
     data() {
         return {
-            user: [],
-            config: CONFIG
+            config: CONFIG,
+            user: '',
         }
     },
-    async mounted() {
+    async created() {
         await axios.get('/api/user/show')
             .then(response => response.data)
             .then(datas => this.user = datas.data)
             .catch(error => { console.log(error) });
-        console.log(this.user)
+        this.id.id = this.user.id;
+        this.data.name = this.user.name;
+        this.data.email = this.user.email;
+        this.data.user_city = this.user.user_city;
+        this.data.user_age = this.user.user_age;
     },
     setup() {
-        // let id;
+        const id = reactive({
+            id: ''
+        });
         const data = reactive({
             name: '',
             email: '',
@@ -82,13 +91,14 @@ export default {
         });
 
         const submit = async () => {
-            await axios.post('/api/user/update', data)
+            await axios.post('/api/user/edit/' + id.id, data)
                 .then(response => response.data)
                 .then(data => { alert(data.meta.message) })
                 .catch(error => console.log(error));
         };
 
         return {
+            id,
             data,
             submit,
         }

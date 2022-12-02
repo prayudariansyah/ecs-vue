@@ -121,8 +121,8 @@ export default {
             return alert('gagal login');
           }
           return alert(messages);
-        }).catch(error => {
-          console.log(error);
+        }).catch(() => {
+          return alert('username atau password salah!!!');
         })
     }
     return { data, submit };
@@ -369,8 +369,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 800px) {
-}
+@media screen and (min-width: 800px) {}
 
 @media screen and (min-width: 850px) {
   .containerlogin {
@@ -384,8 +383,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 1600px) {
-}
+@media screen and (min-width: 1600px) {}
 
 @media screen and (min-width: 573px) {
   footer .textfooter {
@@ -393,8 +391,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 800px) {
-}
+@media screen and (min-width: 800px) {}
 
 @media screen and (min-width: 850px) {
   footer .textfooter {
@@ -402,11 +399,9 @@ footer p {
   }
 }
 
-@media screen and (min-width: 1200px) {
-}
+@media screen and (min-width: 1200px) {}
 
-@media screen and (min-width: 1600px) {
-}
+@media screen and (min-width: 1600px) {}
 
 .menu-toggle {
   display: none;
@@ -453,5 +448,4 @@ footer p {
     color: white;
   }
 }
-
 </style>
