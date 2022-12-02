@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-if="!auth">
+  <div class="home" v-if="!verify">
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       messages: '',
-      auth: false,
+      verify: false,
     }
   },
   async mounted() {
@@ -79,7 +79,7 @@ export default {
       .then(response => response.data)
       .then(datas => {
         this.messages = datas.meta.message;
-        this.auth = true;
+        this.ferivy = true;
         return route.push('/dashboard');
       })
       .catch(error => console.log(error));
