@@ -8,40 +8,40 @@
                     <h4>Profile Saya</h4>
                     <p>Pastikan Data Pribadi anda benar dan tidak tersebar</p>
                 </div>
-                <div class="change-picture">
-                    <img :src="config.BASE_IMAGE + '/' + user.user_picture" alt="">
-                    <div class="new-picture">
-                        <p>Add your picture...</p>
-                        <button>Browse</button>
+                <form @submit.prevent="submit">
+                    <div class="change-picture">
+                        <img :src="config.BASE_IMAGE + '/' + user.user_picture" alt="">
+                        <div class="new-picture">
+                            <p>Add your picture...</p>
+                            <input type="file" id="file" ref="pictureData" aria-label="Input Profile Picture"/>
+                        </div>
                     </div>
-                </div>
-                <div class="new-data">
-                    <form @submit.prevent="submit">
+                    <div class="new-data">
                         <div class="field">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" :value="user.name" :v-model="data.name">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" :value="data.name" :model="data.name">
                         </div>
                         <div class="field">
-                            <label for="umur">Umur</label>
-                            <input type="text" id="user_age" name="user_age" :value="user.user_age"
-                                :v-model="data.user_age">
+                            <label for="user_age">Umur</label>
+                            <input type="text" id="user_age" name="user_age" :value="data.user_age"
+                                :model="data.user_age">
                         </div>
                         <div class="field">
-                            <label for="askot">Asal Kota</label>
-                            <input type="text" id="user_city" name="user_city" :value="user.user_city"
-                                :v-model="data.user_city">
+                            <label for="user_city">Asal Kota</label>
+                            <input type="text" id="user_city" name="user_city" :value="data.user_city"
+                                :model="data.user_city">
                         </div>
                         <div class="field">
                             <label for="emailaddress">Email Adddress</label>
                             <input readonly type="email" id="email" name="email" :value="user.email"
-                                :v-model="data.email">
+                                :model="data.email">
                         </div>
                         <div class="field">
                             <button class="submit" type="submit">Simpan</button>
                             <a class="change-pass" href="/new-password">Ganti Password</a>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -53,8 +53,9 @@
 import SidebarComponent from '../users/components/SidebarComponent.vue';
 import AuthUser from './components/AuthUser.vue';
 import CONFIG from '@/global/config';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'ProFile',
@@ -73,34 +74,45 @@ export default {
             .then(response => response.data)
             .then(datas => this.user = datas.data)
             .catch(error => { console.log(error) });
-        this.id.id = this.user.id;
-        this.data.name = this.user.name;
-        this.data.email = this.user.email;
-        this.data.user_city = this.user.user_city;
-        this.data.user_age = this.user.user_age;
+            this.data.name = this.user.name;
+            // this.data.name = this.user.name;
+            // this.data.email = this.user.email;
+            this.data.user_city = this.user.user_city;
+            this.data.user_age = this.user.user_age;
     },
     setup() {
-        const id = reactive({
-            id: ''
-        });
         const data = reactive({
             name: '',
-            email: '',
             user_city: '',
             user_age: '',
         });
+        const pictureData = ref({});
 
         const submit = async () => {
-            await axios.post('/api/user/edit/' + id.id, data)
+            let form_data = new FormData();
+            const name = document.getElementById('name');
+            const user_city = document.getElementById('user_city');
+            const user_age = document.getElementById('user_age');
+            form_data.append('name', name.value);
+            form_data.append('user_city', user_city.value);
+            form_data.append('user_age', user_age.value);
+            if (pictureData.value.files.item(0) != null){
+                form_data.append('user_picture', pictureData.value.files.item(0));
+            }
+            console.log(form_data);
+            await axios.post('/api/user/edit/', form_data)
                 .then(response => response.data)
-                .then(data => { alert(data.meta.message) })
+                .then(data => { 
+                    alert(data.meta.message);
+                    return useRouter.push('/profile');
+                })
                 .catch(error => console.log(error));
         };
 
         return {
-            id,
             data,
             submit,
+            pictureData,
         }
     },
 }
@@ -200,6 +212,28 @@ h4 {
     font-size: 18px;
     font-weight: 400;
     color: #BFBFBF;
+}
+
+input[type='file']::file-selector-button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
+}
+
+input[type='file']::file-selector-button:hover {
+  transform: translateY(-2px);
+}
+
+input[type='file']::file-selector-button:active {
+  box-shadow: none;
+  transform: translateY(0);
 }
 
 .change-picture {
