@@ -82,7 +82,6 @@ export default {
         this.ferivy = true;
         return route.push('/dashboard');
       })
-      .catch(() => { return route.push('/') });
   },
   setup() {
     const route = useRouter();
