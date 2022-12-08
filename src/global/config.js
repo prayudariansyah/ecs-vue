@@ -1,5 +1,5 @@
 const CONFIG = {
-  BASE_IMAGE: 'http://localhost:8000/storage'
+  BASE_IMAGE: 'https://ecs-api.learnforfuture.id/storage'
 }
 
 export default CONFIG;
