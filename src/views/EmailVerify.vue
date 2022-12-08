@@ -84,15 +84,13 @@ export default {
       })
   },
   setup() {
-    const route = useRouter();
     const submit = async () => {
-      await axios.get('/post/email/verify/resend-verification')
+      await axios.get('/api/email/verify/resend-verification')
         .then(response => response.data)
         .then(datas => {
           alert(datas.meta.message);
           return console.log('success send');
         })
-        .catch(() => { return route.push('/dashboard') })
     }
 
     return { submit };
