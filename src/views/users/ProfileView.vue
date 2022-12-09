@@ -20,17 +20,16 @@
                     <div class="new-data">
                         <div class="field">
                             <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" :value="user.name" :model="data.name">
+                            <input type="text" id="id" name="id" :value="user.id" hidden>
+                            <input type="text" id="name" name="name" :value="user.name">
                         </div>
                         <div class="field">
                             <label for="user_age">Umur</label>
-                            <input type="text" id="user_age" name="user_age" :value="user.user_age"
-                                :model="data.user_age">
+                            <input type="text" id="user_age" name="user_age" :value="user.user_age">
                         </div>
                         <div class="field">
                             <label for="user_city">Asal Kota</label>
-                            <input type="text" id="user_city" name="user_city" :value="user.user_city"
-                                :model="data.user_city">
+                            <input type="text" id="user_city" name="user_city" :value="user.user_city">
                         </div>
                         <div class="field">
                             <label for="emailaddress">Email Adddress</label>
@@ -62,7 +61,7 @@
 import SidebarComponent from '../users/components/SidebarComponent.vue';
 import AuthUser from './components/AuthUser.vue';
 import CONFIG from '@/global/config';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
@@ -78,21 +77,12 @@ export default {
             user: '',
         }
     },
-    async created() {
-        this.data.name = this.user.name;
-        this.data.user_city = this.user.user_city;
-        this.data.user_age = this.user.user_age;
-    },
     setup() {
-        const data = reactive({
-            name: '',
-            user_city: '',
-            user_age: '',
-        });
         const pictureData = ref({});
 
         const submit = async () => {
             let form_data = new FormData();
+            const id = document.getElementById('id').value;
             const name = document.getElementById('name');
             const user_city = document.getElementById('user_city');
             const user_age = document.getElementById('user_age');
@@ -102,8 +92,9 @@ export default {
             if (pictureData.value.files.item(0) != null) {
                 form_data.append('user_picture', pictureData.value.files.item(0));
             }
+            console.log(id);
             console.log(form_data);
-            await axios.post('/api/user/edit/' + this.user.id, form_data)
+            await axios.post('/api/user/edit/' + id, form_data)
                 .then(response => response.data)
                 .then(data => {
                     alert(data.meta.message);
@@ -113,7 +104,6 @@ export default {
         };
 
         return {
-            data,
             submit,
             pictureData,
         }
