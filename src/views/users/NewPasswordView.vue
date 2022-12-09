@@ -39,9 +39,6 @@
                                 }}</span>
                             </div>
                         </div>
-                        <div class="forgot">
-                            <a href="/send-reset-password">lupa password ?</a>
-                        </div>
                         <button class="button" type="submit">Simpan</button>
                     </div>
                 </form>
@@ -257,19 +254,5 @@ h4 {
 .show-pass:hover {
     box-shadow: rgb(250, 132, 50) 0 8px 15px;
     transform: translateY(-2px);
-}
-
-.forgot {
-    width: 100%;
-    min-width: 44px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: right;
-}
-
-.forgot a {
-    margin-right: 40px;
-    color: #E45F03;
-    text-decoration: none;
 }
 </style>

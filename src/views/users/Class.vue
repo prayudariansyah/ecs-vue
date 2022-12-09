@@ -33,13 +33,13 @@
     </div>
   </div>
   <component :is="'script'">
-        function openNav() {
-          document.getElementById("mySide").style.width = "281px";
-        }
-        
-        function closeNav() {
-          document.getElementById("mySide").style.width = "0";
-        }
+    function openNav() {
+    document.getElementById("mySide").style.width = "281px";
+    }
+
+    function closeNav() {
+    document.getElementById("mySide").style.width = "0";
+    }
   </component>
 </template>
 
@@ -105,21 +105,21 @@ export default {
 
     async getScore() {
       await axios.get('/api/score')
-      .then(response => response.data)
-      .then(datas => {
-      this.score = datas.data.filter(score => score.id == this.id && score.sub_mapel_id == this.list_mapel.quiz[0].sub_mapel_id);
+        .then(response => response.data)
+        .then(datas => {
+          this.score = datas.data.filter(score => score.id == this.id && score.sub_mapel_id == this.list_mapel.quiz[0].sub_mapel_id);
 
-      })
+        })
     },
 
     async updateAccessMapel() {
-      const addLast = this.access[0].last_access + 1;
+      const addLast = parseInt(this.access[0].last_access) + 1;
       const dataUpdate = {
         last_access: addLast,
       };
       const listOfLastAccess = this.list_mapels[this.access[0].last_access - 1].list_mapel_id;
       if ((this.list_mapels.findIndex(list => list.list_mapel_id == listOfLastAccess) + 1) == this.list) {
-        await axios.post('/api/access_mapel/edit', dataUpdate);
+        await axios.post('/api/access_mapel/edit/' + this.access[0].access_mapel_id, dataUpdate);
       }
       const route = this.$route.params;
       this.list++;
@@ -130,39 +130,41 @@ export default {
 </script>
 
 <style scoped>
-h4{
-    font-size: 36px;
-    font-weight: 500;
-    color:#404040;
+h4 {
+  font-size: 36px;
+  font-weight: 500;
+  color: #404040;
 }
 
 .subclass {
-   margin: 0;
-    font-family: 'Poppins';
-    overflow: auto;
+  margin: 0;
+  font-family: 'Poppins';
+  overflow: auto;
 }
 
 .container {
   display: flex;
 }
+
 #main {
-    transition: margin-left .5s;
-    padding-left: 80px;
-  }
-.open{
-    position: fixed;
-    top: 120px;
-    font-family: 'Poppins';
-    font-size: 28px;
-    font-weight: 500;
-    color:white;
-    border-radius: 0 100px 100px 0;
-    background: #E45F03;
-    padding: 8px 13px 10px 13px;
+  transition: margin-left .5s;
+  padding-left: 80px;
 }
 
-.content{ 
-    margin-top: 50px;
+.open {
+  position: fixed;
+  top: 120px;
+  font-family: 'Poppins';
+  font-size: 28px;
+  font-weight: 500;
+  color: white;
+  border-radius: 0 100px 100px 0;
+  background: #E45F03;
+  padding: 8px 13px 10px 13px;
+}
+
+.content {
+  margin-top: 50px;
 }
 
 .video {
@@ -170,12 +172,12 @@ h4{
   margin-bottom: 40px;
 }
 
-.text-deskripsi{
-    padding-right: 20px;
-    font-size: 18px;    
-    font-weight: 400;
-    color: black;
-    margin-bottom: 15px;
+.text-deskripsi {
+  padding-right: 20px;
+  font-size: 18px;
+  font-weight: 400;
+  color: black;
+  margin-bottom: 15px;
 }
 
 .btn-container {
@@ -186,14 +188,14 @@ h4{
 
 .btn {
   width: 90px;
-    height: 60px;
-    background-color: #E45F03;
-    color: white;
-    border-radius: 10px;
-    border: none;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 30px;
+  height: 60px;
+  background-color: #E45F03;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 30px;
   cursor: pointer;
 }
 
@@ -208,15 +210,17 @@ h4{
 }
 
 @media screen and (max-width : 800px) {
-    .content{
-        width: 100%;
-        padding-right: 20px;
-    }
-    .video iframe{
-        width: 100%;
-    }
-    .text-deskripsi p{
-        width: 100%;
-    }
+  .content {
+    width: 100%;
+    padding-right: 20px;
+  }
+
+  .video iframe {
+    width: 100%;
+  }
+
+  .text-deskripsi p {
+    width: 100%;
+  }
 }
 </style>

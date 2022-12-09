@@ -113,9 +113,9 @@ export default {
         .then((response) => {
           const datas = response.data;
           const messages = datas.meta.message;
+          localStorage.token = datas.token;
           if (response.status == 200) {
             if (datas.data.role_id == 2) {
-              axios.defaults.headers.common = { 'Authorization': `Bearer ` + datas.token };
               alert(messages);
               return route.push('/email-verify/' + datas.data.id);
             }

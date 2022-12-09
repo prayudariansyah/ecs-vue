@@ -171,7 +171,7 @@ export default {
 
       await axios.post('/api/register', form_data).then(function (response) {
         const datas = response.data;
-        axios.defaults.headers.common = { 'Authorization': `Bearer ` + datas.token };
+        localStorage.token = datas.token;
         alert(datas.meta.message);
         return router.push('/email-verify/' + datas.data.id);
       });
