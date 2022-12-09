@@ -92,8 +92,6 @@ export default {
             if (pictureData.value.files.item(0) != null) {
                 form_data.append('user_picture', pictureData.value.files.item(0));
             }
-            console.log(id);
-            console.log(form_data);
             await axios.post('/api/user/edit/' + id, form_data)
                 .then(response => response.data)
                 .then(data => {
