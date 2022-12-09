@@ -96,14 +96,14 @@
       <p>2020 Copyright ECS by MANUSIA. All Rights Reserved.</p>
     </footer>
   </div>
-    <component :is="'script'">
-      const menuToggle = document.querySelector(".menu-toggle");
-      const navbar = document.querySelector("header nav ul");
+  <component :is="'script'">
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navbar = document.querySelector("header nav ul");
 
-      menuToggle.addEventListener("click", () => {
-      navbar.classList.toggle("close");
-      });
-    </component>
+    menuToggle.addEventListener("click", () => {
+    navbar.classList.toggle("close");
+    });
+  </component>
 </template>
 
 <script>
@@ -171,7 +171,7 @@ export default {
 
       await axios.post('/api/register', form_data).then(function (response) {
         alert(response.data.meta.message);
-        return router.push('/sign-in');
+        return router.push('/email-verify');
       });
     };
 
@@ -408,8 +408,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 800px) {
-}
+@media screen and (min-width: 800px) {}
 
 @media screen and (min-width: 850px) {
   .containerregis {
@@ -423,8 +422,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 1600px) {
-}
+@media screen and (min-width: 1600px) {}
 
 @media screen and (min-width: 573px) {
   footer .textfooter {
@@ -432,8 +430,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 800px) {
-}
+@media screen and (min-width: 800px) {}
 
 @media screen and (min-width: 850px) {
   footer .textfooter {
@@ -441,11 +438,9 @@ footer p {
   }
 }
 
-@media screen and (min-width: 1200px) {
-}
+@media screen and (min-width: 1200px) {}
 
-@media screen and (min-width: 1600px) {
-}
+@media screen and (min-width: 1600px) {}
 
 .menu-toggle {
   display: none;
@@ -492,6 +487,4 @@ footer p {
     color: white;
   }
 }
-
-
 </style>

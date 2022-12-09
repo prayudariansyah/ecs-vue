@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-if="auth">
+  <div class="home" v-if="!verify">
     <header>
       <div class="logo">
         <h1>MANUSIA</h1>
@@ -62,7 +62,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import CONFIG from '@/global/config';
+import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 export default {
@@ -70,41 +70,27 @@ export default {
   data() {
     return {
       messages: '',
-      auth: false,
+      verify: false,
     }
   },
   async mounted() {
     const route = useRouter();
-    try {
-      const response = await fetch(CONFIG.BASE_URL + '/email/verify', {
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      const json = await response.json();
-      const messages = json.meta.message;
-      this.messages = messages;
-      if (response.status == 200) {
-        return await route.push('/dashboard');
-      }
-      this.auth = true;
-    } catch (e) {
-      console.log(e);
-    }
+    await axios.get('/api/email/verify')
+      .then(response => response.data)
+      .then(datas => {
+        this.messages = datas.meta.message;
+        this.ferivy = true;
+        return route.push('/dashboard');
+      })
   },
   setup() {
-    const route = useRouter();
     const submit = async () => {
-      const response = await fetch(CONFIG.BASE_URL + '/email/verify/resend-verification', {
-        headers: { 'Content-Type': 'Application/json' },
-        credentials: 'include',
-      });
-      const json = await response.json();
-      alert(json.meta.message);
-      if (response.status == 400) {
-        localStorage.verify = true;
-        return route.push('/dashboard');
-      }
-      return console.log('success send')
+      await axios.get('/api/email/verify/resend-verification')
+        .then(response => response.data)
+        .then(datas => {
+          alert(datas.meta.message);
+          return console.log('success send');
+        })
     }
 
     return { submit };
