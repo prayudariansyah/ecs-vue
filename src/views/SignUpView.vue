@@ -170,8 +170,10 @@ export default {
       form_data.append('payment_method_id', data.payment_method_id);
 
       await axios.post('/api/register', form_data).then(function (response) {
-        alert(response.data.meta.message);
-        return router.push('/email-verify');
+        const datas = response.data;
+        axios.defaults.headers.common = { 'Authorization': `Bearer ` + datas.token };
+        alert(datas.meta.message);
+        return router.push('/email-verify/' + datas.data.id);
       });
     };
 

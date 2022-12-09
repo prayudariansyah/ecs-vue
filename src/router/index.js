@@ -47,7 +47,7 @@ const routes = [
     component: ClassMapel,
   },
   {
-    path: '/email-verify',
+    path: '/email-verify/:id',
     name: 'email-verify',
     component: EmailVerify
   },

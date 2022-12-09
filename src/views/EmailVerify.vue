@@ -69,13 +69,14 @@ export default {
   name: 'EmailVerify',
   data() {
     return {
+      id: this.$route.params.id,
       messages: '',
       verify: false,
     }
   },
   async mounted() {
     const route = useRouter();
-    await axios.get('/api/email/verify')
+    await axios.get('/api/email/verify/check/' + this.id)
       .then(response => response.data)
       .then(datas => {
         this.messages = datas.meta.message;
@@ -85,7 +86,7 @@ export default {
   },
   setup() {
     const submit = async () => {
-      await axios.get('/api/email/verify/resend-verification')
+      await axios.get('/api/email/resend-verification/' + this.id)
         .then(response => response.data)
         .then(datas => {
           alert(datas.meta.message);
