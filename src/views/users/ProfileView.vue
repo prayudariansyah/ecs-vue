@@ -103,7 +103,7 @@ export default {
                 form_data.append('user_picture', pictureData.value.files.item(0));
             }
             console.log(form_data);
-            await axios.post('/api/user/edit/', form_data)
+            await axios.post('/api/user/edit/' + this.user.id, form_data)
                 .then(response => response.data)
                 .then(data => {
                     alert(data.meta.message);
