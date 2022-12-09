@@ -14,7 +14,8 @@
     <div class="dashboard" v-else>
         <div class="container">
             <SidebarComponent />
-            <div class="content">
+            <span class="open" onclick="openNav()">&#9776;</span>
+            <div class="content" id="main">
                 <div class="title">
                     <h4>My Class</h4>
                     <p>Tidak perlu terburu-buru dalam belajar. Konsisten adalah kunci utama</p>
@@ -33,6 +34,15 @@
             </div>
         </div>
     </div>
+      <component :is="'script'">
+         function openNav() {
+              document.getElementById("mySide").style.width = "281px";
+            }
+            
+        function closeNav() {
+              document.getElementById("mySide").style.width = "0";
+            }
+  </component>
 </template>
 
 <script>
@@ -86,11 +96,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-    margin: 0;
-    padding: 0;
-}
-
 h4 {
     font-size: 36px;
     font-weight: 600;
@@ -99,22 +104,33 @@ h4 {
 
 
 .dashboard {
+    margin: 0;
     font-family: 'Poppins';
-    width: 1440px;
-    height: 900px;
-    overflow: hidden;
+    overflow:visible;
 }
 
 .container {
     display: flex;
-    width: 100%;
-    height: 100%;
+}
 
+#main {
+    transition: margin-left .5s;
+    padding-left: 80px;
+  }
+.open{
+    position: fixed;
+    top: 120px;
+    font-family: 'Poppins';
+    font-size: 28px;
+    font-weight: 500;
+    color:white;
+    border-radius: 0 100px 100px 0;
+    background: #E45F03;
+    padding: 8px 13px 10px 13px;
 }
 
 
 .content {
-    margin-left: 70px;
     margin-top: 50px;
 }
 
@@ -136,8 +152,8 @@ h4 {
 }
 
 .card img {
-    width: 255px;
-    height: 170px;
+    width: 385px;
+    height: 270px;
 }
 
 .card a.matpen {
@@ -152,4 +168,20 @@ h4 {
     font-weight: 400;
     color: #BFBFBF;
 }
+
+@media screen and (max-width: 800px) {
+    .content {
+      flex-direction: column-reverse;
+    }
+    .class-row {
+        flex-direction: column-reverse;
+    }
+    div.content {margin-left: 0;}
+  
+    .card  img {
+      width: 255px;
+      height: 170px;
+    }
+  }
+
 </style>

@@ -1,6 +1,37 @@
 <template>
     <div class="quiz">
-        <div class="content">
+        <aside class="sidebar" id="mySide">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="kembali">
+                <img src="/images/akar-icons_arrow-left.png" alt="">
+                <a href="#">Kembali</a>
+            </div>
+            <div class="bab">
+                <ul>
+                    <li><a class="active" href="#">Intoduction</a></li>
+                    <li><a href="#">Introduction Teacher</a></li>
+                    <li><a href="#">Introduction Class</a></li>                    
+                </ul>
+                <ul>
+                    <li><a class="active" href="#">Chapter 1</a></li>
+                    <li><a href="#">Reading</a></li>
+                    <li><a href="#">writing</a></li>
+                    <li><a href="#">Speaking</a></li>
+                </ul>
+                <ul>
+                    <li><a class="active" href="#">Chapter 2</a></li>
+                    <li><a href="#">Make A Video</a></li>
+                    <li><a href="#">Exercise</a></li>                    
+                </ul>
+                <ul>
+                    <li><a class="active" href="#">Quiz</a></li>
+                    <li><a href="#">Chapter 1</a></li>
+                    <li><a href="#">Chapter 2</a></li>                    
+                </ul>
+            </div>
+        </aside>
+        <span class="open" onclick="openNav()">&#9776;</span>
+        <div class="content" id="main">
             <div class="title">
                 <h4>Chapter 1 : Reading, Writing and Speaking</h4>
             </div>
@@ -19,6 +50,15 @@
             </form>
         </div>
     </div>
+        <component :is="'script'">
+        function openNav() {
+          document.getElementById("mySide").style.width = "281px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySide").style.width = "0";
+        }
+  </component>
 </template>
 
 <script>
@@ -82,47 +122,128 @@ h4 {
 }
 
 .quiz {
+    margin: 0;
     font-family: 'Poppins';
-    height: max-content;
-    overflow: auto;
+    overflow: visible;
 }
 
-.container {
+.container{
     display: flex;
-    width: 100%;
+}
+.sidebar{
+    padding-top: 50px;
+    background-color: #FA8432;
+    position: fixed;
+    height: 100%;
+    width: 0;
+    z-index: 1;
+    overflow-y: hidden;
+    transition: all .1s;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .closebtn {
+    padding-left: 24px;
+    padding-top: 17px;
+    padding-right: 156px;
+    color: white;
+    text-decoration: none;
+    color: white;
+    position: absolute;
+    top: 0;
+    font-size: 36px;
+}
+#main {
+    transition: margin-left .5s;
+    padding-left: 80px;
+  }
+.open{
+    position: fixed;
+    top: 120px;
+    font-family: 'Poppins';
+    font-size: 28px;
+    font-weight: 500;
+    color:white;
+    border-radius: 0 100px 100px 0;
+    background: #E45F03;
+    padding: 8px 13px 10px 13px;
+}
+
+.bab{
     height: 100%;
 }
-
-.content {
-    width: 100%;
-    margin-left: 70px;
-    margin-top: 50px;
+ul {    
+    margin-bottom: 26px;
+    list-style-type: none;          
+    overflow: auto;
+  }
+  
+  li{
+    margin-bottom: 20px;
+  }
+  li a {
+    display: block;
+    padding-left: 24px;    
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  li a.active {
+    padding-top: 17px;
+    padding-bottom: 16px;
+    background-color: #E45F03;
+    color: white;
+  }
+  
+  li a:hover:not(.active) {
+    color: #E45F03;
+  }
+.kembali{
+    margin-top: 20px;
+    padding-left: 24px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.kembali img{
+ width: 24px;   
+ height: 24px;
+}
+.kembali a{
+    font-size: 20px;
+    font-weight: 400;
+    margin-left: 10px;
+    color: white;
+    text-decoration: none;
 }
 
-.question {
+.content{    
+    margin-top: 50px;
+}
+.question{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
-    gap: 50px;
     margin-top: 52px;
     margin-bottom: 15px;
 }
-
-.question h6 {
+.question h6{
     font-weight: 400;
     font-size: 18px;
     line-height: 27px;
     letter-spacing: 0.01em;
     color: #404040;
 }
-
-.question-column {
+.question-column{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
-    gap: 21px;
+    gap: 21px;  
 }
 
 .answer-column {
@@ -194,5 +315,24 @@ h4 {
     font-weight: 600;
     margin-bottom: 30px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+    .container{
+        width: 100%;
+    }
+    .content{
+        width: 100%;
+        flex-direction: column;
+    }
+    div.content {margin-left: 0;}
+    h4{
+        font-size: 28px;
+        width: 100%;
+    }
+    .question{
+        width: 100%;
+    }
+    
 }
 </style>
