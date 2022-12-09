@@ -1,6 +1,7 @@
 <template>
     <AuthUser @sendData="user = $event[0]" />
-  <aside class="sidebar">
+  <aside class="sidebar" id="mySide">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <div class="card-profile">
       <img :src="config.BASE_IMAGE + '/' + user.user_picture" alt="" />
       <p class="name">{{ user.name }}</p>
@@ -48,13 +49,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.sidebar {
-  padding-top: 80px;
-  background-color: #fa8432;
-  width: 280px;
-  height: 900px;
-  display: flex;
-  flex-direction: column;
+.sidebar{
+    padding-top: 50px;
+    background-color: #FA8432;
+    position: fixed;
+    height: 100%;
+    width: 0;
+    z-index: 1;
+    overflow-x: hidden;
+    transition: all .1s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    font-size: 36px;
 }
 
 .card-profile {
@@ -86,13 +98,14 @@ export default {
   margin-bottom: 6px;
 }
 
-.sidebar a {
-  padding-left: 24px;
-  padding-top: 17px;
-  padding-bottom: 16px;
-  padding-right: 156px;
-  color: white;
-  text-decoration: none;
+.sidebar a{
+    padding-left: 24px;
+    padding-top: 17px;
+    padding-bottom: 16px;
+    padding-right: 156px;
+    color: white;
+    text-decoration: none;
+    width: 100px;
 }
 
 .sidebar a.active {

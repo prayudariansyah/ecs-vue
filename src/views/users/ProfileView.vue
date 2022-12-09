@@ -3,7 +3,8 @@
     <div class="profile">
         <div class="container">
             <SidebarComponent />
-            <div class="content">
+            <span class="open" onclick="openNav()">&#9776;</span>
+            <div class="content" id="main">
                 <div class="title">
                     <h4>Profile Saya</h4>
                     <p>Pastikan Data Pribadi anda benar dan tidak tersebar</p>
@@ -42,6 +43,15 @@
             </div>
         </div>
     </div>
+    <component :is="'script'">
+        function openNav() {
+          document.getElementById("mySide").style.width = "281px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySide").style.width = "0";
+        }
+  </component>
 </template>
 
 <script>
@@ -97,10 +107,7 @@ export default {
 </script>
 
 <style scoped>
-* {
-    margin: 0;
-    padding: 0;
-}
+
 
 h4 {
     font-size: 36px;
@@ -109,24 +116,54 @@ h4 {
 }
 
 .profile {
+    margin: 0;
     font-family: 'Poppins';
-    width: 1440px;
-    height: 900px;
-    overflow: auto;
+    overflow: visible;
 }
 
 .container {
     display: flex;
-    width: 100%;
-    height: 100%;
 }
 
-.sidebar {
-    padding-top: 80px;
+.sidebar{
+    padding-top: 50px;
+   padding-top: 50px;
     background-color: #FA8432;
-    width: 280px;
+    position: fixed;
+    height: 100%;
+    width: 0;
+    z-index: 1;
+    overflow-y: hidden;
+    transition: all .1s;
     display: flex;
     flex-direction: column;
+}
+
+.sidebar .closebtn {
+    padding-left: 24px;
+    padding-top: 17px;
+    padding-right: 156px;
+    color: white;
+    text-decoration: none;
+    color: white;
+    position: absolute;
+    top: 0;
+    font-size: 36px;
+}
+#main {
+    transition: margin-left .5s;
+    padding-left: 80px;
+  }
+.open{
+    position: fixed;
+    top: 120px;
+    font-family: 'Poppins';
+    font-size: 28px;
+    font-weight: 500;
+    color:white;
+    border-radius: 0 100px 100px 0;
+    background: #E45F03;
+    padding: 8px 13px 10px 13px;
 }
 
 .card-profile {
@@ -180,8 +217,6 @@ h4 {
 }
 
 .content {
-    width: 1160px;
-    margin-left: 70px;
     margin-top: 50px;
 }
 
@@ -244,7 +279,6 @@ h4 {
 }
 
 .new-data input {
-    margin-right: 720px;
     margin-top: 10px;
     margin-bottom: 15px;
     padding-left: 15px;
@@ -253,7 +287,28 @@ h4 {
     font-size: 16px;
     font-weight: 400;
     border-radius: 10px;
-    line-height: 24px;
+    line-height: 24px; 
+
+    box-sizing: border-box;
+    width: 370px;
+    height: 50px;
+    background: #FFFFFF;
+    border: 1px solid #7186A0;
+    border-radius: 10px;
+}
+.new-data li {
+    list-style-type: none;
+    margin-bottom: 30px;
+}
+.new-data a{
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;    
+    text-align: center;
+    letter-spacing: 0.01em;
+    color: #E45F03;
 }
 
 .submit {
@@ -269,18 +324,34 @@ h4 {
 
 .change-pass {
     margin-top: 10px;
-    max-width: 370px;
-    max-height: 60px;
+    width: 370px;
+    height: 60px;
     padding-top: 10px;
-    padding-bottom: 10px;
     background-color: white;
     color: #E45F03;
     border-radius: 10px;
-    border-style: solid;
+    border-style: none;
     border-width: 2px;
     font-size: 18px;
     font-weight: 600;
     text-align: center;
     text-decoration: none;
+    margin-bottom: 20px;
 }
+
+@media screen and (max-width: 600px) {
+    .change-picture{
+        flex-direction: column;
+    }
+    .new-data input{
+        width: 100%;
+    }
+    .submit{
+        width: 100%;
+    }
+    .change-pass{
+        width: 100%;
+    }
+  }
+
 </style>

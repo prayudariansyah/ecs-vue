@@ -45,21 +45,16 @@
 </template>
 
 <style scoped>
-*{
-    margin: 0;
-    padding: 0;    
-}
+
 
 .send-email{
+    margin: 0;
     font-family: 'Poppins';
     overflow: auto;
 }
 
 main{
     display: flex;
-    flex-direction: row;
-    padding-top: 180px;
-    padding-left: 180px;
 }
 
 .container {
@@ -75,9 +70,6 @@ main{
     color: #FA8432;
 }
 
-.content{
-    margin-top: 30px;
-}
 .content h1{
     font-style: normal;
     font-weight: 600;
@@ -87,8 +79,6 @@ main{
     margin-bottom: 5px;
 }
 .container p{
-    width: 247px;
-    height: 42px;
     font-weight: 400;
     font-size: 14px;
     line-height: 21px;
@@ -154,13 +144,16 @@ main{
     transform: translateY(0);
 }
 
+.imglogin{
+    width: fit-content;
+}
 .floating {
     animation-name: floating;
     animation-duration: 5s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
-    margin-left: 263px;
 }
+
 @keyframes floating {
     0% {
       transform: translate(0, 0px);
@@ -176,11 +169,12 @@ main{
   }
 
 footer {
+    width: 100%;
+    padding: 50px 100px;
+    margin: 70px 0px 0px 0px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 50px 100px;
-    margin: 70px 0px 0px 0px;
     background-color: #e45f03;
     color: white;
 }
@@ -211,6 +205,67 @@ footer p {
     flex-grow: 1;
     text-align: center;
 }
+
+@media screen and (max-width: 400px) {
+    .logo{
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    
+    .container{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .floating{
+        width: 300px;
+        margin-top: 80px;
+        margin-left: 80px;
+    }
+    .input-field input{
+        width: 100%;
+    }
+    .button{
+        width: 100%;
+    }
+
+  }
+  
+  @media screen and (max-width: 800px) {
+    footer{
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    .container{
+        padding-left: 80px;
+    }
+    footer .textfooter {
+        text-align: center;
+        flex-direction: column;
+      }
+    main{
+        flex-direction: column;
+    }
+    .floating{
+        margin-top: 80px;
+        margin-left: 80px;
+    }
+
+  }
+
+  @media screen and (min-width: 801px) {
+    main{
+        padding-top: 80px;   
+        padding-left: 160px;
+    }
+    }
+  @media screen and (min-width: 1200px) {
+  }
+  
+  @media screen and (min-width: 1600px) {
+  }
 </style>
 
 <script>

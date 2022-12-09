@@ -1,5 +1,6 @@
 <template>
-  <aside class="sidebar">
+  <aside class="sidebar" id="mySide">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <div class="kembali">
       <a href="/dashboard">
         <img src="/images/akar-icons_arrow-left.png" alt="" />
@@ -141,28 +142,48 @@ export default {
   padding: 0;
 }
 
-.sidebar {
-  padding-top: 63px;
-  background-color: #fa8432;
-  width: 280px;
-  display: flex;
-  flex-direction: column;
+.sidebar{
+    padding-top: 50px;
+    background-color: #FA8432;
+    position: fixed;
+    width: 0;
+    height: 100%;
+    z-index: 1;
+    overflow-y: hidden;
+    transition: all .1s;
+    display: flex;
+    flex-direction: column;
 }
 
-.kembali {
-  padding-left: 24px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 50px;
+.sidebar .closebtn {
+    padding-left: 24px;
+    padding-top: 17px;
+    padding-right: 156px;
+    color: white;
+    text-decoration: none;
+    color: white;
+    position: fixed;
+    top: 0;
+    font-size: 36px;
 }
 
-
-.kembali a {
-  font-size: 20px;
-  font-weight: 400;
-  margin-left: 10px;
-  color: white;
-  text-decoration: none;
+.kembali{
+    margin-top: 20px;
+    padding-left: 24px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.kembali img{
+ width: 24px;   
+ height: 24px;
+}
+.kembali a{
+    font-size: 20px;
+    font-weight: 400;
+    margin-left: 10px;
+    color: white;
+    text-decoration: none;
 }
 
 .kembali a img {
@@ -210,9 +231,8 @@ li a.active-list {
 }
 
 li a:hover:not(.active) {
-  background-color: #ffb17b;
-  color: #e45f03;
-}
+    color: #E45F03;
+  }
 
 .fade-enter-active,
 .fade-leave-active {

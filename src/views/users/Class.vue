@@ -2,7 +2,8 @@
   <div class="subclass">
     <div class="container">
       <SidebarMapelComponentVue @sendData="getData($event)" />
-      <div class="content">
+      <span class="open" id="open" onclick="openNav()">&#9776;</span>
+      <div class="content" id="main">
         <div v-if="list_mapel.sub_mapel_id">
           <div class="title">
             <h4>{{ list_mapel.list_mapel_name }}</h4>
@@ -31,6 +32,15 @@
       </div>
     </div>
   </div>
+  <component :is="'script'">
+        function openNav() {
+          document.getElementById("mySide").style.width = "281px";
+        }
+        
+        function closeNav() {
+          document.getElementById("mySide").style.width = "0";
+        }
+  </component>
 </template>
 
 <script>
@@ -120,29 +130,39 @@ export default {
 </script>
 
 <style scoped>
-h4 {
-  width: auto;
-  font-size: 36px;
-  font-weight: 500;
-  color: #404040;
+h4{
+    font-size: 36px;
+    font-weight: 500;
+    color:#404040;
 }
 
 .subclass {
-  font-family: 'Poppins';
-  height: max-content;
-  overflow: auto;
+   margin: 0;
+    font-family: 'Poppins';
+    overflow: auto;
 }
 
 .container {
   display: flex;
 }
+#main {
+    transition: margin-left .5s;
+    padding-left: 80px;
+  }
+.open{
+    position: fixed;
+    top: 120px;
+    font-family: 'Poppins';
+    font-size: 28px;
+    font-weight: 500;
+    color:white;
+    border-radius: 0 100px 100px 0;
+    background: #E45F03;
+    padding: 8px 13px 10px 13px;
+}
 
-.content {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 50px;
-  margin-left: 70px;
-  margin-right: 70px;
+.content{ 
+    margin-top: 50px;
 }
 
 .video {
@@ -150,13 +170,12 @@ h4 {
   margin-bottom: 40px;
 }
 
-.text-deskripsi {
-  width: 100%;
-  font-size: 18px;
-  font-weight: 400;
-  color: black;
-  margin-bottom: 15px;
-  text-align: justify;
+.text-deskripsi{
+    padding-right: 20px;
+    font-size: 18px;    
+    font-weight: 400;
+    color: black;
+    margin-bottom: 15px;
 }
 
 .btn-container {
@@ -167,14 +186,14 @@ h4 {
 
 .btn {
   width: 90px;
-  height: 60px;
-  background-color: #e45f03;
-  color: white;
-  border-radius: 10px;
-  border: none;
-  font-size: 18px;
-  font-weight: 600;
-  margin-right: 50px;
+    height: 60px;
+    background-color: #E45F03;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 30px;
   cursor: pointer;
 }
 
@@ -186,5 +205,18 @@ h4 {
 .disabled {
   pointer-events: none;
   background-color: slategray;
+}
+
+@media screen and (max-width : 800px) {
+    .content{
+        width: 100%;
+        padding-right: 20px;
+    }
+    .video iframe{
+        width: 100%;
+    }
+    .text-deskripsi p{
+        width: 100%;
+    }
 }
 </style>
