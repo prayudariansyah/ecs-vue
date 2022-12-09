@@ -79,17 +79,6 @@ export default {
             user: '',
         }
     },
-    async created() {
-        await axios.get('/api/user/show')
-            .then(response => response.data)
-            .then(datas => this.user = datas.data)
-            .catch(error => { console.log(error) });
-            this.data.name = this.user.name;
-            // this.data.name = this.user.name;
-            // this.data.email = this.user.email;
-            this.data.user_city = this.user.user_city;
-            this.data.user_age = this.user.user_age;
-    },
     setup() {
         const data = reactive({
             name: '',
