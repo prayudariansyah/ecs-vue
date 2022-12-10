@@ -138,7 +138,7 @@ h4 {
 .content {
     width: 100%;
     margin-top: 50px;
-    margin-right: 50px;
+    margin-right: 100px;
 }
 
 .title {
