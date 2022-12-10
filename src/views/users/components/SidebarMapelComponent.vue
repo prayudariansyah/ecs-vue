@@ -75,7 +75,7 @@ export default {
 
     async getQuiz() {
       await axios.get('/api/quiz')
-        .then(response => response.data)
+      .then(response => response.data)
         .then(datas => { this.quiz = datas.data })
         .catch(error => { console.log(error) });
     },

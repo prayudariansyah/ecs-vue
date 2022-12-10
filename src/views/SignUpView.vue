@@ -15,6 +15,11 @@
           </li>
         </ul>
       </nav>
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </header>
     <!-- end header -->
 
@@ -170,8 +175,10 @@ export default {
       form_data.append('payment_method_id', data.payment_method_id);
 
       await axios.post('/api/register', form_data).then(function (response) {
-        alert(response.data.meta.message);
-        return router.push('/email-verify');
+        const datas = response.data;
+        localStorage.token = datas.token;
+        alert(datas.meta.message);
+        return router.push('/email-verify/' + datas.data.id);
       });
     };
 
@@ -232,6 +239,7 @@ header nav ul li a {
   display: flex;
   justify-content: space-around;
   margin: 50px 0px;
+  padding: 0px 50px;
 }
 
 .formlogin {
@@ -406,6 +414,10 @@ footer p {
   main .containerregis .imglogin img {
     width: 350px;
   }
+
+  .formlogin{
+    width: auto;
+  }
 }
 
 @media screen and (min-width: 800px) {}
@@ -471,12 +483,13 @@ footer p {
     right: 0;
     background-color: #fa8432;
     margin: 50px 0px;
+    transform: translateY(-1000px);
     transition: all 300ms ease-in-out;
     color: white;
   }
 
   .close {
-    transform: translateY(-1000px);
+    transform: translateY(0px);
   }
 
   header nav ul li {

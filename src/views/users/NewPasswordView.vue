@@ -2,6 +2,7 @@
     <div class="newPassword">
         <div class="container">
             <SidebarComponent />
+            <span class="open" onclick="openNav()">&#9776;</span>
             <div class="content">
                 <div class="title">
                     <h4>New Password</h4>
@@ -39,15 +40,21 @@
                                 }}</span>
                             </div>
                         </div>
-                        <div class="forgot">
-                            <a href="/send-reset-password">lupa password ?</a>
-                        </div>
                         <button class="button" type="submit">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <component :is="'script'">
+        function openNav() {
+        document.getElementById("mySide").style.width = "281px";
+        }
+
+        function closeNav() {
+        document.getElementById("mySide").style.width = "0";
+        }
+    </component>
 </template>
 
 <script>
@@ -109,46 +116,34 @@ h4 {
 .newPassword {
     font-family: 'Poppins';
     width: 100%;
-    overflow: auto;
+    overflow: visible;
+}
+
+.open {
+    position: fixed;
+    top: 120px;
+    font-family: 'Poppins';
+    font-size: 28px;
+    font-weight: 500;
+    color: white;
+    border-radius: 0 100px 100px 0;
+    background: #E45F03;
+    padding: 8px 13px 10px 13px;
 }
 
 .container {
     display: flex;
-    width: 100%;
-    height: 100%;
-}
-
-.sidebar {
-    padding-top: 80px;
-    background-color: #FA8432;
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar a {
-    padding-left: 24px;
-    padding-top: 17px;
-    padding-bottom: 16px;
-    padding-right: 156px;
-    color: white;
-    text-decoration: none;
-}
-
-.sidebar a.active {
-    background-color: #E45F03;
-    color: white;
-}
-
-.sidebar a:hover:not(.active) {
-    background-color: #FFB17B;
-    color: white;
 }
 
 .content {
     width: 100%;
-    margin-left: 70px;
     margin-top: 50px;
+    margin-right: 100px;
+}
+
+.title {
+    margin-left: 50px;
+    color: #BFBFBF;
 }
 
 .title p {
@@ -161,8 +156,7 @@ h4 {
 .new-data {
     width: 100%;
     max-width: 500px;
-    margin-top: 30px;
-    padding: 50px;
+    margin: 50px;
 }
 
 .new-data .field {
@@ -178,10 +172,7 @@ h4 {
 
 .new-data input {
     width: 100%;
-    max-width: 370px;
     min-width: 44px;
-    margin-top: 10px;
-    margin-bottom: 15px;
     margin-right: 10px;
     padding-left: 15px;
     padding-top: 13px;
@@ -193,9 +184,9 @@ h4 {
 }
 
 .input-group {
-    display: inline-block;
-    width: 100%;
-    max-width: 500px;
+    display: flex;
+    padding: 13px;
+    margin-right: 10px;
 }
 
 .button {
@@ -241,9 +232,13 @@ h4 {
 }
 
 .show-pass {
-    width: 44px;
-    height: 44px;
-    padding: 15px;
+    width: 10%;
+    height: 100%;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 0px;
     background-color: #E45F03;
     color: white;
     border-radius: 10px;
@@ -257,19 +252,5 @@ h4 {
 .show-pass:hover {
     box-shadow: rgb(250, 132, 50) 0 8px 15px;
     transform: translateY(-2px);
-}
-
-.forgot {
-    width: 100%;
-    min-width: 44px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: right;
-}
-
-.forgot a {
-    margin-right: 40px;
-    color: #E45F03;
-    text-decoration: none;
 }
 </style>

@@ -34,15 +34,15 @@
             </div>
         </div>
     </div>
-      <component :is="'script'">
-         function openNav() {
-              document.getElementById("mySide").style.width = "281px";
-            }
-            
+    <component :is="'script'">
+        function openNav() {
+        document.getElementById("mySide").style.width = "281px";
+        }
+
         function closeNav() {
-              document.getElementById("mySide").style.width = "0";
-            }
-  </component>
+        document.getElementById("mySide").style.width = "0";
+        }
+    </component>
 </template>
 
 <script>
@@ -106,7 +106,7 @@ h4 {
 .dashboard {
     margin: 0;
     font-family: 'Poppins';
-    overflow:visible;
+    overflow: visible;
 }
 
 .container {
@@ -115,15 +115,16 @@ h4 {
 
 #main {
     transition: margin-left .5s;
-    padding-left: 80px;
-  }
-.open{
+    padding: 60px;
+}
+
+.open {
     position: fixed;
     top: 120px;
     font-family: 'Poppins';
     font-size: 28px;
     font-weight: 500;
-    color:white;
+    color: white;
     border-radius: 0 100px 100px 0;
     background: #E45F03;
     padding: 8px 13px 10px 13px;
@@ -131,7 +132,7 @@ h4 {
 
 
 .content {
-    margin-top: 50px;
+    display: block;
 }
 
 .title p {
@@ -171,17 +172,20 @@ h4 {
 
 @media screen and (max-width: 800px) {
     .content {
-      flex-direction: column-reverse;
+        flex-direction: column-reverse;
     }
+
     .class-row {
         flex-direction: column-reverse;
     }
-    div.content {margin-left: 0;}
-  
-    .card  img {
-      width: 255px;
-      height: 170px;
-    }
-  }
 
+    div.content {
+        margin-left: 0;
+    }
+
+    .card img {
+        width: 255px;
+        height: 170px;
+    }
+}
 </style>

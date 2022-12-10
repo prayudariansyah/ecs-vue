@@ -7,7 +7,6 @@
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/sign-in"><button class="button" role="button">Masuk</button></a></li>
         </ul>
       </nav>
     </header>
@@ -19,13 +18,15 @@
             <h2>Email Verification</h2>
           </div>
           <div class="card2" style="background-color: white; color: #e45f03">
-            <div class="titleprice">
-              <h3>Email verifikasi terkirim</h3>
-              <h2>Silahkan cek email anda!!!</h2>
-              <hr />
-              <h5>jika email belum terkirim silahkan klik dibawah</h5>
+            <div class="item">
+              <div class="titleprice">
+                <h3>Email verifikasi terkirim</h3>
+                <h2>Silahkan cek email anda!!!</h2>
+                <hr />
+                <h5>jika email belum terkirim silahkan klik dibawah</h5>
+              </div>
+              <button class="button" @click="submit">Kirim ulang</button>
             </div>
-            <button class="button" @click="submit">Kirim ulang</button>
           </div>
         </section>
       </article>
@@ -69,13 +70,14 @@ export default {
   name: 'EmailVerify',
   data() {
     return {
+      id: this.$route.params.id,
       messages: '',
       verify: false,
     }
   },
   async mounted() {
     const route = useRouter();
-    await axios.get('/api/email/verify')
+    await axios.get('/api/email/verify/check/' + this.id)
       .then(response => response.data)
       .then(datas => {
         this.messages = datas.meta.message;
@@ -85,7 +87,7 @@ export default {
   },
   setup() {
     const submit = async () => {
-      await axios.get('/api/email/verify/resend-verification')
+      await axios.get('/api/email/resend-verification/' + this.id)
         .then(response => response.data)
         .then(datas => {
           alert(datas.meta.message);
@@ -145,58 +147,11 @@ header nav ul li a {
   font-weight: 500;
 }
 
-.jumbotron {
-  display: flex;
-  margin: 0px 100px;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 169px;
-}
-
-main .jumbo1 {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-main .jumbo1 .textjumbo {
-  flex-grow: 1;
-  color: white;
-  font-size: 60px;
-}
-
-main .jumbo1 .textjumbo b {
-  color: #e45f03;
-}
-
-main .jumbo1 p {
-  flex-grow: 1;
-  width: 400px;
-  font-weight: 0px;
-
-  color: white;
-}
-
-main .jumbo1 button {
-  flex-grow: 1;
-  width: 200px;
-}
-
-main .jumbo1 button a {
-  text-decoration: none;
-  color: white;
-}
-
-main .jumbo2 {
-  flex-grow: 10;
-  align-items: flex-end;
-  text-align: right;
-}
-
 article {
   padding: 30px;
-  margin: 0px 100px;
-  background-color: #ffffff;
+  margin: 0px auto;
+  text-align: center;
+  max-width: 500px;
 }
 
 .catalogue {
@@ -243,22 +198,24 @@ main article .about .imgabout {
   color: #bfbfbf;
 }
 
-.harga {
-  display: grid;
+article .harga {
   place-items: center;
 }
 
 article .harga .titleprice {
   text-align: center;
-  margin: 50px 0px;
+  margin: 50px;
 }
 
 article .card2 {
   border-radius: 20px;
   background-color: #fa8432;
   color: white;
+  width: 100%;
+}
+
+article .item {
   padding: 20px;
-  width: 400px;
 }
 
 article .harga .card2 ul {

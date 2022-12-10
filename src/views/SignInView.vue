@@ -113,10 +113,11 @@ export default {
         .then((response) => {
           const datas = response.data;
           const messages = datas.meta.message;
+          localStorage.token = datas.token;
           if (response.status == 200) {
             if (datas.data.role_id == 2) {
               alert(messages);
-              return route.push('/email-verify');
+              return route.push('/email-verify/' + datas.data.id);
             }
             return alert('gagal login');
           }
@@ -178,7 +179,8 @@ header nav ul li a {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin: 50px 0px;
+  margin: 50px auto;
+  padding: 0px 50px;
 }
 
 .formlogin {
@@ -432,12 +434,13 @@ footer p {
     right: 0;
     background-color: #fa8432;
     margin: 50px 0px;
+    transform: translateY(-1000px);
     transition: all 300ms ease-in-out;
     color: white;
   }
 
   .close {
-    transform: translateY(-1000px);
+    transform: translateY(0px);
   }
 
   header nav ul li {
