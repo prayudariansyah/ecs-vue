@@ -126,32 +126,6 @@ h4 {
     display: flex;
 }
 
-.sidebar {
-    padding-top: 50px;
-    padding-top: 50px;
-    background-color: #FA8432;
-    position: fixed;
-    height: 100%;
-    width: 0;
-    z-index: 1;
-    overflow-y: hidden;
-    transition: all .1s;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar .closebtn {
-    padding-left: 24px;
-    padding-top: 17px;
-    padding-right: 156px;
-    color: white;
-    text-decoration: none;
-    color: white;
-    position: absolute;
-    top: 0;
-    font-size: 36px;
-}
-
 #main {
     transition: margin-left .5s;
     padding-left: 80px;
@@ -200,27 +174,9 @@ h4 {
 
 }
 
-.sidebar a {
-    padding-left: 24px;
-    padding-top: 17px;
-    padding-bottom: 16px;
-    padding-right: 156px;
-    color: white;
-    text-decoration: none;
-}
-
-.sidebar a.active {
-    background-color: #E45F03;
-    color: white;
-}
-
-.sidebar a:hover:not(.active) {
-    background-color: #FFB17B;
-    color: white;
-}
-
 .content {
     margin-top: 50px;
+    margin-right: 50px;
 }
 
 .title p {
@@ -290,6 +246,7 @@ input[type='file']::file-selector-button:active {
 
 .new-data {
     margin-top: 30px;
+    margin-right: 50px;
 }
 
 .new-data .field {

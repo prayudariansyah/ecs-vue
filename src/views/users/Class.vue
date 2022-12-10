@@ -148,7 +148,7 @@ h4 {
 
 #main {
   transition: margin-left .5s;
-  padding-left: 80px;
+  margin: 60px;
 }
 
 .open {
@@ -195,7 +195,7 @@ h4 {
   border: none;
   font-size: 18px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-right: 30px;
   cursor: pointer;
 }
 

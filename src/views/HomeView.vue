@@ -82,20 +82,22 @@
             <h2>Harga</h2>
           </div>
           <div class="card2">
-            <div class="titleprice">
-              <h3>Program Berkelanjutan</h3>
-              <h2>Rp. 1.500.000</h2>
-              <h4>Per Semester</h4>
+            <div class="item">
+              <div class="titleprice">
+                <h3>Program Berkelanjutan</h3>
+                <h2>Rp. 1.500.000</h2>
+                <h4>Per Semester</h4>
+              </div>
+              <hr />
+              <h4>Kelebihan Program</h4>
+              <ul>
+                <li>Materi Pelajaran Sekolah Dasar</li>
+                <li>Pembelajaran yang interaktif</li>
+                <li>Diajari oleh para ahli di bidangnya</li>
+                <li>Sesi Zoom One Class 1 kali seminggu</li>
+              </ul>
+              <a href="/sign-up"><button class="button">Daftar Sekarang</button></a>
             </div>
-            <hr />
-            <h4>Kelebihan Program</h4>
-            <ul>
-              <li>Materi Pelajaran Sekolah Dasar</li>
-              <li>Pembelajaran yang interaktif</li>
-              <li>Diajari oleh para ahli di bidangnya</li>
-              <li>Sesi Zoom One Class 1 kali seminggu</li>
-            </ul>
-            <a href="/sign-up"><button class="button">Daftar Sekarang</button></a>
           </div>
         </section>
         <!-- end harga -->
@@ -247,7 +249,9 @@ main .jumbo2 {
 
 article {
   padding: 30px;
-  margin: 0px 100px;
+  margin: 0px auto;
+  text-align: center;
+  max-width: 500px;
   background-color: #ffffff;
 }
 
@@ -295,22 +299,24 @@ main article .about .imgabout {
   color: #bfbfbf;
 }
 
-.harga {
-  display: grid;
+article .harga {
   place-items: center;
 }
 
 article .harga .titleprice {
   text-align: center;
-  margin: 50px 0px;
+  margin: 50px;
 }
 
 article .card2 {
   border-radius: 20px;
   background-color: #fa8432;
   color: white;
+  width: 100%;
+}
+
+article .harga .item {
   padding: 20px;
-  width: 400px;
 }
 
 article .harga .card2 ul {
@@ -576,11 +582,12 @@ footer p {
     right: 0;
     background-color: #fa8432;
     margin: 50px 0px;
+    transform: translateY(-1000px);
     transition: all 300ms ease-in-out;
   }
 
   .close {
-    transform: translateY(-1000px);
+    transform: translateY(0px);
   }
 
   header nav ul li {
@@ -594,8 +601,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 800px) {
-}
+@media screen and (min-width: 800px) {}
 
 @media screen and (min-width: 850px) {
   footer .textfooter {
@@ -603,10 +609,7 @@ footer p {
   }
 }
 
-@media screen and (min-width: 1200px) {
-}
+@media screen and (min-width: 1200px) {}
 
-@media screen and (min-width: 1600px) {
-}
-
+@media screen and (min-width: 1600px) {}
 </style>
