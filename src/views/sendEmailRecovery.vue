@@ -59,6 +59,7 @@ export default {
 
         const data = reactive({
             email: '',
+            host: window.location.origin,
         });
 
         const submit = async () => {
@@ -78,8 +79,7 @@ export default {
 </script>
 
 <style scoped>
-
-.send-email{
+.send-email {
     margin: 0;
 
     font-family: 'Poppins';
@@ -103,7 +103,7 @@ main {
     color: #FA8432;
 }
 
-.content h1{
+.content h1 {
     font-style: normal;
     font-weight: 600;
     font-size: 36px;
@@ -112,7 +112,7 @@ main {
     margin-bottom: 5px;
 }
 
-.container p{
+.container p {
     font-weight: 400;
     font-size: 14px;
     line-height: 21px;
@@ -182,9 +182,10 @@ main {
     transform: translateY(0);
 }
 
-.imglogin{
+.imglogin {
     width: fit-content;
 }
+
 .floating {
     animation-name: floating;
     animation-duration: 5s;
@@ -245,63 +246,69 @@ footer p {
 }
 
 @media screen and (max-width: 400px) {
-    .logo{
+    .logo {
         font-size: 24px;
     }
 }
 
 @media screen and (max-width: 600px) {
-    
-    .container{
+
+    .container {
         padding-left: 20px;
         padding-right: 20px;
     }
-    .floating{
+
+    .floating {
         width: 300px;
         margin-top: 80px;
         margin-left: 80px;
     }
-    .input-field input{
-        width: 100%;
-    }
-    .button{
+
+    .input-field input {
         width: 100%;
     }
 
-  }
-  
-  @media screen and (max-width: 800px) {
-    footer{
+    .button {
+        width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 800px) {
+    footer {
         width: 100%;
         padding: 0;
         margin: 0;
     }
-    .container{
+
+    .container {
         padding-left: 80px;
     }
+
     footer .textfooter {
         text-align: center;
         flex-direction: column;
-      }
-    main{
+    }
+
+    main {
         flex-direction: column;
     }
-    .floating{
+
+    .floating {
         margin-top: 80px;
         margin-left: 80px;
     }
 
-  }
+}
 
-  @media screen and (min-width: 801px) {
-    main{
-        padding-top: 80px;   
+@media screen and (min-width: 801px) {
+    main {
+        padding-top: 80px;
         padding-left: 160px;
     }
-    }
-  @media screen and (min-width: 1200px) {
-  }
-  
-  @media screen and (min-width: 1600px) {
-  }
+}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1600px) {}
 </style>
